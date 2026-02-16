@@ -1,0 +1,97 @@
+{
+    "skillId": 0,
+    "skillName": "测试1",
+    "version": "1.0",
+    "duration": 3.3333334922790529,
+    "playbackSpeed": 1.0,
+    "isLoop": false,
+    "groups": [
+        {
+            "groupId": "bd8e361c-e64a-41dd-b55f-79dd12c7b772",
+            "groupName": "分组 1",
+            "isCollapsed": false,
+            "isEnabled": true,
+            "isLocked": false,
+            "tracks": [
+                {
+                    "rid": 1000
+                }
+            ]
+        }
+    ],
+    "references": {
+        "version": 2,
+        "RefIds": [
+            {
+                "rid": 1000,
+                "type": {
+                    "class": "AnimationTrack",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "trackId": "d0017640-bdb2-4279-b7e0-495469b86389",
+                    "trackType": "AnimationTrack",
+                    "trackName": "动画轨道",
+                    "isMuted": false,
+                    "isLocked": false,
+                    "isHidden": false,
+                    "isCollapsed": false,
+                    "isEnabled": true,
+                    "clips": [
+                        {
+                            "rid": 1001
+                        },
+                        {
+                            "rid": 1002
+                        }
+                    ]
+                }
+            },
+            {
+                "rid": 1001,
+                "type": {
+                    "class": "SkillAnimationClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "clipId": "177a2fc3-7fb7-455c-96bd-c0bfef0ff393",
+                    "clipName": "动画轨道片段",
+                    "isEnabled": true,
+                    "startTime": 0.20000001788139344,
+                    "duration": 1.7999999523162842,
+                    "blendInDuration": 0.23999999463558198,
+                    "blendOutDuration": 1.0,
+                    "animationClip": {
+                        "instanceID": 30026
+                    },
+                    "playSpeed": 1.0,
+                    "clipGuid": "5ae7dd75483496b46a09884c7811402b"
+                }
+            },
+            {
+                "rid": 1002,
+                "type": {
+                    "class": "SkillAnimationClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "clipId": "a4e59be2-641e-4a25-9a0d-6790b2ea26e0",
+                    "clipName": "动画轨道片段",
+                    "isEnabled": true,
+                    "startTime": 1.0,
+                    "duration": 2.3333334922790529,
+                    "blendInDuration": 1.0,
+                    "blendOutDuration": 0.0,
+                    "animationClip": {
+                        "instanceID": 30198
+                    },
+                    "playSpeed": 1.0,
+                    "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911"
+                }
+            }
+        ]
+    }
+}

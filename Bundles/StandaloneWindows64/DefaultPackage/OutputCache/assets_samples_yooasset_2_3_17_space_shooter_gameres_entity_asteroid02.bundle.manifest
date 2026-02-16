@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 1426374058
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b822e330870054b9e06e24e02407e93c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e3f2e1f817d153237bb6078b5a7d12dc
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: b822e330870054b9e06e24e02407e93c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: ffef5a382eef32d46b1d6175c85f644e, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/Entity/asteroid02.prefab
+Dependencies:
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache/assets_samples_yooasset_2_3_17_space_shooter_gameres_entityart_prop_asteroid_02.bundle

@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 863436225
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ec1f06e8b5f3df7e4f44a0eeb8aa2a65
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 923768aebf385ad86f7762daa8034951
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: ec1f06e8b5f3df7e4f44a0eeb8aa2a65
+HashAppended: 0
+ClassTypes:
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UISpriteAtlas/atlas_icon.spriteatlas
+Dependencies:
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache/assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_icon.bundle

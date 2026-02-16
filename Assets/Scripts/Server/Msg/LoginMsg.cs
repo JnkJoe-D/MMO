@@ -1,0 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MsgRegister : MsgBase
+{
+    public MsgRegister() { protoName = "MsgRegister"; }
+    //客户端发
+    public string id = "";
+    public string pw = "";
+    //服务端返回结果(0-成功，1-失败)
+    public int result = 0;
+}
+public class MsgLogin : MsgBase
+{
+    public MsgLogin() { protoName = "MsgLogin"; }
+    public string id = "";
+    public string pw = "";
+    public int result = 0;
+}
+public class MsgKick : MsgBase
+{
+    public MsgKick() { protoName = "MsgKick"; }
+    //踢出原因,0-别人重复登陆
+    public int reason = 0;
+}

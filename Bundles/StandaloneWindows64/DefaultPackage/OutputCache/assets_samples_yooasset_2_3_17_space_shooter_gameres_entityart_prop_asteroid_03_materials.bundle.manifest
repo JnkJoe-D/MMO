@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 1053807028
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 21a6a44599e3d8132b2ca81a40bf5345
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5e762ccb57c4caaabbb5a4199ac82c23
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 21a6a44599e3d8132b2ca81a40bf5345
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/EntityArt/prop_asteroid_03/Materials/prop_asteroid_03_mat.mat
+Dependencies:
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache/unityshaders.bundle

@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 2224582269
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 16c3cba6b2be5e33bbee2f368d402f08
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 22c7f70bd3e2de7057decfa752510fd2
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 16c3cba6b2be5e33bbee2f368d402f08
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/Effect/engines_enemy.prefab
+Dependencies:
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache/assets_samples_yooasset_2_3_17_space_shooter_gameres_effectart.bundle

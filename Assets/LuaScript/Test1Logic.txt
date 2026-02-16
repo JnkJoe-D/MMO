@@ -1,0 +1,19 @@
+Test1Logic = {}
+local UiTable = require("Test1View")
+print("Test1Logic Run")
+function Test1Logic:Create()
+	local ui = {}
+	setmetatable(ui,{__index=UiTable})
+	ui:Create()
+	ui.layer = 1
+	GameUi:LoadUi(ui)
+	print(UiTable)
+	UiTable:Init()
+	return ui
+end
+function UiTable:ButtonClickHandler(component)
+	if(component.name == "Button") then
+		print("Button clicked")
+	end
+end
+Test1Logic:Create()

@@ -1,0 +1,70 @@
+ManifestFileVersion: 0
+CRC: 3585620684
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 532b7de319b5e0c9aa60981d5b057732
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 152b27f0fdba60d3b155703f9139b5d4
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 532b7de319b5e0c9aa60981d5b057732
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 41730f8e5f2b6e64abc4a03035c61ea5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 814f6a7e3ec8a40aaa3a2057e2695924, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 258
+  Script: {instanceID: 0}
+- Class: 850595691
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/Scene/scene_home.unity
+Dependencies:
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache/assets_samples_yooasset_2_3_17_space_shooter_gameres_sceneart.bundle
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache/share_assets_samples_yooasset_2_3_17_space_shooter_gameres_scene.bundle
