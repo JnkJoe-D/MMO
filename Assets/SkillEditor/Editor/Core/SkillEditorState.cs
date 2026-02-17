@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace SkillEditor.Editor
 {
-    public enum TimeStepMode
-    {
-        Variable = 0, // 使用动态网格（基于缩放级别自动调整）
-        Fixed = 1     // 使用固定帧率网格（基于 frameRate 属性）
-    }
-
     /// <summary>
     /// 技能编辑器全局 UI 状态
     /// </summary>

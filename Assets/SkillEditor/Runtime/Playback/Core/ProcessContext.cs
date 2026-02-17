@@ -5,22 +5,6 @@ using UnityEngine;
 namespace SkillEditor
 {
     /// <summary>
-    /// 播放模式
-    /// </summary>
-    public enum PlayMode
-    {
-        /// <summary>
-        /// 编辑器预览
-        /// </summary>
-        EditorPreview,
-
-        /// <summary>
-        /// 运行时（Mono Update 或帧同步共用）
-        /// </summary>
-        Runtime,
-    }
-
-    /// <summary>
     /// 播放上下文，为 Process 提供依赖注入：
     /// - 目标角色的 GameObject / Transform
     /// - 组件惰性缓存

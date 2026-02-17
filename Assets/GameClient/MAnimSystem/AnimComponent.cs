@@ -397,6 +397,7 @@ namespace Game.MAnimSystem
                 Graph.Destroy();
                 _isGraphCreated = false;
             }
+            if(!Animator.isActiveAndEnabled)return;
             Animator.Rebind(); // 强制刷新 Animator 状态，避免残留影响
             Animator.Update(0f); // 立即应用状态重置
         }

@@ -1,4 +1,5 @@
 using System;
+using Game.MAnimSystem;
 using UnityEngine;
 
 namespace SkillEditor
@@ -15,7 +16,8 @@ namespace SkillEditor
         
         [SkillProperty("播放速度")]
         public float playSpeed = 1.0f;
-        
+        [SkillProperty("目标动画层")]
+        public EAnimLayer layer = EAnimLayer.Locomotion;
         [HideInInspector]
         public string clipGuid;
 
@@ -38,7 +40,9 @@ namespace SkillEditor
                 isEnabled = this.isEnabled,
                 animationClip = this.animationClip,
                 playSpeed = this.playSpeed,
-                clipGuid = this.clipGuid
+                clipGuid = this.clipGuid,
+                blendInDuration = this.blendInDuration,
+                blendOutDuration = this.blendOutDuration
             };
         }
     }

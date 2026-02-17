@@ -1,3 +1,6 @@
+using Game.MAnimSystem;
+using UnityEngine;
+using System;
 namespace SkillEditor
 {
     /// <summary>
@@ -8,17 +11,19 @@ namespace SkillEditor
     public class RuntimeAnimationProcess : ProcessBase<SkillAnimationClip>
     {
         // TODO: 替换为实际的 AnimComponent 类型
-        // private AnimComponent animComp;
+        private AnimComponent animComp;
 
         public override void OnEnable()
         {
-            // animComp = context.GetComponent<AnimComponent>();
+            animComp = context.GetComponent<AnimComponent>();
+            // animComp?.Initialize(); // 确保 AnimComponent 已初始化
+            // animComp?.InitializeGraph(); // 确保动画图已创建
         }
 
         public override void OnEnter()
         {
             // 调用 AnimComponent 播放控制 + 设置速度
-            // animComp.Play(clip.animationClip, clip.playbackSpeed);
+            animComp.Play(clip.animationClip, (int)clip.layer, clip.blendInDuration);
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)

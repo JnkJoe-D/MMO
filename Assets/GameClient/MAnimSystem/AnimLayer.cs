@@ -57,6 +57,12 @@ namespace Game.MAnimSystem
         private float _weight = 1f;
 
         /// <summary>
+        /// 动画混合模式。
+        /// </summary>
+        // 为了解决线性混合导致的骨骼扭曲问题，默认使用 SmoothStep 平滑混合。
+        public SkillEditor.AnimBlendMode BlendMode { get; set; } = SkillEditor.AnimBlendMode.SmoothStep;
+
+        /// <summary>
         /// 获取或设置层权重。
         /// </summary>
         public float Weight
@@ -274,7 +280,8 @@ namespace Game.MAnimSystem
         {
             if (!_isLayerFading) return;
 
-            // 计算新权重
+            // 计算新权重 (线性变化)
+            // 层Fade通常用于开关层，线性即可，若需平滑也可应用但暂时保留线性以确保可控
             float direction = _targetLayerWeight > _weight ? 1f : -1f;
             float newWeight = _weight + direction * _layerFadeSpeed * deltaTime;
 
@@ -529,6 +536,12 @@ namespace Game.MAnimSystem
                     continue;
                 }
 
+                // 淡出状态我们也应用同样的混合曲线反向逻辑吗？
+                // 传统的 CrossFade 通常要求 Sum(Weights) = 1。
+                // 如果 Target 使用 SmoothStep (S形)，FadeOut 最好也是 (1 - SmoothStep)。
+                // 这里我们简化处理：FadeOut 依旧线性衰减，最后通过 NormalizeWeights 归一化来强制互补。
+                // 这样 FadeOut 会自动“填充” FadeIn 留下的空间。
+                
                 float newWeight = fs.State.Weight - fs.FadeSpeed * deltaTime;
 
                 if (newWeight <= 0f)
@@ -545,6 +558,8 @@ namespace Game.MAnimSystem
             }
 
             // 3. 权重归一化（确保总和为1）
+            // 注意：如果使用了 SmoothStep，TargetWeight 会非线性变化。
+            // 我们通过归一化 FadeOut 状态来配合 TargetWeight。
             NormalizeWeights(totalFadeOutWeight);
 
             // 4. 更新所有活动状态的逻辑 (检测播放结束事件等)
@@ -567,7 +582,10 @@ namespace Game.MAnimSystem
         /// <param name="totalFadeOutWeight">所有淡出状态的总权重</param>
         private void NormalizeWeights(float totalFadeOutWeight)
         {
-            float totalWeight = _targetFadeProgress + totalFadeOutWeight;
+            // 获取当前目标状态的实际应用权重 (已经经过 SmoothStep 处理)
+            float currentTargetWeight = _targetState != null ? _targetState.Weight : 0f;
+            
+            float totalWeight = currentTargetWeight + totalFadeOutWeight;
 
             // 处理权重总和异常的情况
             if (totalWeight < 0.001f)
@@ -576,7 +594,7 @@ namespace Game.MAnimSystem
                 if (_targetState != null)
                 {
                     _targetState.Weight = 1f;
-                    _targetFadeProgress = 1f;
+                    // _targetFadeProgress = 1f; // 不修改进度，只修权重
                 }
                 return;
             }
@@ -584,7 +602,8 @@ namespace Game.MAnimSystem
             if (Mathf.Abs(totalWeight - 1f) > 0.001f && totalFadeOutWeight > 0.001f)
             {
                 // 权重总和不为 1，需要归一化
-                float scale = (1f - _targetFadeProgress) / totalFadeOutWeight;
+                // 目标权重是"主导"的，我们缩放 FadeOut 权重来适配它
+                float scale = (1f - currentTargetWeight) / totalFadeOutWeight;
                 for (int i = 0; i < _fadingStates.Count; i++)
                 {
                     var fs = _fadingStates[i];
