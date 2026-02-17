@@ -1,9 +1,15 @@
 using System;
 using System.Collections.Generic;
+using Game.MAnimSystem;
 using UnityEngine;
 
 namespace SkillEditor
 {
+    public class LayerMaskState
+    {
+        public AvatarMask OriginalMask;
+        public List<AvatarMask> ActiveOverrides = new List<AvatarMask>();
+    }
     /// <summary>
     /// 播放上下文，为 Process 提供依赖注入：
     /// - 目标角色的 GameObject / Transform
@@ -34,10 +40,12 @@ namespace SkillEditor
         public float GlobalPlaySpeed { get; set; } = 1f; // 全局播放速度控制
 
         // 组件缓存
-        private Dictionary<Type, Component> componentCache = new Dictionary<Type, Component>();
+        private Dictionary<Type, Component> _componentCache = new Dictionary<Type, Component>();
+        // Mask托管栈
+        private Dictionary<int, LayerMaskState> _layerMaskStates = new Dictionary<int, LayerMaskState>();
 
         // 系统级清理注册（同 key 去重）
-        private Dictionary<string, Action> cleanupActions = new Dictionary<string, Action>();
+        private Dictionary<string, Action> _cleanupActions = new Dictionary<string, Action>();
 
         public ProcessContext(GameObject owner, PlayMode playMode)
         {
@@ -52,19 +60,65 @@ namespace SkillEditor
         public T GetComponent<T>() where T : Component
         {
             var type = typeof(T);
-            if (!componentCache.TryGetValue(type, out var comp))
+            if (!_componentCache.TryGetValue(type, out var comp))
             {
                 if (Owner != null)
                 {
                     comp = Owner.GetComponentInChildren<T>();
                     if (comp != null)
                     {
-                        componentCache[type] = comp;
+                        _componentCache[type] = comp;
                     }
                 }
             }
             return (T)comp;
         }
+        public void PushLayerMask(int layerIndex, AvatarMask overrideMask, AnimComponent animComp)
+        {
+            if (overrideMask == null) return;
+
+            if (!_layerMaskStates.TryGetValue(layerIndex, out var state))
+            {
+                // 第一次有 Clip 进入该层，记录原始 Mask
+                state = new LayerMaskState();
+                state.OriginalMask = animComp.GetLayerMask(layerIndex);
+                _layerMaskStates[layerIndex] = state;
+            }
+
+            // 入栈
+            state.ActiveOverrides.Add(overrideMask);
+
+            // 应用栈顶 Mask
+            animComp.SetLayerMask(layerIndex, overrideMask);
+        }
+        public void PopLayerMask(int layerIndex, AvatarMask overrideMask, AnimComponent animComp)
+        {
+            if (overrideMask == null) return;
+
+            if (_layerMaskStates.TryGetValue(layerIndex, out var state))
+            {
+                // 移除该 Mask（处理中间退出的情况）
+                if (state.ActiveOverrides.Remove(overrideMask))
+                {
+                    // 重新计算应生效的 Mask
+                    if (state.ActiveOverrides.Count > 0)
+                    {
+                        // 还有其他 Override，应用栈顶（List 最后一个）
+                        var topMask = state.ActiveOverrides[state.ActiveOverrides.Count - 1];
+                        animComp.SetLayerMask(layerIndex, topMask);
+                    }
+                    else
+                    {
+                        // 栈空，恢复原始 Mask
+                        animComp.SetLayerMask(layerIndex, state.OriginalMask);
+
+                        // 可选：清理 State，节省内存（下次进入重新获取 Original）
+                        _layerMaskStates.Remove(layerIndex);
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// 注册系统级清理操作（同 key 去重，后注册覆盖前注册）
@@ -74,7 +128,7 @@ namespace SkillEditor
         /// <param name="cleanup">清理回调</param>
         public void RegisterCleanup(string key, Action cleanup)
         {
-            cleanupActions[key] = cleanup;
+            _cleanupActions[key] = cleanup;
         }
 
         /// <summary>
@@ -82,11 +136,11 @@ namespace SkillEditor
         /// </summary>
         internal void ExecuteCleanups()
         {
-            foreach (var action in cleanupActions.Values)
+            foreach (var action in _cleanupActions.Values)
             {
                 action?.Invoke();
             }
-            cleanupActions.Clear();
+            _cleanupActions.Clear();
         }
 
         /// <summary>
@@ -94,8 +148,9 @@ namespace SkillEditor
         /// </summary>
         internal void Clear()
         {
-            componentCache.Clear();
-            cleanupActions.Clear();
+            _componentCache.Clear();
+            _layerMaskStates.Clear();
+            _cleanupActions.Clear();
         }
     }
 }

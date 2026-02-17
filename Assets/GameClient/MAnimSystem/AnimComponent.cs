@@ -110,6 +110,8 @@ namespace Game.MAnimSystem
                 {
                     _layers[i]?.SetSpeed((float)speed);
                     deltaTime *= (float)speed; // 叠加速度控制
+                    Debug.Log($"Internal Update speed :{speed}");
+                    Debug.Log($"Internal Update deltatime :{deltaTime}");
                 }
                 _layers[i]?.Update(deltaTime);
             }
@@ -410,7 +412,7 @@ namespace Game.MAnimSystem
                     layer?.Destroy();
                 }
                 _layers.Clear();
-
+                _layerSpeeds.Clear();
                 // 销毁图，释放非托管内存
                 Graph.Destroy();
                 _isGraphCreated = false;
@@ -427,12 +429,12 @@ namespace Game.MAnimSystem
         public AvatarMask GetLayerMask(int layer)
         {
             if (layer < 0 || layer >= _layers.Count) return null;
-            return _layers[layer]?.GetMask();
+            return _layers[layer].Mask;
         }
         public void SetLayerMask(int layer, AvatarMask avatarMask)
         {
             if (layer < 0 || layer >= _layers.Count) return;
-            _layers[layer]?.SetMask(avatarMask);
+            _layers[layer].Mask = avatarMask;
         }
     }
 }

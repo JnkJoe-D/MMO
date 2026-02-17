@@ -98,10 +98,10 @@
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "avatarMask": {
-                        "instanceID": 0
+                        "instanceID": 30278
                     },
                     "clipGuid": "5ae7dd75483496b46a09884c7811402b",
-                    "maskGuid": ""
+                    "maskGuid": "0d1d08be95f017340b0a742913c403f9"
                 }
             },
             {
@@ -125,10 +125,10 @@
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "avatarMask": {
-                        "instanceID": 0
+                        "instanceID": 64754
                     },
                     "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
-                    "maskGuid": ""
+                    "maskGuid": "9921a430717d12648bc57a3ccbd93dbc"
                 }
             },
             {
@@ -179,10 +179,10 @@
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "avatarMask": {
-                        "instanceID": 0
+                        "instanceID": 30278
                     },
                     "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
-                    "maskGuid": ""
+                    "maskGuid": "0d1d08be95f017340b0a742913c403f9"
                 }
             }
         ]

@@ -203,7 +203,7 @@ namespace SkillEditor
         {
             if (CurrentState != State.Playing) return;
 
-            float speed = Timeline != null ? Timeline.playbackSpeed : 1f;
+            float speed = context.GlobalPlaySpeed;
             CurrentTime += deltaTime * speed;
 
             // 区间扫描

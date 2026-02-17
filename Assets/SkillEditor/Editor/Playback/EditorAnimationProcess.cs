@@ -13,7 +13,6 @@ namespace SkillEditor.Editor
     {
         // TODO: 替换为实际的 AnimComponent 类型
         private AnimComponent animComp;
-        private Dictionary<Type, System.Object> cache = new Dictionary<Type, System.Object>();
         public override void OnEnable()
         {
             animComp = context.GetComponent<AnimComponent>();
@@ -23,15 +22,15 @@ namespace SkillEditor.Editor
             context.RegisterCleanup("ClearPlaygraph", () => animComp.ClearPlayGraph()); // 注册退出时的清理
         }
 
-        public override void OnEnter()
-        {
-            animComp.Play(clip.animationClip, clip.blendInDuration);// 调用 AnimComponent 播放控制
-            animComp.SetLayerSpeed((int)clip.layer,0f); // 先暂停，等待 OnUpdate 采样
+            public override void OnEnter()
+            {
             if (clip.avatarMask != null)
             {
-                cache[typeof(AvatarMask)] = clip.avatarMask; // 缓存遮罩数据
+                context.PushLayerMask((int)clip.layer, clip.avatarMask, animComp);
                 animComp.SetLayerMask((int)clip.layer, clip.avatarMask);
             }
+            animComp.Play(clip.animationClip, clip.blendInDuration);// 调用 AnimComponent 播放控制
+            animComp.SetLayerSpeed((int)clip.layer,0f); // 先暂停，等待 OnUpdate 采样
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)
@@ -46,11 +45,7 @@ namespace SkillEditor.Editor
 
         public override void OnExit()
         {
-            // 停止当前片段的采样
-            if (cache.TryGetValue(typeof(AvatarMask), out object maskObj) && maskObj is AvatarMask avatarMask)
-            {
-                animComp.SetLayerMask((int)clip.layer, avatarMask); // 恢复原始遮罩
-            }
+            context.PopLayerMask((int)clip.layer, clip.avatarMask, animComp); 
         }
         public override void OnDisable()
         {
@@ -60,7 +55,6 @@ namespace SkillEditor.Editor
         {
             base.Reset();
             animComp = null;
-            cache.Clear(); // 清空缓存
         }
     }
 }

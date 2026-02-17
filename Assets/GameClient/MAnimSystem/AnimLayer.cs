@@ -52,7 +52,7 @@ namespace Game.MAnimSystem
         // --- 层属性 (用于多层混合) ---
 
         /// <summary>
-        /// 层混合器引用（用于设置层权重、Mask、Additive）。
+        /// 层混合器引用（用于设置层的权重、Mask、Additive）。
         /// </summary>
         private AnimationLayerMixerPlayable _layerMixer;
 
@@ -84,8 +84,19 @@ namespace Game.MAnimSystem
         /// </summary>
         public AvatarMask Mask
         {
-            get => _mask == null ? new AvatarMask() : _mask; // 创建默认遮罩，避免返回 null
-            set => SetMask(value?? new AvatarMask()); // 确保不设置 null
+            get
+            {
+                return _mask == null ? new AvatarMask() : _mask; // 创建默认遮罩，避免返回 null
+            }
+            set
+            {
+                _mask = value??new AvatarMask(); // 确保不为 null
+                // 同步到 LayerMixer,设置本层的遮罩
+                if (_layerMixer.IsValid() && _mask != null)
+                {
+                    _layerMixer.SetLayerMaskFromAvatarMask((uint)LayerIndex, _mask);
+                }
+            }
         }
 
         /// <summary>
@@ -107,7 +118,7 @@ namespace Game.MAnimSystem
         /// 动画混合模式。
         /// </summary>
         // 为了解决线性混合导致的骨骼扭曲问题，默认使用 SmoothStep 平滑混合。
-        public AnimBlendMode BlendMode { get; set; } = AnimBlendMode.SmoothStep;
+        public AnimBlendMode BlendMode { get; set; } = AnimBlendMode.Linear;
         // --- 层淡入淡出 ---
 
         /// <summary>
@@ -219,21 +230,7 @@ namespace Game.MAnimSystem
         }
         public AvatarMask GetMask()
         {
-            return _mask;
-        }
-        /// <summary>
-        /// 设置骨骼遮罩。
-        /// </summary>
-        /// <param name="mask">AvatarMask 实例</param>
-        public void SetMask(AvatarMask mask)
-        {
-            _mask = mask;
-
-            // 同步到 LayerMixer
-            if (_layerMixer.IsValid() && mask != null)
-            {
-                _layerMixer.SetLayerMaskFromAvatarMask((uint)LayerIndex, mask);
-            }
+            return Mask;
         }
 
         /// <summary>

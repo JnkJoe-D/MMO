@@ -166,8 +166,7 @@ namespace SkillEditor.Editor
                 // 防止过大的 deltaTime (例如断点调试后)
                 if (deltaTime > 0.1f) deltaTime = 0.016f;
 
-                float speed = state.currentTimeline != null ? state.currentTimeline.playbackSpeed : 1.0f;
-                state.timeIndicator += deltaTime * speed;
+                state.timeIndicator += deltaTime;
 
                 float maxDuration = state.currentTimeline != null ? state.currentTimeline.duration : 10f;
                 
