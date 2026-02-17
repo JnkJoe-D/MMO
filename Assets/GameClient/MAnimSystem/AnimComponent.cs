@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
 using System.Collections.Generic;
+using System;
 
 namespace Game.MAnimSystem
 {
@@ -39,7 +40,10 @@ namespace Game.MAnimSystem
         /// 所有动画层列表。
         /// </summary>
         private List<AnimLayer> _layers = new List<AnimLayer>();
-
+        /// <summary>
+        /// 每层的速度倍率
+        /// </summary>
+        private Dictionary<int, double> _layerSpeeds = new Dictionary<int, double>();
         /// <summary>
         /// 获取指定索引的动画层（延迟创建）。
         /// </summary>
@@ -65,10 +69,6 @@ namespace Game.MAnimSystem
         /// 组件是否已初始化
         /// </summary>
         private bool _isInitialized = false;
-        /// <summary>
-        /// 速度倍率
-        /// </summary>
-        private float _speedScale = 1f;
         public void Initialize()
         {
             if (_isInitialized) return;
@@ -91,51 +91,69 @@ namespace Game.MAnimSystem
             ClearPlayGraph();
         }
 
-        private void Update()
+        private void Update() //更新权重，控制过渡
         {
             if (!_isGraphCreated) return;
 
             // 始终自动更新，由 Unity 驱动
             UpdateInternal(Time.deltaTime);
         }
-
         /// <summary>
-        /// 外部手动更新逻辑（供编辑器预览使用）。
-        /// 支持手动驱动权重计算和状态更新。
-        /// </summary>
-        /// <param name="deltaTime">时间增量</param>
-        public void ManualUpdate(float deltaTime)
-        {
-            if (!_isGraphCreated) return;
-            UpdateInternal(deltaTime);
-        }
-
-        /// <summary>
-        /// 内部更新逻辑。
+        /// 内部更新逻辑,帮助在MonoUpdate中同步每层的播放速度（过渡）
         /// </summary>
         /// <param name="deltaTime">时间增量</param>
         private void UpdateInternal(float deltaTime)
         {
             for (int i = 0; i < _layers.Count; i++)
             {
-                _layers[i]?.OnUpdate(deltaTime);
+                if (_layerSpeeds.TryGetValue(i, out double speed))
+                {
+                    _layers[i]?.SetSpeed((float)speed);
+                    deltaTime *= (float)speed; // 叠加速度控制
+                }
+                _layers[i]?.Update(deltaTime);
             }
         }
+        /// <summary>
+        /// 外部手动更新逻辑（供技能编辑器预览使用）。
+        /// 支持手动驱动权重计算和状态更新。
+        /// </summary>
+        /// <param name="deltaTime">时间增量</param>
+        public void ManualUpdate(float deltaTime)
+        {
+            if (!_isGraphCreated) return;
+            ManualUpdateInternal(deltaTime);
+        }
+        /// <summary>
+        /// 内部更新逻辑，deltatime已包含速度控制，并由顶层线性传递
+        /// </summary>
+        /// <param name="deltaTime">时间增量</param>
+        private void ManualUpdateInternal(float deltaTime)
+        {
+            for (int i = 0; i < _layers.Count; i++)
+            {
+                _layers[i]?.Update(deltaTime);
+            }
+        }
+
 
         /// <summary>
         /// 设置动画播放速度。
         /// 用于帧同步场景下的速度控制。
         /// </summary>
         /// <param name="speedScale">速度缩放因子 (1.0 = 正常速度)</param>
-        public void SetSpeed(float speedScale)
+        public void SetLayerSpeed(int layerIndex, float speedScale)
         {
             if (!_isGraphCreated) return;
-
-            foreach (var layer in _layers)
+            if (layerIndex < 0 || layerIndex >= _layers.Count) return;
+            if(_layerSpeeds.ContainsKey(layerIndex))
             {
-                layer?.SetSpeed(speedScale);
+                _layerSpeeds[layerIndex] = speedScale;
             }
-            _speedScale = speedScale;
+            else
+            {
+                _layerSpeeds.Add(layerIndex, speedScale);
+            }
         }
 
         /// <summary>
@@ -184,7 +202,6 @@ namespace Game.MAnimSystem
             {
                 CreateLayer(_layers.Count);
             }
-
             return _layers[index];
         }
 
@@ -213,6 +230,7 @@ namespace Game.MAnimSystem
                 _layers.Add(null);
             }
             _layers[index] = layer;
+            _layerSpeeds.Add(index, 1.0);// 默认速度为 1.0
         }
 
         // --- 公共 API ---
@@ -405,6 +423,16 @@ namespace Game.MAnimSystem
         public void Log(string message)
         {
             Debug.Log($"[AnimComponent] {message}");
+        }
+        public AvatarMask GetLayerMask(int layer)
+        {
+            if (layer < 0 || layer >= _layers.Count) return null;
+            return _layers[layer]?.GetMask();
+        }
+        public void SetLayerMask(int layer, AvatarMask avatarMask)
+        {
+            if (layer < 0 || layer >= _layers.Count) return;
+            _layers[layer]?.SetMask(avatarMask);
         }
     }
 }

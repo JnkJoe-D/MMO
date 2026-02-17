@@ -5,6 +5,11 @@ using UnityEngine.Animations;
 
 namespace Game.MAnimSystem
 {
+    public enum AnimBlendMode
+    {
+        Linear = 0,   // 线性混合，简单直接，但可能导致骨骼扭曲
+        SmoothStep = 1 // 平滑混合，使用 S 形曲线过渡，减少骨骼扭曲
+    }
     /// <summary>
     /// 管理单个动画层（例如：基础层、上半身层）。
     /// 负责在该层内部管理多个状态的混合、过渡 (Fade) 和生命周期。
@@ -57,12 +62,6 @@ namespace Game.MAnimSystem
         private float _weight = 1f;
 
         /// <summary>
-        /// 动画混合模式。
-        /// </summary>
-        // 为了解决线性混合导致的骨骼扭曲问题，默认使用 SmoothStep 平滑混合。
-        public SkillEditor.AnimBlendMode BlendMode { get; set; } = SkillEditor.AnimBlendMode.SmoothStep;
-
-        /// <summary>
         /// 获取或设置层权重。
         /// </summary>
         public float Weight
@@ -70,7 +69,11 @@ namespace Game.MAnimSystem
             get => _weight;
             set => SetWeight(value);
         }
-
+        public double PlaybackSpeed
+        {
+            get => Mixer.GetSpeed();
+            set => Mixer.SetSpeed(value);
+        }
         /// <summary>
         /// 骨骼遮罩。
         /// </summary>
@@ -81,8 +84,8 @@ namespace Game.MAnimSystem
         /// </summary>
         public AvatarMask Mask
         {
-            get => _mask;
-            set => SetMask(value);
+            get => _mask == null ? new AvatarMask() : _mask; // 创建默认遮罩，避免返回 null
+            set => SetMask(value?? new AvatarMask()); // 确保不设置 null
         }
 
         /// <summary>
@@ -100,7 +103,11 @@ namespace Game.MAnimSystem
             get => _isAdditive;
             set => SetAdditive(value);
         }
-
+        /// <summary>
+        /// 动画混合模式。
+        /// </summary>
+        // 为了解决线性混合导致的骨骼扭曲问题，默认使用 SmoothStep 平滑混合。
+        public AnimBlendMode BlendMode { get; set; } = AnimBlendMode.SmoothStep;
         // --- 层淡入淡出 ---
 
         /// <summary>
@@ -210,7 +217,10 @@ namespace Game.MAnimSystem
                 _layerMixer.SetInputWeight((int)LayerIndex, _weight);
             }
         }
-
+        public AvatarMask GetMask()
+        {
+            return _mask;
+        }
         /// <summary>
         /// 设置骨骼遮罩。
         /// </summary>
@@ -488,24 +498,23 @@ namespace Game.MAnimSystem
 
         /// <summary>
         /// 设置当前动画的播放速度。
-        /// 用于帧同步场景下的速度控制。
         /// </summary>
         /// <param name="speed">速度因子 (1.0 = 正常速度)</param>
         public void SetSpeed(float speed)
         {
-            if (_targetState != null)
-            {
-                _targetState.Speed = speed;
-            }
+            PlaybackSpeed = speed;
         }
 
         // --- 内部更新 (由 Component 驱动) ---
-
+        public void Update(float deltaTime)
+        {
+            OnUpdate(deltaTime);
+        }
         /// <summary>
         /// 每帧更新逻辑。负责处理权重淡入淡出和状态更新。
         /// </summary>
         /// <param name="deltaTime">时间增量</param>
-        public void OnUpdate(float deltaTime)
+        private void OnUpdate(float deltaTime)
         {
             // 0. 更新层淡入淡出
             UpdateLayerFade(deltaTime);
@@ -515,6 +524,17 @@ namespace Game.MAnimSystem
             {
                 _targetFadeProgress += _fadeSpeed * deltaTime;
                 _targetFadeProgress = Mathf.Clamp01(_targetFadeProgress);
+
+                if(BlendMode == AnimBlendMode.SmoothStep)
+                {
+                    // 使用 SmoothStep 曲线调整权重
+                    _targetState.Weight = Mathf.SmoothStep(0f, 1f, _targetFadeProgress);
+                }
+                else
+                {
+                    // 线性过渡
+                    _targetState.Weight = _targetFadeProgress;
+                }
                 _targetState.Weight = _targetFadeProgress;
 
                 if (_targetFadeProgress >= 1f)
@@ -603,7 +623,7 @@ namespace Game.MAnimSystem
             {
                 // 权重总和不为 1，需要归一化
                 // 目标权重是"主导"的，我们缩放 FadeOut 权重来适配它
-                float scale = (1f - currentTargetWeight) / totalFadeOutWeight;
+                float scale = (1f - currentTargetWeight) / totalFadeOutWeight;// 使用实际权重计算剩余空间
                 for (int i = 0; i < _fadingStates.Count; i++)
                 {
                     var fs = _fadingStates[i];

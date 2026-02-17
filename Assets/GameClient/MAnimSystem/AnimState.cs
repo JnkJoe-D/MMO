@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+using System.Collections.Generic;
 
 namespace Game.MAnimSystem
 {
@@ -43,6 +44,10 @@ namespace Game.MAnimSystem
         /// 表示该状态已完全进入。
         /// </summary>
         public System.Action OnFadeComplete;
+        /// <summary>
+        /// 自定义事件调度表，允许在特定时间点触发回调。
+        /// </summary>
+        private Dictionary<float, System.Action> _scheduledEvents = new Dictionary<float, System.Action>();
 
         /// <summary>
         /// 获取或设置该状态的权重 (0.0 ~ 1.0)。
@@ -192,8 +197,48 @@ namespace Game.MAnimSystem
                     OnEnd = null; // 触发一次后清空，避免反复触发
                 }
             }
+            
+            // 检查并触发自定义事件
+            foreach (var kvp in _scheduledEvents)
+            {
+                if (Time >= kvp.Key && kvp.Key >= Time - deltaTime) // 确保事件只触发一次
+                {
+                    kvp.Value?.Invoke();
+                    _scheduledEvents.Remove(kvp.Key);
+                    break;
+                }
+            }
         }
-
+        public void AddScheduledEvent(float triggerTime, System.Action callback)
+        {
+            if (triggerTime < 0) return; // 不允许负时间
+            if (_scheduledEvents.ContainsKey(triggerTime))
+            {
+                _scheduledEvents[triggerTime] += callback;
+            }
+            else
+            {
+                _scheduledEvents[triggerTime] = callback;
+            }
+        }
+        public void RemoveScheduledEvent(float triggerTime, System.Action callback)
+        {
+            if (_scheduledEvents.ContainsKey(triggerTime))
+            {
+                _scheduledEvents[triggerTime] -= callback;
+                if (_scheduledEvents[triggerTime] == null)
+                {
+                    _scheduledEvents.Remove(triggerTime);
+                }
+            }
+        }
+        public void RemoveScheduledEvents(float triggerTime)
+        {
+            if (_scheduledEvents.ContainsKey(triggerTime))
+            {
+                _scheduledEvents.Remove(triggerTime);
+            }
+        }
         /// <summary>
         /// 销毁状态，清理底层的 Playable。
         /// </summary>
@@ -205,6 +250,7 @@ namespace Game.MAnimSystem
             }
             OnEnd = null;
             OnFadeComplete = null;
+            _scheduledEvents.Clear();
         }
     }
 }

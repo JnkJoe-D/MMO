@@ -57,12 +57,15 @@ public class Test_Anim : MonoBehaviour
     {
         if (runner != null)        
         {
-            // context.GlobalPlaySpeed = speedMultiplier; // 动态调整全局播放速度
+            context.GlobalPlaySpeed = speedMultiplier; // 动态调整全局播放速度
             timer += Time.deltaTime;
-            if (timer >= 1/30f) // 30 FPS 更新一次
+            float step = 1f / 30f;
+
+            // 使用 while 处理单帧时间过长的情况（追帧）
+            while (timer >= step)
             {
-                timer = 0f;
-                runner.Tick(1 / 30f);
+                timer -= step; // <--- 关键：减去步长，保留余数 (0.04 - 0.0333 = 0.0067)
+                runner.Tick(step);
             }
         }
     }

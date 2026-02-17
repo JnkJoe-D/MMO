@@ -18,7 +18,7 @@ namespace SkillEditor
         public string version = "1.0";
 
         // Timeline 参数
-        public float duration = 3.0f;           // 持续时间（秒）
+        public float duration = 0f;           // 持续时间（秒）
         public float playbackSpeed = 1.0f;      // 播放速度
         public bool isLoop = false;             // 是否循环播放
 

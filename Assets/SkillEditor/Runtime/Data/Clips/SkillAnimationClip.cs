@@ -15,12 +15,15 @@ namespace SkillEditor
         public AnimationClip animationClip;
         
         [SkillProperty("播放速度")]
-        public float playSpeed = 1.0f;
+        public float playbackSpeed = 1.0f;
         [SkillProperty("目标动画层")]
         public EAnimLayer layer = EAnimLayer.Locomotion;
+        [SkillProperty("目标动画遮罩")]
+        public AvatarMask avatarMask;
         [HideInInspector]
         public string clipGuid;
-
+        [HideInInspector]
+        public string maskGuid;
         public override bool SupportsBlending => true;
 
         public SkillAnimationClip()
@@ -39,8 +42,10 @@ namespace SkillEditor
                 duration = this.duration,
                 isEnabled = this.isEnabled,
                 animationClip = this.animationClip,
-                playSpeed = this.playSpeed,
+                playbackSpeed = this.playbackSpeed,
                 clipGuid = this.clipGuid,
+                maskGuid = this.maskGuid,
+                layer = this.layer,
                 blendInDuration = this.blendInDuration,
                 blendOutDuration = this.blendOutDuration
             };

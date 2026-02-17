@@ -54,9 +54,12 @@ namespace SkillEditor.Editor
             {
                 foreach (var clip in track.clips)
                 {
-                    if (clip is SkillAnimationClip animClip && animClip.animationClip != null)
+                    if (clip is SkillAnimationClip animClip)
                     {
-                        animClip.clipGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.animationClip));
+                        if(animClip.animationClip != null)
+                            animClip.clipGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.animationClip));
+                        if(animClip.avatarMask != null)
+                            animClip.maskGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.avatarMask));
                     }
                     else if (clip is VFXClip vfxClip && vfxClip.effectPrefab != null)
                     {
@@ -81,10 +84,18 @@ namespace SkillEditor.Editor
             {
                 foreach (var clip in track.clips)
                 {
-                    if (clip is SkillAnimationClip animClip && !string.IsNullOrEmpty(animClip.clipGuid))
+                    if (clip is SkillAnimationClip animClip)
                     {
-                        string assetPath = AssetDatabase.GUIDToAssetPath(animClip.clipGuid);
-                        animClip.animationClip = AssetDatabase.LoadAssetAtPath<UnityEngine.AnimationClip>(assetPath);
+                        if(!string.IsNullOrEmpty(animClip.clipGuid))
+                        {
+                            string assetPath = AssetDatabase.GUIDToAssetPath(animClip.clipGuid);
+                            animClip.animationClip = AssetDatabase.LoadAssetAtPath<UnityEngine.AnimationClip>(assetPath);
+                        }
+                        if(!string.IsNullOrEmpty(animClip.maskGuid))
+                        {
+                            string assetPath = AssetDatabase.GUIDToAssetPath(animClip.maskGuid);
+                            animClip.avatarMask = AssetDatabase.LoadAssetAtPath<UnityEngine.AvatarMask>(assetPath);
+                        }
                     }
                     else if (clip is VFXClip vfxClip && !string.IsNullOrEmpty(vfxClip.clipGuid))
                     {

@@ -31,6 +31,7 @@ namespace SkillEditor
         /// 可选扩展数据（外部注入业务相关对象）
         /// </summary>
         public object UserData { get; set; }
+        public float GlobalPlaySpeed { get; set; } = 1f; // 全局播放速度控制
 
         // 组件缓存
         private Dictionary<Type, Component> componentCache = new Dictionary<Type, Component>();
