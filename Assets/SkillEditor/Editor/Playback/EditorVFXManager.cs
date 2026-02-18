@@ -128,19 +128,22 @@ namespace SkillEditor.Editor
 
         // ─── 私有方法 ───
 
+        public GameObject VfxRoot => vfxRoot;
+
         private void EnsureRoot()
         {
             if (vfxRoot == null)
             {
                 vfxRoot = new GameObject("[EditorVFXPreview]");
-                vfxRoot.hideFlags = HideFlags.HideAndDontSave;
+                // 改为 DontSave，这样可以在 Hierarchy 中看到，但不会保存到场景
+                vfxRoot.hideFlags = HideFlags.DontSave;
             }
         }
 
         private GameObject CreateInstance(GameObject prefab, Vector3 position, Quaternion rotation)
         {
             var inst = Object.Instantiate(prefab, position, rotation, vfxRoot.transform);
-            inst.hideFlags = HideFlags.HideAndDontSave;
+            inst.hideFlags = HideFlags.DontSave;
             return inst;
         }
 
@@ -150,7 +153,8 @@ namespace SkillEditor.Editor
             foreach (var ps in particles)
             {
                 ps.Clear(true);
-                ps.Play(true);
+                // 停止播放，完全由 Timeline 的 Sample 方法驱动 Simulate
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             }
         }
 

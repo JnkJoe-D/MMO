@@ -267,13 +267,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82329166}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29476140eab32fb4eb1046839cba8d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skillPath: "Assets/\u65B0\u6280\u80FD.json"
-  speedMultiplier: 1
+  skillAsset: {fileID: 0}
+  speedMultiplier: 0.11
 --- !u!114 &82329171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,16 +464,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82329166}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94c614c853b8506499a25d6c469b0617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animComponent: {fileID: 0}
+  animComponent: {fileID: 82329167}
   clip1: {fileID: 7400000, guid: 5ae7dd75483496b46a09884c7811402b, type: 2}
   blendInDuration1: 0.2
   clip2: {fileID: 7400000, guid: 3b177f8cda8c2214c98f0ea0565f0911, type: 2}
-  blendInDuration2: 1.466667
+  blendInDuration2: 1.4666669
   clip3: {fileID: 0}
   blendInDuration3: 0.2
   clip4: {fileID: 0}

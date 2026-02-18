@@ -25,6 +25,11 @@ namespace SkillEditor
         /// 当前播放状态
         /// </summary>
         public State CurrentState { get; private set; } = State.Idle;
+        
+        /// <summary>
+        /// 获取当前所有 Process 实例（供编辑器查看状态）
+        /// </summary>
+        public IReadOnlyList<ProcessInstance> ActiveProcesses => processes;
 
         /// <summary>
         /// 当前播放时间（秒）
@@ -82,7 +87,10 @@ namespace SkillEditor
         /// <summary>
         /// Process 实例与其运行状态的绑定
         /// </summary>
-        private struct ProcessInstance
+        /// <summary>
+        /// Process 实例与其运行状态的绑定
+        /// </summary>
+        public struct ProcessInstance
         {
             public IProcess process;
             public ClipBase clip;

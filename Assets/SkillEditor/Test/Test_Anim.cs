@@ -15,12 +15,13 @@ using UnityEditor;
 public class Test_Anim : MonoBehaviour
 {
     public string skillPath = "Assets/新技能.json";
+    public TextAsset skillAsset; // 直接拖入 TextAsset 资源（编辑器专用）
     [Range(0f, 3.0f)]
     public float speedMultiplier = 1.0f; // 用于测试不同的播放速度
     private AnimComponent animComp;
     private SkillRunner runner;
     private ProcessContext context;
-
+    private SkillTimeline timeline;
     private float timer = 0f;
     public void Start()
     {
@@ -33,21 +34,18 @@ public class Test_Anim : MonoBehaviour
         context = new ProcessContext(gameObject, SkillEditor.PlayMode.Runtime);
         runner = new SkillRunner(SkillEditor.PlayMode.Runtime);
 
-        // 3. 加载资源
-#if UNITY_EDITOR
-        TextAsset skillAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(skillPath);
         if (skillAsset == null)
         {
-            Debug.LogError($"测试资源未找到: {skillPath}");
-            return;
+            // 3. 加载资源
+            skillAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(skillPath);
+            if (skillAsset == null)
+            {
+                Debug.LogError($"测试资源未找到: {skillPath}");
+                return;
+            }
         }
-
-        SkillTimeline timeline = ScriptableObject.CreateInstance<SkillTimeline>();
+        timeline = ScriptableObject.CreateInstance<SkillTimeline>();
         JsonUtility.FromJsonOverwrite(skillAsset.text, timeline);
-#else
-        Debug.LogError("请在编辑器下运行此测试以加载 TextAsset");
-        return;
-#endif
         timeline.isLoop = true;
         // 5. 开始播放
         runner.Play(timeline, context);

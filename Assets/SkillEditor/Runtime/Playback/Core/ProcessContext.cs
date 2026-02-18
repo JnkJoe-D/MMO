@@ -38,7 +38,8 @@ namespace SkillEditor
         /// </summary>
         public object UserData { get; set; }
         public float GlobalPlaySpeed { get; set; } = 1f; // 全局播放速度控制
-
+        public MonoBehaviour CoroutineRunner { get; set; } // 协程运行器（用于 RuntimeVFXProcess 等）
+        public ISkillActor SkillActor { get; set; }
         // 组件缓存
         private Dictionary<Type, Component> _componentCache = new Dictionary<Type, Component>();
         // Mask托管栈

@@ -12,6 +12,7 @@ namespace SkillEditor.Editor
     {
         // 预览播放器
         private SkillRunner previewRunner;
+        public SkillRunner PreviewRunner => previewRunner;
         private double lastPreviewTime;
         private double accumulator; // 时间累积器（用于 Fixed 模式）
 

@@ -110,15 +110,65 @@ namespace SkillEditor.Editor
 
         private void OnUndoRedo()
         {
-            // 1. 核心：重建缓存，确保撤销回来的轨道能被正确通过 ID 获取
-            if (state != null)
+            if (state == null || state.currentTimeline == null) return;
+
+            // 1. 保存当前选中的 ID
+            var selectedGroupIds = state.selectedGroup?.groupId;
+            var selectedTrackId = state.selectedTrack?.trackId;
+            var selectedClipIds = new System.Collections.Generic.List<string>();
+            foreach (var clip in state.selectedClips)
             {
-                state.RebuildTrackCache();
+                if (clip != null) selectedClipIds.Add(clip.clipId);
+            }
+            bool wasTimelineSelected = state.isTimelineSelected;
+
+            // 2. 重建缓存 (因为 Undo 可能导致 Track 对象引用变化)
+            state.RebuildTrackCache();
+
+            // 3. 尝试恢复选中状态
+            // 先清除旧引用
+            if (trackListView != null) trackListView.ClearSelection(); 
+            if (timelineView != null) timelineView.ClearClipSelection();
+            
+            // 恢复 Timeline 选中
+            state.isTimelineSelected = wasTimelineSelected;
+
+            // 恢复 Group 选中
+            if (!string.IsNullOrEmpty(selectedGroupIds))
+            {
+                foreach (var group in state.currentTimeline.groups)
+                {
+                    if (group.groupId == selectedGroupIds)
+                    {
+                        state.selectedGroup = group;
+                        break;
+                    }
+                }
             }
 
-            // 2. 撤销/重做后，由于模型引用可能发生变化，最安全的做法是清除当前选中
-            if (trackListView != null) trackListView.ClearSelection();
-            if (timelineView != null) timelineView.ClearClipSelection();
+            // 恢复 Track 选中
+            if (!string.IsNullOrEmpty(selectedTrackId))
+            {
+                state.selectedTrack = state.GetTrackById(selectedTrackId);
+            }
+
+            // 恢复 Clip 选中
+            if (selectedClipIds.Count > 0)
+            {
+                foreach (var track in state.currentTimeline.AllTracks)
+                {
+                    foreach (var clip in track.clips)
+                    {
+                        if (selectedClipIds.Contains(clip.clipId))
+                        {
+                            state.selectedClips.Add(clip);
+                        }
+                    }
+                }
+            }
+
+            // 4. 同步到 Inspector
+            SyncSelectionToInspector();
             
             Repaint();
         }

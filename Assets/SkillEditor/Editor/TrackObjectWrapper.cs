@@ -98,17 +98,17 @@ namespace SkillEditor.Editor
             TrackBase track = trackObj.trackData;
 
             EditorGUI.BeginChangeCheck();
-            if (trackObj.timeline != null) Undo.RecordObjects(new Object[] { trackObj, trackObj.timeline }, "编辑轨道属性");
-
             // 使用新的 Drawer 系统
             var drawer = SkillEditor.Editor.DrawerFactory.CreateDrawer(track);
             if (drawer != null)
             {
+                drawer.UndoContext = (trackObj.timeline != null) ? new Object[] { trackObj, trackObj.timeline } : new Object[] { trackObj };
                 drawer.DrawInspector(track);
             }
             else
             {
-                // Fallback
+                // Fallback (手动处理 Undo)
+                if (trackObj.timeline != null) Undo.RecordObjects(new Object[] { trackObj, trackObj.timeline }, "编辑轨道属性");
                 track.trackName = EditorGUILayout.TextField("轨道名称", track.trackName);
             }
 
@@ -140,17 +140,17 @@ namespace SkillEditor.Editor
             ClipBase clip = clipObj.clipData;
 
             EditorGUI.BeginChangeCheck();
-            if (clipObj.timeline != null) Undo.RecordObjects(new Object[] { clipObj, clipObj.timeline }, "编辑片段属性");
-
             // 使用新的 Drawer 系统
             var drawer = SkillEditor.Editor.ClipDrawerFactory.CreateDrawer(clip);
             if (drawer != null)
             {
+                drawer.UndoContext = (clipObj.timeline != null) ? new Object[] { clipObj, clipObj.timeline } : new Object[] { clipObj };
                 drawer.DrawInspector(clip);
             }
             else
             {
                 // Fallback
+                if (clipObj.timeline != null) Undo.RecordObjects(new Object[] { clipObj, clipObj.timeline }, "编辑片段属性");
                 clip.clipName = EditorGUILayout.TextField("片段名称", clip.clipName);
                 clip.startTime = EditorGUILayout.FloatField("开始时间", clip.startTime);
                 clip.duration = EditorGUILayout.FloatField("持续时间", clip.duration);

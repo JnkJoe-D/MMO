@@ -13,6 +13,8 @@ namespace SkillEditor.Editor
     /// </summary>
     public class SkillInspectorBase
     {
+        public Object[] UndoContext { get; set; }
+
         public virtual void DrawInspector(object target)
         {
             if (target == null) return;
@@ -144,6 +146,10 @@ namespace SkillEditor.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
+                if (UndoContext != null && UndoContext.Length > 0)
+                {
+                    Undo.RecordObjects(UndoContext, "Inspector Change: " + name);
+                }
                 field.SetValue(obj, newValue);
             }
         }

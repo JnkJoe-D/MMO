@@ -14,7 +14,7 @@ namespace SkillEditor.Editor
             EditorGUILayout.LabelField("动画片段", EditorStyles.boldLabel);
             base.DrawInspector(clip);
 
-            // 绘制美化后的匹配长度按钮
+            // 绘制匹配长度按钮
             if (animClip.animationClip != null)
             {
                 GUILayout.Space(10);
