@@ -33,21 +33,22 @@ namespace Game.MAnimSystem
         /// </summary>
         public int PortIndex { get; private set; } = -1;
 
+        public delegate void StateEventHandler(AnimState state);
         /// <summary>
         /// 播放完成事件 (当 Time >= Length 时触发)。
         /// 注意：循环动画通常不会触发此事件，除非手动调用。
         /// </summary>
-        public System.Action OnEnd;
+        public StateEventHandler OnEnd;
 
         /// <summary>
         /// 过渡完成事件 (当权重达到 1.0 时触发)。
         /// 表示该状态已完全进入。
         /// </summary>
-        public System.Action OnFadeComplete;
+        public StateEventHandler OnFadeComplete;
         /// <summary>
         /// 自定义事件调度表，允许在特定时间点触发回调。
         /// </summary>
-        private Dictionary<float, System.Action> _scheduledEvents = new Dictionary<float, System.Action>();
+        private Dictionary<float, StateEventHandler> _scheduledEvents = new Dictionary<float, StateEventHandler>();
 
         /// <summary>
         /// 获取或设置该状态的权重 (0.0 ~ 1.0)。
@@ -193,7 +194,7 @@ namespace Game.MAnimSystem
                 // 防止重复触发，通常由外部管理器处理，这里作为自检
                 if (OnEnd != null)
                 {
-                    OnEnd.Invoke();
+                    OnEnd.Invoke(this);
                     OnEnd = null; // 触发一次后清空，避免反复触发
                 }
             }
@@ -203,13 +204,13 @@ namespace Game.MAnimSystem
             {
                 if (Time >= kvp.Key && kvp.Key >= Time - deltaTime) // 确保事件只触发一次
                 {
-                    kvp.Value?.Invoke();
+                    kvp.Value?.Invoke(this);
                     _scheduledEvents.Remove(kvp.Key);
                     break;
                 }
             }
         }
-        public void AddScheduledEvent(float triggerTime, System.Action callback)
+        public void AddScheduledEvent(float triggerTime, StateEventHandler callback)
         {
             if (triggerTime < 0) return; // 不允许负时间
             if (_scheduledEvents.ContainsKey(triggerTime))
@@ -221,7 +222,7 @@ namespace Game.MAnimSystem
                 _scheduledEvents[triggerTime] = callback;
             }
         }
-        public void RemoveScheduledEvent(float triggerTime, System.Action callback)
+        public void RemoveScheduledEvent(float triggerTime, StateEventHandler callback)
         {
             if (_scheduledEvents.ContainsKey(triggerTime))
             {
@@ -239,6 +240,12 @@ namespace Game.MAnimSystem
                 _scheduledEvents.Remove(triggerTime);
             }
         }
+        public virtual void Clear()
+        {
+            OnEnd = null;
+            OnFadeComplete = null;
+            _scheduledEvents.Clear();
+        }
         /// <summary>
         /// 销毁状态，清理底层的 Playable。
         /// </summary>
@@ -248,9 +255,7 @@ namespace Game.MAnimSystem
             {
                 _playableCache.Destroy();
             }
-            OnEnd = null;
-            OnFadeComplete = null;
-            _scheduledEvents.Clear();
+            Clear();
         }
     }
 }

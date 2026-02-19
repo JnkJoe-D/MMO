@@ -219,9 +219,13 @@ namespace SkillEditor.Editor
                             TrackBase track = group.tracks[j];
                             if (track != null)
                             {
-                                foreach (var clip in track.clips)
+                                if(track.isEnabled)
                                 {
-                                    maxEndTime = Mathf.Max(maxEndTime, clip.startTime + clip.duration);
+                                    foreach (var clip in track.clips)
+                                    {
+                                        if(!clip.isEnabled)continue;
+                                        maxEndTime = Mathf.Max(maxEndTime, clip.startTime + clip.duration);
+                                    }
                                 }
 
                                 float trackHeight = TRACK_HEIGHT;

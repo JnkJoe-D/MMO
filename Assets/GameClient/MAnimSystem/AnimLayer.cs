@@ -325,7 +325,15 @@ namespace Game.MAnimSystem
         public void Play(AnimState state, float fadeDuration)
         {
             if (state == null) return;
-            if (state == _targetState) return;
+            if (state == _targetState)
+            {
+                // 强制重置时间，实现循环/重播
+                state.Time = 0;
+                state.Playable.SetDone(false); // 重置播放状态
+
+                // 如果需要由 1.0 -> 1.0 的过程，这里不需要做任何淡入淡出，保持权重即可
+                return;
+            }
 
             // 1. 确保状态已连接到本层的 Mixer
             if (!IsStateConnected(state))
@@ -377,7 +385,7 @@ namespace Game.MAnimSystem
                 }
                 _fadingStates.Clear();
 
-                _targetState.OnFadeComplete?.Invoke();
+                _targetState.OnFadeComplete?.Invoke(_targetState);
             }
         }
 
@@ -536,7 +544,7 @@ namespace Game.MAnimSystem
 
                 if (_targetFadeProgress >= 1f)
                 {
-                    _targetState.OnFadeComplete?.Invoke();
+                    _targetState.OnFadeComplete?.Invoke(_targetState);
                 }
             }
 

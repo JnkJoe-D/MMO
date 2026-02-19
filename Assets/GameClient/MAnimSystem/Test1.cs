@@ -60,10 +60,10 @@ public class Test1 : MonoBehaviour
             var state = animComponent.Play(attackClip, 0.1f);
             
             // 订阅过渡完成事件 (淡入完毕)
-            state.OnFadeComplete = () => Debug.Log("[事件] 攻击动作：过渡淡入完成!");
+            state.OnFadeComplete = (_) => Debug.Log("[事件] 攻击动作：过渡淡入完成!");
             
             // 订阅播放结束事件 (动画播完)
-            state.OnEnd = () => 
+            state.OnEnd = (_) => 
             {
                 Debug.Log("[事件] 攻击动作：播放结束! 自动切回 Idle。");
                 animComponent.Play(idleClip, 0.2f);

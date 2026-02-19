@@ -44,8 +44,6 @@ namespace SkillEditor
             }
             else
             {
-                Debug.Log($"Instantiating prefab: {prefab.name} (Type: {prefab.GetType()})");
-                // 显式调用 GameObject 的 Instantiate
                 instance = Object.Instantiate(prefab);
             }
 

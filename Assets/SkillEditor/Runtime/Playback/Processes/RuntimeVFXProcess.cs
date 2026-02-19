@@ -81,35 +81,29 @@ namespace SkillEditor
                         initialSpeed = systems[i].main.simulationSpeed
                     };
                 }
-                
+
                 // 立即同步一次速度
-                SyncSpeed();
+                SyncSpeed(context.GlobalPlaySpeed);
             }
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)
         {
-            try
-            {
-                SyncSpeed();
-            }
-            catch(System.Exception ex)
-            {
-                Debug.LogError($"VFX OnUpdate: {ex.Message}");
-            }
+            SyncSpeed(context.GlobalPlaySpeed);
         }
 
-        private void SyncSpeed()
+        private void SyncSpeed(float speed)
         {
+            if(speed<0)return;
             if (particleInfos == null) return;
-            float globalSpeed = context.GlobalPlaySpeed;
+
             for (int i = 0; i < particleInfos.Length; i++)
             {
                 var info = particleInfos[i];
                 if (info.ps != null)
                 {
                     var main = info.ps.main;
-                    main.simulationSpeed = info.initialSpeed * globalSpeed;
+                    main.simulationSpeed = info.initialSpeed * speed;
                 }
             }
         }
@@ -121,6 +115,8 @@ namespace SkillEditor
 
             if (clip.destroyOnEnd)
             {
+                //重置速度
+                SyncSpeed(1f);
                 if (clip.stopEmissionOnEnd)
                 {
                     // 软结束

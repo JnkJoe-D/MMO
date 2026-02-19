@@ -95,14 +95,14 @@
                     "blendInDuration": 0.20000000298023225,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 30096
+                        "instanceID": 30300
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "overrideMask": {
                         "instanceID": 0
                     },
-                    "clipGuid": "5ae7dd75483496b46a09884c7811402b",
+                    "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
                     "maskGuid": ""
                 }
             },
@@ -117,7 +117,7 @@
                     "clipId": "265993f1-a78c-4874-8ebc-32310f004f97",
                     "clipName": "特效轨道片段",
                     "isEnabled": true,
-                    "startTime": 0.6666666865348816,
+                    "startTime": 1.1666667461395264,
                     "duration": 1.0,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
@@ -134,9 +134,9 @@
                         "z": 0.0
                     },
                     "rotationOffset": {
-                        "x": 2.239110589649651e-12,
-                        "y": 291.4178771972656,
-                        "z": 180.0
+                        "x": 319.2066955566406,
+                        "y": 61.161556243896487,
+                        "z": 19.785892486572267
                     },
                     "scale": {
                         "x": 1.0,

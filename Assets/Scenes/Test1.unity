@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 82329171}
   - component: {fileID: 82329172}
   - component: {fileID: 82329173}
+  - component: {fileID: 82329174}
   m_Layer: 0
   m_Name: DefaultPreviewCharacter
   m_TagString: Untagged
@@ -268,13 +269,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82329166}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29476140eab32fb4eb1046839cba8d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skillAsset: {fileID: 4900000, guid: 4303a3f188150154db32946eb5432b46, type: 3}
-  speedMultiplier: 0.57
+  speedMultiplier: 1
 --- !u!114 &82329171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,12 +486,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82329166}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47949fc7b751ebe4f98559b7fa8b0e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skillAsset: {fileID: 4900000, guid: a5e2ab7a13706cb40a62759a6370e7ea, type: 3}
+  speedMultiplier: 1
+--- !u!114 &82329174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82329166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b4bb7fd5dacc3f47b0d731cc7568ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillAsset1: {fileID: 4900000, guid: a5e2ab7a13706cb40a62759a6370e7ea, type: 3}
+  skillAsset2: {fileID: 4900000, guid: 63d7c2da5b7609943a15bd67e745be6c, type: 3}
   speedMultiplier: 1
 --- !u!1 &87637335
 GameObject:

@@ -17,6 +17,9 @@
                 },
                 {
                     "rid": 1001
+                },
+                {
+                    "rid": 1002
                 }
             ]
         }
@@ -42,10 +45,10 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1002
+                            "rid": 1003
                         },
                         {
-                            "rid": 1003
+                            "rid": 1004
                         }
                     ]
                 }
@@ -68,16 +71,39 @@
                     "isEnabled": false,
                     "clips": [
                         {
-                            "rid": 1004
+                            "rid": 1005
                         },
                         {
-                            "rid": 1005
+                            "rid": 1006
                         }
                     ]
                 }
             },
             {
                 "rid": 1002,
+                "type": {
+                    "class": "AnimationTrack",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "trackId": "d0019918-f755-42ee-916e-ccd883180408",
+                    "trackType": "AnimationTrack",
+                    "trackName": "动画轨道",
+                    "isMuted": false,
+                    "isLocked": false,
+                    "isHidden": false,
+                    "isCollapsed": false,
+                    "isEnabled": false,
+                    "clips": [
+                        {
+                            "rid": 1007
+                        }
+                    ]
+                }
+            },
+            {
+                "rid": 1003,
                 "type": {
                     "class": "SkillAnimationClip",
                     "ns": "SkillEditor",
@@ -92,19 +118,19 @@
                     "blendInDuration": 0.20000000298023225,
                     "blendOutDuration": 1.4666669368743897,
                     "animationClip": {
-                        "instanceID": 30094
+                        "instanceID": 30096
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "overrideMask": {
-                        "instanceID": 30182
+                        "instanceID": 30184
                     },
                     "clipGuid": "5ae7dd75483496b46a09884c7811402b",
                     "maskGuid": "9921a430717d12648bc57a3ccbd93dbc"
                 }
             },
             {
-                "rid": 1003,
+                "rid": 1004,
                 "type": {
                     "class": "SkillAnimationClip",
                     "ns": "SkillEditor",
@@ -119,19 +145,19 @@
                     "blendInDuration": 1.4666669368743897,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 30298
+                        "instanceID": 30300
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "overrideMask": {
-                        "instanceID": 30504
+                        "instanceID": 30506
                     },
                     "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
                     "maskGuid": "0d1d08be95f017340b0a742913c403f9"
                 }
             },
             {
-                "rid": 1004,
+                "rid": 1005,
                 "type": {
                     "class": "SkillAnimationClip",
                     "ns": "SkillEditor",
@@ -146,7 +172,7 @@
                     "blendInDuration": 0.20000000298023225,
                     "blendOutDuration": 2.3333334922790529,
                     "animationClip": {
-                        "instanceID": 30094
+                        "instanceID": 30096
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -158,7 +184,7 @@
                 }
             },
             {
-                "rid": 1005,
+                "rid": 1006,
                 "type": {
                     "class": "SkillAnimationClip",
                     "ns": "SkillEditor",
@@ -173,15 +199,42 @@
                     "blendInDuration": 2.3333334922790529,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 30298
+                        "instanceID": 30300
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "overrideMask": {
-                        "instanceID": 30504
+                        "instanceID": 30506
                     },
                     "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
                     "maskGuid": "0d1d08be95f017340b0a742913c403f9"
+                }
+            },
+            {
+                "rid": 1007,
+                "type": {
+                    "class": "SkillAnimationClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "clipId": "49cbe113-3076-4b78-a54c-a36d08f83fca",
+                    "clipName": "动画轨道片段",
+                    "isEnabled": true,
+                    "startTime": 0.0,
+                    "duration": 3.1666667461395265,
+                    "blendInDuration": 0.20000000298023225,
+                    "blendOutDuration": 0.0,
+                    "animationClip": {
+                        "instanceID": 30096
+                    },
+                    "playbackSpeed": 1.0,
+                    "layer": 0,
+                    "overrideMask": {
+                        "instanceID": 0
+                    },
+                    "clipGuid": "5ae7dd75483496b46a09884c7811402b",
+                    "maskGuid": ""
                 }
             }
         ]

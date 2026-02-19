@@ -13,7 +13,6 @@ namespace SkillEditor.Editor
         private SkillEditorWindow window;
         private SkillEditorState state;
         private SkillEditorEvents events;
-        private Vector2 scrollPosition;
         
         // 常量定义
         private const float TRACK_HEIGHT = 40f;
@@ -25,11 +24,7 @@ namespace SkillEditor.Editor
         private string renamingText = "";
         private bool needsFocusOnRename = false;
         
-        // 分组拖拽状态
-        private enum DragType { None, Track, Group }
-        private DragType currentDragType = DragType.None;
-        private TrackBase draggingTrack = null;
-        private Group draggingGroup = null;
+        // 分组拖拽
         private int dropTargetIndex = -1;
         private string dropTargetGroupId = null;
         private string hoveredGroupId = null;

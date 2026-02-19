@@ -25,7 +25,7 @@ public class Test2 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             AnimState state = animComponent.Play(clip1, blendInDuration1);
-            state.AddScheduledEvent(1.6999998092651368f, () =>
+            state.AddScheduledEvent(1.6999998092651368f, (_) =>
             {
                 Debug.Log("事件触发: " + blendInDuration2 + "秒");
                 animComponent.Play(clip2, blendInDuration2);

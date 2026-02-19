@@ -120,11 +120,11 @@ namespace SkillEditor
             float maxTime = 0f;
             foreach (var track in AllTracks)
             {
-                if (track.clips != null)
+                if (track.clips != null && track.isEnabled)
                 {
                     foreach (var clip in track.clips)
                     {
-                        if (clip != null)
+                        if (clip != null && clip.isEnabled)
                         {
                             float endTime = clip.StartTime + clip.Duration;
                             if (endTime > maxTime) maxTime = endTime;
