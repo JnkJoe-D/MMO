@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace SkillEditor.Editor
 {
+    [CustomDrawer(typeof(VFXTrack))]
     public class VFXTrackDrawer : TrackDrawer
     {
         public override void DrawInspector(TrackBase track)

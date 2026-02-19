@@ -12,14 +12,46 @@ namespace SkillEditor.Editor
         }
     }
     
-    // 简单的注册中心 (这也是一个简化实现，可以用 Attribute + Reflection 自动发现)
+    // 自动注册中心
     public static class DrawerFactory
     {
+        private static System.Collections.Generic.Dictionary<System.Type, System.Type> _drawerMap;
+
+        private static void Initialize()
+        {
+            _drawerMap = new System.Collections.Generic.Dictionary<System.Type, System.Type>();
+            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var asm in assemblies)
+            {
+                // Simple filter to speed up
+                var asmName = asm.GetName().Name;
+                if (asmName.StartsWith("System") || asmName.StartsWith("mscorlib")) continue;
+
+                 System.Type[] types;
+                try { types = asm.GetTypes(); } catch { continue; }
+
+                foreach (var type in types)
+                {
+                    if (typeof(TrackDrawer).IsAssignableFrom(type) && !type.IsAbstract)
+                    {
+                        var attr = (CustomDrawerAttribute)System.Attribute.GetCustomAttribute(type, typeof(CustomDrawerAttribute));
+                        if (attr != null && attr.TargetType != null)
+                        {
+                            _drawerMap[attr.TargetType] = type;
+                        }
+                    }
+                }
+            }
+        }
+
         public static TrackDrawer CreateDrawer(TrackBase track)
         {
-            if (track is VFXTrack) return new VFXTrackDrawer();
-            if (track is AnimationTrack) return new AnimationTrackDrawer();
-            // ... 其他映射
+            if (_drawerMap == null) Initialize();
+
+            if (track != null && _drawerMap.TryGetValue(track.GetType(), out var drawerType))
+            {
+                return (TrackDrawer)System.Activator.CreateInstance(drawerType);
+            }
             return new DefaultTrackDrawer();
         }
     }

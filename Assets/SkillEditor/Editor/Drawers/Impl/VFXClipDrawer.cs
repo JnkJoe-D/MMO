@@ -4,6 +4,7 @@ using SkillEditor;
 
 namespace SkillEditor.Editor
 {
+    [CustomDrawer(typeof(VFXClip))]
     public class VFXClipDrawer : ClipDrawer
     {
         public override void DrawInspector(ClipBase clip)
