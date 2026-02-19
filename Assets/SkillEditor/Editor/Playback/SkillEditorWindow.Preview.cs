@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using Game.Adapters;
+using Game.MAnimSystem;
+using SkillEditor;
 
 namespace SkillEditor.Editor
 {
@@ -49,6 +52,14 @@ namespace SkillEditor.Editor
 
             var ctx = new ProcessContext(state.previewTarget, PlayMode.EditorPreview);
             ctx.AddService<ISkillActor>(state.previewTarget.name, new CharSkillActor(state.previewTarget)); // 注入测试用 ISkillActor 实现
+            
+            // 注册动画系统适配器
+            var animComp = state.previewTarget.GetComponent<AnimComponent>();
+            if (animComp != null)
+            {
+                ctx.AddService<ISkillAnimationHandler>("AnimationHandler", new AnimComponentAdapter(animComp));
+            }
+            
             lastPreviewTime = EditorApplication.timeSinceStartup;
             previewRunner.Play(state.currentTimeline, ctx);
         }

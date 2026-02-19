@@ -2,7 +2,7 @@ using UnityEngine;
 using SkillEditor;
 using Game.MAnimSystem;
 using SU = SkillEditor.SerializationUtility;
-
+using Game.Adapters;
 public class Test_Switch : MonoBehaviour
 {
     public TextAsset skillAsset1;
@@ -27,6 +27,7 @@ public class Test_Switch : MonoBehaviour
             // 2. 准备上下文
             // 2. 准备上下文
             context = new ProcessContext(gameObject, SkillEditor.PlayMode.Runtime);
+            context.AddService<ISkillAnimationHandler>("AnimationHandler", new AnimComponentAdapter(animComp));
             context.AddService<ISkillActor>(gameObject.name, new CharSkillActor(gameObject)); // 注入测试用 ISkillActor 实现
             context.AddService<MonoBehaviour>("CoroutineRunner", this);
             runner = new SkillRunner(SkillEditor.PlayMode.Runtime);

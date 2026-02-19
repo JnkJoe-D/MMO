@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Game.MAnimSystem;
 using UnityEngine;
 
 namespace SkillEditor
@@ -73,15 +72,18 @@ namespace SkillEditor
             }
             return (T)comp;
         }
-        public void PushLayerMask(int layerIndex, AvatarMask overrideMask, AnimComponent animComp)
+        public void PushLayerMask(int layerIndex, AvatarMask overrideMask)
         {
             if (overrideMask == null) return;
+
+            var animHandler = GetService<ISkillAnimationHandler>("AnimationHandler");
+            if (animHandler == null) return;
 
             if (!_layerMaskStates.TryGetValue(layerIndex, out var state))
             {
                 // 第一次有 Clip 进入该层，记录原始 Mask
                 state = new LayerMaskState();
-                state.OriginalMask = animComp.GetLayerMask(layerIndex);
+                state.OriginalMask = animHandler.GetLayerMask(layerIndex);
                 _layerMaskStates[layerIndex] = state;
             }
 
@@ -89,11 +91,13 @@ namespace SkillEditor
             state.ActiveOverrides.Add(overrideMask);
 
             // 应用栈顶 Mask
-            animComp.SetLayerMask(layerIndex, overrideMask);
+            animHandler.SetLayerMask(layerIndex, overrideMask);
         }
-        public void PopLayerMask(int layerIndex, AvatarMask overrideMask, AnimComponent animComp)
+        public void PopLayerMask(int layerIndex, AvatarMask overrideMask)
         {
             if (overrideMask == null) return;
+            var animHandler = GetService<ISkillAnimationHandler>("AnimationHandler");
+            if (animHandler == null) return;
 
             if (_layerMaskStates.TryGetValue(layerIndex, out var state))
             {
@@ -105,12 +109,12 @@ namespace SkillEditor
                     {
                         // 还有其他 Override，应用栈顶（List 最后一个）
                         var topMask = state.ActiveOverrides[state.ActiveOverrides.Count - 1];
-                        animComp.SetLayerMask(layerIndex, topMask);
+                        animHandler.SetLayerMask(layerIndex, topMask);
                     }
                     else
                     {
                         // 栈空，恢复原始 Mask
-                        animComp.SetLayerMask(layerIndex, state.OriginalMask);
+                        animHandler.SetLayerMask(layerIndex, state.OriginalMask);
 
                         // 可选：清理 State，节省内存（下次进入重新获取 Original）
                         _layerMaskStates.Remove(layerIndex);

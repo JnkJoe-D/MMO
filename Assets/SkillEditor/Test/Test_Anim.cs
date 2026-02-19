@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Game.Adapters;
 using UnityEngine;
 using SkillEditor;
 using Game.MAnimSystem;
@@ -35,8 +34,13 @@ public class Test_Anim : MonoBehaviour
             context = new ProcessContext(gameObject, SkillEditor.PlayMode.Runtime);
             runner = new SkillRunner(SkillEditor.PlayMode.Runtime);
 
+            // 3. 添加服务
+            context.AddService<ISkillAnimationHandler>("AnimationHandler", new AnimComponentAdapter(animComp));
+
+            // 4.反序列化
             timeline = SU.OpenFromJson(skillAsset);
             timeline.isLoop = true;
+            
             // 5. 开始播放
             runner.Play(timeline, context);
             Debug.Log($"播放开始: State={runner.CurrentState}");

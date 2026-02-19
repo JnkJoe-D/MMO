@@ -4,7 +4,7 @@ using Game.MAnimSystem;
 using SkillEditor;
 using SU = SkillEditor.SerializationUtility;
 using UnityEngine;
-
+using Game.Adapters;
 public class Test_VFX : MonoBehaviour
 {
     public TextAsset skillAsset; // 直接拖入 TextAsset 资源（编辑器专用）
@@ -31,7 +31,9 @@ public class Test_VFX : MonoBehaviour
 
             // 2. 准备上下文
             context = new ProcessContext(gameObject, SkillEditor.PlayMode.Runtime);
-            context.AddService<ISkillActor>(gameObject.name,new CharSkillActor(gameObject)); // 注入测试用 ISkillActor 实现
+        // 3. 添加服务
+        context.AddService<ISkillAnimationHandler>("AnimationHandler", new AnimComponentAdapter(animComp));
+        context.AddService<ISkillActor>(gameObject.name,new CharSkillActor(gameObject)); // 注入测试用 ISkillActor 实现
             context.AddService<MonoBehaviour>("CoroutineRunner",this);
             runner = new SkillRunner(SkillEditor.PlayMode.Runtime);
 

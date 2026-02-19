@@ -1,4 +1,3 @@
-using Game.MAnimSystem;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -11,39 +10,42 @@ namespace SkillEditor
     [ProcessBinding(typeof(SkillAnimationClip), PlayMode.Runtime)]
     public class RuntimeAnimationProcess : ProcessBase<SkillAnimationClip>
     {
-        // TODO: 替换为实际的 AnimComponent 类型
-        private AnimComponent animComp;
+        // 使用抽象接口替代具体实现
+        private ISkillAnimationHandler animHandler;
+        
         public override void OnEnable()
         {
-            animComp = context.GetComponent<AnimComponent>();
-            animComp?.Initialize(); // 确保 AnimComponent 已初始化
-            animComp?.InitializeGraph(); // 确保动画图已创建
+            animHandler = context.GetService<ISkillAnimationHandler>("AnimationHandler");
+            animHandler?.Initialize();
         }
 
         public override void OnEnter()
         {
             if (clip.overrideMask != null)
             {
-                context.PushLayerMask((int)clip.layer, clip.overrideMask, animComp);
+                context.PushLayerMask((int)clip.layer, clip.overrideMask);
             }
-            // 调用 AnimComponent 播放控制 + 设置速度
-            animComp.Play(clip.animationClip, (int)clip.layer, clip.blendInDuration);
+            // 调用接口播放控制 + 设置速度
+            if (animHandler != null)
+            {
+                animHandler.PlayAnimation(clip.animationClip, (int)clip.layer, clip.blendInDuration, clip.playbackSpeed * context.GlobalPlaySpeed);
+            }
             //这里的update频率比monoupdate低，所以在onenter先同步一次播放速度，确保动画按预期速度开始播放
-            animComp.SetLayerSpeed((int)clip.layer, clip.playbackSpeed * context.GlobalPlaySpeed);
+            animHandler?.SetLayerSpeed((int)clip.layer, clip.playbackSpeed * context.GlobalPlaySpeed);
             Debug.Log($"[OnEnter] Play at time: {UnityEngine.Time.time}");
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)
         {
             // 仅控制播放状态和速度
-            animComp.SetLayerSpeed((int)clip.layer, clip.playbackSpeed * context.GlobalPlaySpeed); // 叠加全局播放速度
+            animHandler?.SetLayerSpeed((int)clip.layer, clip.playbackSpeed * context.GlobalPlaySpeed); // 叠加全局播放速度
         }
 
         public override void OnExit()
         {
             if (clip.overrideMask != null)
             {
-                context.PopLayerMask((int)clip.layer, clip.overrideMask, animComp);
+                context.PopLayerMask((int)clip.layer, clip.overrideMask);
             }
             Debug.Log($"[OnExit] OnExit at time: {UnityEngine.Time.time}");
             // 可选：停止当前动画片段
@@ -52,7 +54,7 @@ namespace SkillEditor
         public override void Reset()
         {
             base.Reset();
-            animComp = null;
+            animHandler = null;
         }
     }
 }
