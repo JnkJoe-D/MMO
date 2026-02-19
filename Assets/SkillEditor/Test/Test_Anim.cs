@@ -35,7 +35,8 @@ public class Test_Anim : MonoBehaviour
             runner = new SkillRunner(SkillEditor.PlayMode.Runtime);
 
             // 3. 添加服务
-            context.AddService<ISkillAnimationHandler>("AnimationHandler", new AnimComponentAdapter(animComp));
+            // 3. 添加服务
+            context.AddService<ISkillAnimationHandler>(new AnimComponentAdapter(animComp));
 
             // 4.反序列化
             timeline = SU.OpenFromJson(skillAsset);

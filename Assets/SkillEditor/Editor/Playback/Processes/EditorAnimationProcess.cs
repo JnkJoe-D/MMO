@@ -14,7 +14,7 @@ namespace SkillEditor.Editor
         private ISkillAnimationHandler animHandler;
         public override void OnEnable()
         {
-            animHandler = context.GetService<ISkillAnimationHandler>("AnimationHandler");
+            animHandler = context.GetService<ISkillAnimationHandler>(); // 懒加载
             animHandler?.Initialize();
             // 注册系统级清理（多个动画 Process 共享同一个 key，仅执行一次）
             context.RegisterCleanup("ClearPlaygraph", () => animHandler?.ClearPlayGraph()); // 注册退出时的清理

@@ -37,7 +37,10 @@ namespace SkillEditor
         /// </summary>
         public object UserData { get; set; }
         public float GlobalPlaySpeed { get; set; } = 1f; // 全局播放速度控制
-        private Dictionary<Type,Dictionary<string, object>> _services = new Dictionary<Type, Dictionary<string, object>>();
+        
+        // 单层字典，Key 为服务接口类型
+        private Dictionary<Type, object> _services = new Dictionary<Type, object>();
+        private IServiceFactory _serviceFactory; // 服务工厂（懒加载）
         // 组件缓存
         private Dictionary<Type, Component> _componentCache = new Dictionary<Type, Component>();
         // Mask托管栈
@@ -46,11 +49,12 @@ namespace SkillEditor
         // 系统级清理注册（同 key 去重）
         private Dictionary<string, Action> _cleanupActions = new Dictionary<string, Action>();
 
-        public ProcessContext(GameObject owner, PlayMode playMode)
+        public ProcessContext(GameObject owner, PlayMode playMode, IServiceFactory factory = null)
         {
             Owner = owner;
             OwnerTransform = owner != null ? owner.transform : null;
             PlayMode = playMode;
+            _serviceFactory = factory;
         }
 
         /// <summary>
@@ -76,7 +80,7 @@ namespace SkillEditor
         {
             if (overrideMask == null) return;
 
-            var animHandler = GetService<ISkillAnimationHandler>("AnimationHandler");
+            var animHandler = GetService<ISkillAnimationHandler>(); // 懒加载
             if (animHandler == null) return;
 
             if (!_layerMaskStates.TryGetValue(layerIndex, out var state))
@@ -96,7 +100,7 @@ namespace SkillEditor
         public void PopLayerMask(int layerIndex, AvatarMask overrideMask)
         {
             if (overrideMask == null) return;
-            var animHandler = GetService<ISkillAnimationHandler>("AnimationHandler");
+            var animHandler = GetService<ISkillAnimationHandler>();
             if (animHandler == null) return;
 
             if (_layerMaskStates.TryGetValue(layerIndex, out var state))
@@ -123,41 +127,39 @@ namespace SkillEditor
             }
         }
 
-        public void AddService<T>(string insName,object ins)
+        public void AddService<T>(T service)
         {
-            var type = typeof(T);
-            if (!_services.TryGetValue(type, out var dict))
-            {
-                dict = new Dictionary<string, object>();
-                _services[type] = dict;
-            }
-            dict[insName] = ins;
+            if (service == null) return;
+            _services[typeof(T)] = service;
         }
 
-        public T GetService<T>(string insName) where T : class
+        public T GetService<T>() where T : class
         {
             var type = typeof(T);
-            if (_services.TryGetValue(type, out var dict))
+            
+            // 1. 尝试从缓存获取
+            if (_services.TryGetValue(type, out var service))
             {
-                if (dict.TryGetValue(insName, out var ins))
+                return service as T;
+            }
+
+            // 2. 尝试懒加载
+            if (_serviceFactory != null)
+            {
+                var newService = _serviceFactory.ProvideService(type);
+                if (newService != null && newService is T typedService)
                 {
-                    return ins as T;
+                    // 注册到缓存，下次直接获取
+                    AddService<T>(typedService);
+                    return typedService;
                 }
             }
             return null;
         }
 
-        public void RemoveService<T>(string insName)
+        public void RemoveService<T>()
         {
-            var type = typeof(T);
-            if (_services.TryGetValue(type, out var dict))
-            {
-                dict.Remove(insName);
-                if (dict.Count == 0)
-                {
-                    _services.Remove(type);
-                }
-            }
+            _services.Remove(typeof(T));
         }
         /// <summary>
         /// 注册系统级清理操作（同 key 去重，后注册覆盖前注册）

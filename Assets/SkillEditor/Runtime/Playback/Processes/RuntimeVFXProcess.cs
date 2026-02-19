@@ -13,6 +13,10 @@ namespace SkillEditor
         }
         private ParticleSpeedInfo[] particleInfos;
         private GameObject vfxInstance;
+        public override void OnEnable()
+        {
+            base.OnEnable();
+        }
         public override void OnEnter()
         {
             Debug.Log($"[RuntimeVFXProcess] OnEnter at time: {UnityEngine.Time.time}");
@@ -20,7 +24,8 @@ namespace SkillEditor
 
             // 1. 获取挂点
             Transform targetTransform = null;
-            var actor = context.GetService<ISkillActor>(context.Owner.name);
+            // 懒加载获取 actor 服务
+            var actor = context.GetService<ISkillActor>();
             if (actor != null)
             {
                 targetTransform = actor.GetBone(clip.bindPoint, clip.customBoneName);
@@ -130,12 +135,8 @@ namespace SkillEditor
                     }
 
                     // 尝试获取 CoroutineRunner
-                    var runner = context.GetService<MonoBehaviour>("CoroutineRunner");
-                    if (runner == null && Application.isPlaying)
-                    {
-                        // Fallback to SkillLifecycleManager if available
-                        runner = SkillLifecycleManager.Instance;
-                    }
+                    // 尝试获取通用协程 Runner (由 Factory 提供)
+                    var runner = context.GetService<MonoBehaviour>();
 
                     if (runner != null && runner.isActiveAndEnabled)
                     {

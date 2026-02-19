@@ -50,15 +50,11 @@ namespace SkillEditor.Editor
         {
             if (state.currentTimeline == null) return;
 
-            var ctx = new ProcessContext(state.previewTarget, PlayMode.EditorPreview);
-            ctx.AddService<ISkillActor>(state.previewTarget.name, new CharSkillActor(state.previewTarget)); // 注入测试用 ISkillActor 实现
+            var factory = new SkillServiceFactory(state.previewTarget);
+            var ctx = new ProcessContext(state.previewTarget, PlayMode.EditorPreview, factory);
             
-            // 注册动画系统适配器
-            var animComp = state.previewTarget.GetComponent<AnimComponent>();
-            if (animComp != null)
-            {
-                ctx.AddService<ISkillAnimationHandler>("AnimationHandler", new AnimComponentAdapter(animComp));
-            }
+            // 手动注入不再需要，由 Factory 懒加载提供
+            // ctx.AddService<ISkillActor>(new CharSkillActor(state.previewTarget)); 
             
             lastPreviewTime = EditorApplication.timeSinceStartup;
             previewRunner.Play(state.currentTimeline, ctx);

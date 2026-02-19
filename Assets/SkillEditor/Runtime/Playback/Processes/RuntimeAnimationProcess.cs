@@ -15,7 +15,7 @@ namespace SkillEditor
         
         public override void OnEnable()
         {
-            animHandler = context.GetService<ISkillAnimationHandler>("AnimationHandler");
+            animHandler = context.GetService<ISkillAnimationHandler>(); // 懒加载
             animHandler?.Initialize();
         }
 

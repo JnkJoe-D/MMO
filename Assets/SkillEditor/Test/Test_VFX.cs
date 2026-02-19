@@ -32,9 +32,9 @@ public class Test_VFX : MonoBehaviour
             // 2. 准备上下文
             context = new ProcessContext(gameObject, SkillEditor.PlayMode.Runtime);
         // 3. 添加服务
-        context.AddService<ISkillAnimationHandler>("AnimationHandler", new AnimComponentAdapter(animComp));
-        context.AddService<ISkillActor>(gameObject.name,new CharSkillActor(gameObject)); // 注入测试用 ISkillActor 实现
-            context.AddService<MonoBehaviour>("CoroutineRunner",this);
+        context.AddService<ISkillAnimationHandler>(new AnimComponentAdapter(animComp));
+        context.AddService<ISkillActor>(new CharSkillActor(gameObject)); // 注入测试用 ISkillActor 实现
+            context.AddService<MonoBehaviour>(this);
             runner = new SkillRunner(SkillEditor.PlayMode.Runtime);
 
             timeline = SU.OpenFromJson(skillAsset);
