@@ -11,7 +11,7 @@ namespace SkillEditor
         public GameObject effectPrefab;
         
         [HideInInspector]
-        public string clipGuid;
+        public string prefabGuid;
 
         [Header("挂点设置")]
         [SkillProperty("挂载位置")]
@@ -60,7 +60,7 @@ namespace SkillEditor
                 duration = this.duration,
                 isEnabled = this.isEnabled,
                 effectPrefab = this.effectPrefab,
-                clipGuid = this.clipGuid,
+                prefabGuid = this.prefabGuid,
                 bindPoint = this.bindPoint,
                 customBoneName = this.customBoneName,
                 followTarget = this.followTarget,

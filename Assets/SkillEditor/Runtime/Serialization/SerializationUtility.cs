@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-namespace SkillEditor.Editor
+namespace SkillEditor
 {
     /// <summary>
     /// 技能序列化工具类
@@ -24,14 +24,12 @@ namespace SkillEditor.Editor
             // 2. 序列化
             string json = JsonUtility.ToJson(timeline, true);
             File.WriteAllText(path, json);
-            
-            Debug.Log($"[{Lan.EditorTitle}] {Lan.ExportToJson}: {path}");
         }
 
         /// <summary>
-        /// 从 JSON 文件导入技能
+        /// 从 JSON 文件路径导入技能
         /// </summary>
-        public static SkillTimeline ImportFromJson(string path)
+        public static SkillTimeline ImportFromJsonPath(string path)
         {
             if (!File.Exists(path)) return null;
 
@@ -44,7 +42,20 @@ namespace SkillEditor.Editor
 
             return timeline;
         }
+        /// <summary>
+        /// 从 JSON 文件获取技能
+        /// </summary>
+        public static SkillTimeline OpenFromJson(TextAsset textAsset)
+        {
+            if(textAsset==null)return null;
+            string json = textAsset.text;
+            SkillTimeline timeline = ScriptableObject.CreateInstance<SkillTimeline>();
+            JsonUtility.FromJsonOverwrite(json, timeline);
 
+            // 导入后置处理：根据 GUID 还原资源引用
+            ResolveAllAssets(timeline);
+            return timeline;
+        }
         /// <summary>
         /// 刷新所有片段的 GUID（遍历 groups → tracks → clips）
         /// </summary>
@@ -58,12 +69,12 @@ namespace SkillEditor.Editor
                     {
                         if(animClip.animationClip != null)
                             animClip.clipGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.animationClip));
-                        if(animClip.avatarMask != null)
-                            animClip.maskGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.avatarMask));
+                        if(animClip.overrideMask != null)
+                            animClip.maskGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.overrideMask));
                     }
                     else if (clip is VFXClip vfxClip && vfxClip.effectPrefab != null)
                     {
-                        vfxClip.clipGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(vfxClip.effectPrefab));
+                        vfxClip.prefabGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(vfxClip.effectPrefab));
                     }
                     else if (clip is AudioClip audioClip && audioClip.audioClip != null)
                     {
@@ -94,12 +105,12 @@ namespace SkillEditor.Editor
                         if(!string.IsNullOrEmpty(animClip.maskGuid))
                         {
                             string assetPath = AssetDatabase.GUIDToAssetPath(animClip.maskGuid);
-                            animClip.avatarMask = AssetDatabase.LoadAssetAtPath<UnityEngine.AvatarMask>(assetPath);
+                            animClip.overrideMask = AssetDatabase.LoadAssetAtPath<UnityEngine.AvatarMask>(assetPath);
                         }
                     }
-                    else if (clip is VFXClip vfxClip && !string.IsNullOrEmpty(vfxClip.clipGuid))
+                    else if (clip is VFXClip vfxClip && !string.IsNullOrEmpty(vfxClip.prefabGuid))
                     {
-                        string assetPath = AssetDatabase.GUIDToAssetPath(vfxClip.clipGuid);
+                        string assetPath = AssetDatabase.GUIDToAssetPath(vfxClip.prefabGuid);
                         vfxClip.effectPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
                     }
                     else if (clip is AudioClip audioClip && !string.IsNullOrEmpty(audioClip.clipGuid))

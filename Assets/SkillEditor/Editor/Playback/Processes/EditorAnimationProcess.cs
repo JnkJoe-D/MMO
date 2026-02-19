@@ -24,10 +24,9 @@ namespace SkillEditor.Editor
 
             public override void OnEnter()
             {
-            if (clip.avatarMask != null)
+            if (clip.overrideMask != null)
             {
-                context.PushLayerMask((int)clip.layer, clip.avatarMask, animComp);
-                animComp.SetLayerMask((int)clip.layer, clip.avatarMask);
+                context.PushLayerMask((int)clip.layer, clip.overrideMask, animComp);
             }
             animComp.Play(clip.animationClip, clip.blendInDuration);// 调用 AnimComponent 播放控制
             animComp.SetLayerSpeed((int)clip.layer,0f); // 先暂停，等待 OnUpdate 采样
@@ -45,7 +44,7 @@ namespace SkillEditor.Editor
 
         public override void OnExit()
         {
-            context.PopLayerMask((int)clip.layer, clip.avatarMask, animComp); 
+            context.PopLayerMask((int)clip.layer, clip.overrideMask, animComp); 
         }
         public override void OnDisable()
         {

@@ -6,21 +6,21 @@ namespace SkillEditor
     [ProcessBinding(typeof(VFXClip), PlayMode.Runtime)]
     public class RuntimeVFXProcess : ProcessBase<VFXClip>
     {
-        private GameObject vfxInstance;
-        private Coroutine returnCoroutine;
-
-        public override void OnEnable()
+        private struct ParticleSpeedInfo
         {
-            base.OnEnable();
-
+            public ParticleSystem ps;
+            public float initialSpeed;
         }
+        private ParticleSpeedInfo[] particleInfos;
+        private GameObject vfxInstance;
         public override void OnEnter()
         {
+            Debug.Log($"[RuntimeVFXProcess] OnEnter at time: {UnityEngine.Time.time}");
             if (clip.effectPrefab == null) return;
 
             // 1. 获取挂点
             Transform targetTransform = null;
-            var actor = context.SkillActor;
+            var actor = context.GetService<ISkillActor>(context.Owner.name);
             if (actor != null)
             {
                 targetTransform = actor.GetBone(clip.bindPoint, clip.customBoneName);
@@ -69,15 +69,54 @@ namespace SkillEditor
                         vfxInstance.transform.rotation *= Quaternion.Euler(clip.rotationOffset);
                     }
                 }
+
+                // 4. 缓存粒子信息用于速度同步
+                var systems = vfxInstance.GetComponentsInChildren<ParticleSystem>();
+                particleInfos = new ParticleSpeedInfo[systems.Length];
+                for (int i = 0; i < systems.Length; i++)
+                {
+                    particleInfos[i] = new ParticleSpeedInfo
+                    {
+                        ps = systems[i],
+                        initialSpeed = systems[i].main.simulationSpeed
+                    };
+                }
+                
+                // 立即同步一次速度
+                SyncSpeed();
             }
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)
         {
+            try
+            {
+                SyncSpeed();
+            }
+            catch(System.Exception ex)
+            {
+                Debug.LogError($"VFX OnUpdate: {ex.Message}");
+            }
+        }
+
+        private void SyncSpeed()
+        {
+            if (particleInfos == null) return;
+            float globalSpeed = context.GlobalPlaySpeed;
+            for (int i = 0; i < particleInfos.Length; i++)
+            {
+                var info = particleInfos[i];
+                if (info.ps != null)
+                {
+                    var main = info.ps.main;
+                    main.simulationSpeed = info.initialSpeed * globalSpeed;
+                }
+            }
         }
 
         public override void OnExit()
         {
+            Debug.Log($"[RuntimeVFXProcess] OnExit at time: {UnityEngine.Time.time}");
             if (vfxInstance == null) return;
 
             if (clip.destroyOnEnd)
@@ -95,7 +134,7 @@ namespace SkillEditor
                     }
 
                     // 尝试获取 CoroutineRunner
-                    var runner = context.CoroutineRunner;
+                    var runner = context.GetService<MonoBehaviour>("CoroutineRunner");
                     if (runner == null && Application.isPlaying)
                     {
                         // Fallback to SkillLifecycleManager if available
@@ -129,10 +168,12 @@ namespace SkillEditor
             
         }
         public override void Reset()
-        {
+         {
             base.Reset();
-
+            particleInfos = null;
+            vfxInstance = null;
         }
+            
         private IEnumerator DelayReturn(GameObject inst, float delay)
         {
             if (delay > 0)

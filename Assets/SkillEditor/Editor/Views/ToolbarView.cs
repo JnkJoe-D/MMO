@@ -165,7 +165,7 @@ namespace SkillEditor.Editor
             string path = EditorUtility.OpenFilePanel(Lan.ImportPanelTitle, "Assets", "json");
             if (!string.IsNullOrEmpty(path))
             {
-                var newTimeline = SerializationUtility.ImportFromJson(path);
+                var newTimeline = SerializationUtility.ImportFromJsonPath(path);
                 if (newTimeline != null)
                 {
                     window.SetCurrentTimeline(newTimeline);

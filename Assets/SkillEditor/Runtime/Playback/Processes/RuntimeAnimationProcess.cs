@@ -22,10 +22,9 @@ namespace SkillEditor
 
         public override void OnEnter()
         {
-            if (clip.avatarMask != null)
+            if (clip.overrideMask != null)
             {
-                context.PushLayerMask((int)clip.layer, clip.avatarMask, animComp);
-                animComp.SetLayerMask((int)clip.layer, clip.avatarMask);
+                context.PushLayerMask((int)clip.layer, clip.overrideMask, animComp);
             }
             // 调用 AnimComponent 播放控制 + 设置速度
             animComp.Play(clip.animationClip, (int)clip.layer, clip.blendInDuration);
@@ -42,7 +41,10 @@ namespace SkillEditor
 
         public override void OnExit()
         {
-            context.PopLayerMask((int)clip.layer, clip.avatarMask, animComp);
+            if (clip.overrideMask != null)
+            {
+                context.PopLayerMask((int)clip.layer, clip.overrideMask, animComp);
+            }
             Debug.Log($"[OnExit] OnExit at time: {UnityEngine.Time.time}");
             // 可选：停止当前动画片段
         }

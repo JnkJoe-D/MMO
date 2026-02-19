@@ -3,7 +3,6 @@
     "skillName": "测试1",
     "version": "1.0",
     "duration": 5.5,
-    "playbackSpeed": 1.0,
     "isLoop": true,
     "groups": [
         {
@@ -93,15 +92,15 @@
                     "blendInDuration": 0.20000000298023225,
                     "blendOutDuration": 1.4666669368743897,
                     "animationClip": {
-                        "instanceID": 29924
+                        "instanceID": 30094
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
-                    "avatarMask": {
-                        "instanceID": 30278
+                    "overrideMask": {
+                        "instanceID": 30182
                     },
                     "clipGuid": "5ae7dd75483496b46a09884c7811402b",
-                    "maskGuid": "0d1d08be95f017340b0a742913c403f9"
+                    "maskGuid": "9921a430717d12648bc57a3ccbd93dbc"
                 }
             },
             {
@@ -120,15 +119,15 @@
                     "blendInDuration": 1.4666669368743897,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 30098
+                        "instanceID": 30298
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
-                    "avatarMask": {
-                        "instanceID": 64754
+                    "overrideMask": {
+                        "instanceID": 30504
                     },
                     "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
-                    "maskGuid": "9921a430717d12648bc57a3ccbd93dbc"
+                    "maskGuid": "0d1d08be95f017340b0a742913c403f9"
                 }
             },
             {
@@ -147,11 +146,11 @@
                     "blendInDuration": 0.20000000298023225,
                     "blendOutDuration": 2.3333334922790529,
                     "animationClip": {
-                        "instanceID": 29924
+                        "instanceID": 30094
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
-                    "avatarMask": {
+                    "overrideMask": {
                         "instanceID": 0
                     },
                     "clipGuid": "5ae7dd75483496b46a09884c7811402b",
@@ -174,12 +173,12 @@
                     "blendInDuration": 2.3333334922790529,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 30098
+                        "instanceID": 30298
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
-                    "avatarMask": {
-                        "instanceID": 30278
+                    "overrideMask": {
+                        "instanceID": 30504
                     },
                     "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
                     "maskGuid": "0d1d08be95f017340b0a742913c403f9"

@@ -106,14 +106,13 @@ namespace Game.MAnimSystem
         {
             for (int i = 0; i < _layers.Count; i++)
             {
+                float layerDeltaTime = deltaTime;
                 if (_layerSpeeds.TryGetValue(i, out double speed))
                 {
                     _layers[i]?.SetSpeed((float)speed);
-                    deltaTime *= (float)speed; // 叠加速度控制
-                    Debug.Log($"Internal Update speed :{speed}");
-                    Debug.Log($"Internal Update deltatime :{deltaTime}");
+                    layerDeltaTime *= (float)speed; // 叠加速度控制
                 }
-                _layers[i]?.Update(deltaTime);
+                _layers[i]?.Update(layerDeltaTime);
             }
         }
         /// <summary>
@@ -156,6 +155,7 @@ namespace Game.MAnimSystem
             {
                 _layerSpeeds.Add(layerIndex, speedScale);
             }
+            _layers[layerIndex].SetSpeed(speedScale);
         }
 
         /// <summary>
@@ -428,12 +428,14 @@ namespace Game.MAnimSystem
         }
         public AvatarMask GetLayerMask(int layer)
         {
-            if (layer < 0 || layer >= _layers.Count) return null;
+            // if (layer < 0 || layer >= _layers.Count) return null;
+            if (layer < 0) return null;
             return _layers[layer].Mask;
         }
         public void SetLayerMask(int layer, AvatarMask avatarMask)
         {
-            if (layer < 0 || layer >= _layers.Count) return;
+            // if (layer < 0 || layer >= _layers.Count) return;
+            if (layer < 0) return;
             _layers[layer].Mask = avatarMask;
         }
     }

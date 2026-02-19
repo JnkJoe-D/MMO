@@ -2,11 +2,11 @@
     "skillId": 0,
     "skillName": "新技能",
     "version": "1.0",
-    "duration": 1.0,
-    "isLoop": true,
+    "duration": 3.1666667461395265,
+    "isLoop": false,
     "groups": [
         {
-            "groupId": "9386db55-b9d8-4d57-be6e-86b2a2e09647",
+            "groupId": "6bb4e390-22d6-480e-9ba7-96827a5c9fb4",
             "groupName": "分组 1",
             "isCollapsed": false,
             "isEnabled": true,
@@ -14,9 +14,21 @@
             "tracks": [
                 {
                     "rid": 1000
-                },
+                }
+            ]
+        },
+        {
+            "groupId": "8d4f326b-8e8c-4901-ae7b-bfb42e38c6c7",
+            "groupName": "分组 2",
+            "isCollapsed": false,
+            "isEnabled": true,
+            "isLocked": false,
+            "tracks": [
                 {
                     "rid": 1001
+                },
+                {
+                    "rid": 1002
                 }
             ]
         }
@@ -27,37 +39,14 @@
             {
                 "rid": 1000,
                 "type": {
-                    "class": "VFXTrack",
+                    "class": "AnimationTrack",
                     "ns": "SkillEditor",
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "trackId": "3b5fa15b-617c-46ff-b4d4-f69bf681e1ff",
-                    "trackType": "VFXTrack",
-                    "trackName": "特效轨道",
-                    "isMuted": false,
-                    "isLocked": false,
-                    "isHidden": false,
-                    "isCollapsed": false,
-                    "isEnabled": true,
-                    "clips": [
-                        {
-                            "rid": 1002
-                        }
-                    ]
-                }
-            },
-            {
-                "rid": 1001,
-                "type": {
-                    "class": "VFXTrack",
-                    "ns": "SkillEditor",
-                    "asm": "Assembly-CSharp"
-                },
-                "data": {
-                    "trackId": "9e9877c2-b344-44b3-8d10-ea660cd6e649",
-                    "trackType": "VFXTrack",
-                    "trackName": "特效轨道",
+                    "trackId": "04715858-f287-4023-8572-7d79e426c608",
+                    "trackType": "AnimationTrack",
+                    "trackName": "动画轨道",
                     "isMuted": false,
                     "isLocked": false,
                     "isHidden": false,
@@ -71,25 +60,98 @@
                 }
             },
             {
+                "rid": 1001,
+                "type": {
+                    "class": "VFXTrack",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "trackId": "0440095f-5c51-4e39-956c-a7a178c3c105",
+                    "trackType": "VFXTrack",
+                    "trackName": "特效轨道",
+                    "isMuted": false,
+                    "isLocked": false,
+                    "isHidden": false,
+                    "isCollapsed": false,
+                    "isEnabled": true,
+                    "clips": [
+                        {
+                            "rid": 1004
+                        }
+                    ]
+                }
+            },
+            {
                 "rid": 1002,
+                "type": {
+                    "class": "VFXTrack",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "trackId": "a86e461b-1e73-4332-8fb6-56c9c73b1f72",
+                    "trackType": "VFXTrack",
+                    "trackName": "特效轨道",
+                    "isMuted": false,
+                    "isLocked": false,
+                    "isHidden": false,
+                    "isCollapsed": false,
+                    "isEnabled": true,
+                    "clips": [
+                        {
+                            "rid": 1005
+                        }
+                    ]
+                }
+            },
+            {
+                "rid": 1003,
+                "type": {
+                    "class": "SkillAnimationClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "clipId": "1aaf78d6-23f6-4485-b690-7ac26f3b4471",
+                    "clipName": "动画轨道片段",
+                    "isEnabled": true,
+                    "startTime": 0.0,
+                    "duration": 3.1666667461395265,
+                    "blendInDuration": 0.20000000298023225,
+                    "blendOutDuration": 0.0,
+                    "animationClip": {
+                        "instanceID": 30096
+                    },
+                    "playbackSpeed": 1.0,
+                    "layer": 0,
+                    "overrideMask": {
+                        "instanceID": 0
+                    },
+                    "clipGuid": "5ae7dd75483496b46a09884c7811402b",
+                    "maskGuid": ""
+                }
+            },
+            {
+                "rid": 1004,
                 "type": {
                     "class": "VFXClip",
                     "ns": "SkillEditor",
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "clipId": "6b300d42-d634-4372-9529-8ba2c98d3600",
+                    "clipId": "265993f1-a78c-4874-8ebc-32310f004f97",
                     "clipName": "特效轨道片段",
                     "isEnabled": true,
-                    "startTime": 0.0,
+                    "startTime": 0.5,
                     "duration": 1.0,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
                         "instanceID": 32086
                     },
-                    "prefabGuid": "83e244af1d719994ab693b7cedf89951",
-                    "bindPoint": 3,
+                    "clipGuid": "83e244af1d719994ab693b7cedf89951",
+                    "bindPoint": 0,
                     "customBoneName": "",
                     "followTarget": true,
                     "positionOffset": {
@@ -103,34 +165,34 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 0.5,
-                        "y": 0.5,
-                        "z": 0.5
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
                     },
                     "destroyOnEnd": true,
                     "stopEmissionOnEnd": false
                 }
             },
             {
-                "rid": 1003,
+                "rid": 1005,
                 "type": {
                     "class": "VFXClip",
                     "ns": "SkillEditor",
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "clipId": "c1db71ad-f3f2-4f86-b148-157fdec7c8ef",
+                    "clipId": "9e852666-5808-4742-8f19-b9b776e8d11c",
                     "clipName": "特效轨道片段",
                     "isEnabled": true,
-                    "startTime": 0.0,
+                    "startTime": 0.5,
                     "duration": 1.0,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
                         "instanceID": 32086
                     },
-                    "prefabGuid": "83e244af1d719994ab693b7cedf89951",
-                    "bindPoint": 4,
+                    "clipGuid": "83e244af1d719994ab693b7cedf89951",
+                    "bindPoint": 0,
                     "customBoneName": "",
                     "followTarget": true,
                     "positionOffset": {
@@ -144,9 +206,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 0.5,
-                        "y": 0.5,
-                        "z": 0.5
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
                     },
                     "destroyOnEnd": true,
                     "stopEmissionOnEnd": false

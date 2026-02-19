@@ -24,9 +24,21 @@ namespace Game.MAnimSystem
         /// 构造一个新的 ClipState。
         /// </summary>
         /// <param name="clip">要播放的动画片段</param>
+        private float _cachedLength;
+        private bool _cachedIsLooping;
+
+        /// <summary>
+        /// 构造一个新的 ClipState。
+        /// </summary>
+        /// <param name="clip">要播放的动画片段</param>
         public ClipState(AnimationClip clip)
         {
             Clip = clip;
+            if (Clip != null)
+            {
+                _cachedLength = Clip.length;
+                _cachedIsLooping = Clip.isLooping;
+            }
         }
 
         /// <summary>
@@ -34,28 +46,23 @@ namespace Game.MAnimSystem
         /// </summary>
         protected override Playable CreatePlayable(PlayableGraph graph)
         {
+            if (Clip == null) return Playable.Null;
             _clipPlayable = AnimationClipPlayable.Create(graph, Clip);
             return _clipPlayable;
         }
 
         /// <summary>
-        /// 获取动画片段的长度。若 Clip 为空则返回 0。
+        /// 获取动画片段的长度。
         /// </summary>
-        public override float Length => Clip != null ? Clip.length : 0f;
+        public override float Length => _cachedLength;
 
         /// <summary>
         /// 是否循环播放。
-        /// 默认情况下 AnimationClipPlayable 会遵循 AnimationClip.settings 中的设置。
         /// </summary>
         public override bool IsLooping
         {
-            get => Clip != null && Clip.isLooping;
-            set 
-            {
-                // AnimationClipPlayable 通常自动遵循 Clip 资产的设置。
-                // 如果需要运行时强制覆盖循环模式，通常需要操作 Playable 底层的 SetWrapMode (Pre/PostExtrapolation)。
-                // 为保持简洁，此处暂未实现强制覆盖逻辑。
-            }
+            get => _cachedIsLooping;
+            set => _cachedIsLooping = value;
         }
         
         /// <summary>

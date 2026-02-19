@@ -48,6 +48,7 @@ namespace SkillEditor.Editor
             if (state.currentTimeline == null) return;
 
             var ctx = new ProcessContext(state.previewTarget, PlayMode.EditorPreview);
+            ctx.AddService<ISkillActor>(state.previewTarget.name, new CharSkillActor(state.previewTarget)); // 注入测试用 ISkillActor 实现
             lastPreviewTime = EditorApplication.timeSinceStartup;
             previewRunner.Play(state.currentTimeline, ctx);
         }

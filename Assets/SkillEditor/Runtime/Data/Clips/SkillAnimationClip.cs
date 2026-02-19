@@ -19,7 +19,7 @@ namespace SkillEditor
         [SkillProperty("目标动画层")]
         public EAnimLayer layer = EAnimLayer.Locomotion;
         [SkillProperty("目标动画遮罩")]
-        public AvatarMask avatarMask;
+        public AvatarMask overrideMask;
         [HideInInspector]
         public string clipGuid;
         [HideInInspector]

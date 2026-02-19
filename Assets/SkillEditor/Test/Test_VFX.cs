@@ -1,18 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using SkillEditor;
 using Game.MAnimSystem;
+using SkillEditor;
 using SU = SkillEditor.SerializationUtility;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using UnityEngine;
 
-/// <summary>
-/// 运行时播放测试脚本（无需 NUnit）
-/// 挂载到场景物体上运行
-/// </summary>
-public class Test_Anim : MonoBehaviour
+public class Test_VFX : MonoBehaviour
 {
     public TextAsset skillAsset; // 直接拖入 TextAsset 资源（编辑器专用）
     [Range(0f, 3.0f)]
@@ -24,8 +17,13 @@ public class Test_Anim : MonoBehaviour
     private float timer = 0f;
     public void Start()
     {
-        try
+        if(skillAsset == null)
         {
+            Debug.LogError("请在 Inspector 中拖入一个 Skill JSON 资源");
+            return;
+        }
+        // try
+        // {
             animComp = gameObject.GetComponent<AnimComponent>();
             // 1. 初始化
             if (animComp == null) animComp = gameObject.AddComponent<AnimComponent>();
@@ -33,6 +31,8 @@ public class Test_Anim : MonoBehaviour
 
             // 2. 准备上下文
             context = new ProcessContext(gameObject, SkillEditor.PlayMode.Runtime);
+            context.AddService<ISkillActor>(gameObject.name,new CharSkillActor(gameObject)); // 注入测试用 ISkillActor 实现
+            context.AddService<MonoBehaviour>("CoroutineRunner",this);
             runner = new SkillRunner(SkillEditor.PlayMode.Runtime);
 
             timeline = SU.OpenFromJson(skillAsset);
@@ -40,16 +40,16 @@ public class Test_Anim : MonoBehaviour
             // 5. 开始播放
             runner.Play(timeline, context);
             Debug.Log($"播放开始: State={runner.CurrentState}");
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError($"测试初始化失败: {ex.Message}");
-        }
+        // }
+        // catch (System.Exception ex)
+        // {
+        //     Debug.LogError($"测试初始化失败: {ex.Message}");
+        // }
     }
     void Update()
     {
-        try
-        {
+        // try
+        // {
             if (runner != null)
             {
                 context.GlobalPlaySpeed = speedMultiplier; // 动态调整全局播放速度
@@ -63,10 +63,10 @@ public class Test_Anim : MonoBehaviour
                     runner.Tick(step);
                 }
             }
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError($"测试运行时异常: {ex.Message}");
-        }
+        // }
+        // catch (System.Exception ex)
+        // {
+        //     Debug.LogError($"测试运行时异常: {ex.Message}");
+        // }
     }
 }

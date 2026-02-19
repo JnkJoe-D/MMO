@@ -38,8 +38,7 @@ namespace SkillEditor
         /// </summary>
         public object UserData { get; set; }
         public float GlobalPlaySpeed { get; set; } = 1f; // 全局播放速度控制
-        public MonoBehaviour CoroutineRunner { get; set; } // 协程运行器（用于 RuntimeVFXProcess 等）
-        public ISkillActor SkillActor { get; set; }
+        private Dictionary<Type,Dictionary<string, object>> _services = new Dictionary<Type, Dictionary<string, object>>();
         // 组件缓存
         private Dictionary<Type, Component> _componentCache = new Dictionary<Type, Component>();
         // Mask托管栈
@@ -120,7 +119,42 @@ namespace SkillEditor
             }
         }
 
+        public void AddService<T>(string insName,object ins)
+        {
+            var type = typeof(T);
+            if (!_services.TryGetValue(type, out var dict))
+            {
+                dict = new Dictionary<string, object>();
+                _services[type] = dict;
+            }
+            dict[insName] = ins;
+        }
 
+        public T GetService<T>(string insName) where T : class
+        {
+            var type = typeof(T);
+            if (_services.TryGetValue(type, out var dict))
+            {
+                if (dict.TryGetValue(insName, out var ins))
+                {
+                    return ins as T;
+                }
+            }
+            return null;
+        }
+
+        public void RemoveService<T>(string insName)
+        {
+            var type = typeof(T);
+            if (_services.TryGetValue(type, out var dict))
+            {
+                dict.Remove(insName);
+                if (dict.Count == 0)
+                {
+                    _services.Remove(type);
+                }
+            }
+        }
         /// <summary>
         /// 注册系统级清理操作（同 key 去重，后注册覆盖前注册）
         /// Process 在 OnEnable 中调用，Runner 结束时统一执行
@@ -149,6 +183,7 @@ namespace SkillEditor
         /// </summary>
         internal void Clear()
         {
+            _services.Clear();
             _componentCache.Clear();
             _layerMaskStates.Clear();
             _cleanupActions.Clear();
