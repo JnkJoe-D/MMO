@@ -269,25 +269,27 @@ namespace SkillEditor.Editor
         /// <summary>
         /// 根据轨道类型创建片段
         /// </summary>
+        /// <summary>
+        /// 根据轨道类型创建片段
+        /// </summary>
         public ClipBase CreateClipForTrack(TrackBase track)
         {
-            switch (track.trackType)
+            if (track == null) return null;
+            
+            Type clipType = TrackRegistry.GetClipType(track.GetType());
+            if (clipType != null)
             {
-                case "AnimationTrack":
-                    return new SkillAnimationClip();
-                case "VFXTrack":
-                    return new VFXClip();
-                case "AudioTrack":
-                    return new AudioClip();
-                case "DamageTrack":
-                    return new DamageClip();
-                case "MovementTrack":
-                    return new MovementClip();
-                case "CameraTrack":
-                    return new CameraClip();
-                default:
-                    return null;
+                try
+                {
+                    return (ClipBase)Activator.CreateInstance(clipType);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"[技能编辑器] 创建片段失败: {clipType.Name}, 错误: {e.Message}");
+                }
             }
+            
+            return null;
         }
 
         #endregion
@@ -297,15 +299,13 @@ namespace SkillEditor.Editor
         /// <summary>
         /// 根据片段类型获取对应的轨道类型
         /// </summary>
+        /// <summary>
+        /// 根据片段类型获取对应的轨道类型
+        /// </summary>
         public string GetTrackTypeForClip(ClipBase clip)
         {
-            if (clip is SkillAnimationClip) return "AnimationTrack";
-            if (clip is VFXClip) return "VFXTrack";
-            if (clip is AudioClip) return "AudioTrack";
-            if (clip is DamageClip) return "DamageTrack";
-            if (clip is MovementClip) return "MovementTrack";
-            if (clip is CameraClip) return "CameraTrack";
-            return "AnimationTrack";
+            if (clip == null) return null;
+            return TrackRegistry.GetTrackTypeByClipType(clip.GetType());
         }
 
         /// <summary>

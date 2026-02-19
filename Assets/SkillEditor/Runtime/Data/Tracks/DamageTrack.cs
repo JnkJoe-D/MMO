@@ -3,6 +3,7 @@ using System;
 namespace SkillEditor
 {
     [Serializable]
+    [TrackDefinition("伤害判定轨道",  typeof(DamageClip), "#E57F33", "Animation.EventMarker", 3)]
     public class DamageTrack : TrackBase
     {
         public DamageTrack()

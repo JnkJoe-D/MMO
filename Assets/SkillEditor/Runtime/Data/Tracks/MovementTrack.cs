@@ -3,6 +3,7 @@ using System;
 namespace SkillEditor
 {
     [Serializable]
+    [TrackDefinition("移动轨道",  typeof(MovementClip), "#4C7FCC", "MoveTool", 4)]
     public class MovementTrack : TrackBase
     {
         public MovementTrack()

@@ -754,23 +754,7 @@ namespace SkillEditor.Editor
         /// </summary>
         public Color GetClipColor(string trackType)
         {
-            switch (trackType)
-            {
-                case "AnimationTrack":
-                    return new Color(0.2f, 0.7f, 0.3f);
-                case "VFXTrack":
-                    return new Color(0.8f, 0.3f, 0.3f);
-                case "AudioTrack":
-                    return new Color(0.8f, 0.7f, 0.2f);
-                case "DamageTrack":
-                    return new Color(0.9f, 0.5f, 0.2f);
-                case "MovementTrack":
-                    return new Color(0.3f, 0.5f, 0.8f);
-                case "CameraTrack":
-                    return new Color(0.6f, 0.3f, 0.7f);
-                default:
-                    return Color.gray;
-            }
+            return TrackRegistry.GetTrackColor(trackType);
         }
 
         /// <summary>

@@ -70,7 +70,6 @@ namespace SkillEditor.Editor
             var name = attribute != null ? attribute.Name : ObjectNames.NicifyVariableName(field.Name);
 
             object newValue = value;
-            bool changed = false;
 
             EditorGUI.BeginChangeCheck();
 

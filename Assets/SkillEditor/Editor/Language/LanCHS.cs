@@ -23,6 +23,8 @@ namespace SkillEditor.Editor
         public static string SettingsDynamicStep = "动态自适应";
         public static string PreviewSpeedMultiplier = "预览速率";
 
+        public static string AddTrackMenuItem = "添加轨道";
+
         public static string LanguageLabel = "语言 (Language)";
 
         // Toolbar

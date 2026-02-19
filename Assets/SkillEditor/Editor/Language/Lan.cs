@@ -104,6 +104,8 @@ namespace SkillEditor.Editor
         public static string SettingsDynamicStep = "Dynamic";
         public static string PreviewSpeedMultiplier = "Preview Speed Multiplier";
 
+        public static string AddTrackMenuItem = "AddTrack";
+
         public static string LanguageLabel = "Language";
 
         // Toolbar

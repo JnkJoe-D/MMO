@@ -382,13 +382,21 @@ namespace SkillEditor.Editor
         {
             GenericMenu menu = new GenericMenu();
             
-            string subMenuAddTrack = "添加轨道/";
-            menu.AddItem(new GUIContent($"{subMenuAddTrack}动画轨道"), false, () => OnAddTrackToGroup(group, "AnimationTrack"));
-            menu.AddItem(new GUIContent($"{subMenuAddTrack}特效轨道"), false, () => OnAddTrackToGroup(group, "VFXTrack"));
-            menu.AddItem(new GUIContent($"{subMenuAddTrack}音效轨道"), false, () => OnAddTrackToGroup(group, "AudioTrack"));
-            menu.AddItem(new GUIContent($"{subMenuAddTrack}伤害判定轨道"), false, () => OnAddTrackToGroup(group, "DamageTrack"));
-            menu.AddItem(new GUIContent($"{subMenuAddTrack}移动轨道"), false, () => OnAddTrackToGroup(group, "MovementTrack"));
-            menu.AddItem(new GUIContent($"{subMenuAddTrack}摄像机轨道"), false, () => OnAddTrackToGroup(group, "CameraTrack"));
+            // 动态生成添加轨道菜单
+            var registeredTracks = TrackRegistry.GetRegisteredTracks();
+            foreach (var trackInfo in registeredTracks)
+            {
+                // 使用 MenuPath (例如 "添加轨道/动画轨道")
+                string menuPath = Lan.AddTrackMenuItem + "/" + trackInfo.Attribute.DisplayName; 
+                // if (!string.IsNullOrEmpty(trackInfo.Attribute.MenuPath))
+                // {
+                //     menuPath = trackInfo.Attribute.MenuPath;
+                // }
+                
+                // 捕获变量
+                Type type = trackInfo.TrackType;
+                menu.AddItem(new GUIContent(menuPath), false, () => OnAddTrackToGroup(group, type));
+            }
             
             menu.AddSeparator("");
             
@@ -443,13 +451,13 @@ namespace SkillEditor.Editor
         /// <summary>
         /// 添加轨道到指定分组（树状结构：直接加入 group.tracks）
         /// </summary>
-        private void OnAddTrackToGroup(Group group, string trackType)
+        private void OnAddTrackToGroup(Group group, Type trackType)
         {
             SkillTimeline timeline = state.currentTimeline;
             if (timeline == null) return;
 
             window.RecordUndo("添加轨道");
-            TrackBase newTrack = CreateTrackByType(trackType);
+            TrackBase newTrack = CreateTrack(trackType);
             if (newTrack == null) return;
             
             // 树状结构：轨道直接加入分组
@@ -463,38 +471,19 @@ namespace SkillEditor.Editor
         }
         
         /// <summary>
-        /// 根据类型创建轨道
+        /// 根据类型创建轨道实例
         /// </summary>
-        private TrackBase CreateTrackByType(string trackType)
+        private TrackBase CreateTrack(Type trackType)
         {
-            TrackBase newTrack = null;
-            
-            switch (trackType)
+            try 
             {
-                case "AnimationTrack":
-                    newTrack = new AnimationTrack();
-                    break;
-                case "VFXTrack":
-                    newTrack = new VFXTrack();
-                    break;
-                case "AudioTrack":
-                    newTrack = new AudioTrack();
-                    break;
-                case "DamageTrack":
-                    newTrack = new DamageTrack();
-                    break;
-                case "MovementTrack":
-                    newTrack = new MovementTrack();
-                    break;
-                case "CameraTrack":
-                    newTrack = new CameraTrack();
-                    break;
-                default:
-                    Debug.LogError($"[技能编辑器] 未知的轨道类型: {trackType}");
-                    return null;
+                return (TrackBase)Activator.CreateInstance(trackType);
             }
-            
-            return newTrack;
+            catch (Exception e)
+            {
+                Debug.LogError($"[技能编辑器] 创建轨道失败: {trackType.Name}, 错误: {e.Message}");
+                return null;
+            }
         }
         
         /// <summary>
@@ -896,25 +885,17 @@ namespace SkillEditor.Editor
         /// <summary>
         /// 获取轨道图标
         /// </summary>
+        /// <summary>
+        /// 获取轨道图标
+        /// </summary>
         private GUIContent GetTrackIcon(string trackType)
         {
-            switch (trackType)
+            string iconName = TrackRegistry.GetTrackIcon(trackType);
+            if (string.IsNullOrEmpty(iconName))
             {
-                case "AnimationTrack":
-                    return EditorGUIUtility.IconContent("Animation.Record");
-                case "VFXTrack":
-                    return EditorGUIUtility.IconContent("Particle Effect");
-                case "AudioTrack":
-                    return EditorGUIUtility.IconContent("AudioSource Icon");
-                case "DamageTrack":
-                    return EditorGUIUtility.IconContent("Animation.EventMarker");
-                case "MovementTrack":
-                    return EditorGUIUtility.IconContent("MoveTool");
-                case "CameraTrack":
-                    return EditorGUIUtility.IconContent("Camera Icon");
-                default:
-                    return EditorGUIUtility.IconContent("Animation.EventMarker");
+                return EditorGUIUtility.IconContent("ScriptableObject Icon");
             }
+            return EditorGUIUtility.IconContent(iconName);
         }
 
         /// <summary>
