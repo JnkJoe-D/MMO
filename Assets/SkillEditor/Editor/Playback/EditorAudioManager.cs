@@ -30,6 +30,7 @@ namespace SkillEditor.Editor
                 {
                     src.gameObject.SetActive(true);
                     active.Add(src);
+                    ResetSource(src); // 确保状态重置
                     return src;
                 }
             }
@@ -40,7 +41,9 @@ namespace SkillEditor.Editor
             go.transform.SetParent(audioRoot.transform);
             go.hideFlags = HideFlags.HideAndDontSave;
             src = go.AddComponent<AudioSource>();
+            src.playOnAwake = false;
             active.Add(src);
+            ResetSource(src);
             return src;
         }
 
@@ -51,12 +54,22 @@ namespace SkillEditor.Editor
         {
             if (src == null) return;
 
-            src.Stop();
+            if (src.isPlaying) src.Stop();
+            src.clip = null;
+            src.gameObject.SetActive(false);
+            
+            if (active.Contains(src)) active.Remove(src);
+            if (!pool.Contains(src)) pool.Enqueue(src);
+        }
+
+        private void ResetSource(AudioSource src)
+        {
             src.clip = null;
             src.volume = 1f;
-            src.gameObject.SetActive(false);
-            active.Remove(src);
-            pool.Enqueue(src);
+            src.pitch = 1f;
+            src.loop = false;
+            src.spatialBlend = 0f;
+            src.time = 0f;
         }
 
         /// <summary>

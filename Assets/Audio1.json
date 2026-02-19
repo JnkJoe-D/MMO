@@ -1,0 +1,74 @@
+{
+    "skillId": 0,
+    "skillName": "新技能",
+    "version": "1.0",
+    "duration": 0.6666666865348816,
+    "isLoop": false,
+    "groups": [
+        {
+            "groupId": "2da6e924-8692-4e61-9d5a-0e944cc4ae62",
+            "groupName": "分组 1",
+            "isCollapsed": false,
+            "isEnabled": true,
+            "isLocked": false,
+            "tracks": [
+                {
+                    "rid": 1000
+                }
+            ]
+        }
+    ],
+    "references": {
+        "version": 2,
+        "RefIds": [
+            {
+                "rid": 1000,
+                "type": {
+                    "class": "AudioTrack",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "trackId": "ee9a2854-f1e0-4e97-82fd-cf4be5e55d38",
+                    "trackType": "AudioTrack",
+                    "trackName": "音效轨道",
+                    "isMuted": false,
+                    "isLocked": false,
+                    "isHidden": false,
+                    "isCollapsed": false,
+                    "isEnabled": true,
+                    "clips": [
+                        {
+                            "rid": 1001
+                        }
+                    ]
+                }
+            },
+            {
+                "rid": 1001,
+                "type": {
+                    "class": "AudioClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "clipId": "bacf68d7-12fa-4648-9ded-fc2b2168bd3b",
+                    "clipName": "音效轨道片段",
+                    "isEnabled": true,
+                    "startTime": 0.0,
+                    "duration": 0.6666666865348816,
+                    "blendInDuration": 0.0,
+                    "blendOutDuration": 0.0,
+                    "audioClip": {
+                        "instanceID": 40444
+                    },
+                    "volume": 6.940000057220459,
+                    "pitch": 1.0,
+                    "loop": false,
+                    "spatialBlend": 0.0,
+                    "clipGuid": "0dfff3759086b8a4eadd1b6180927f48"
+                }
+            }
+        ]
+    }
+}

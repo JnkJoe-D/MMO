@@ -132,8 +132,8 @@ namespace SkillEditor
                     }
                 }
             }
-            // 至少保持 1秒或者现在的 maxTime
-            duration = Mathf.Max(1.0f, maxTime); 
+            // 至少保持 .1秒或者现在的 maxTime
+            duration = Mathf.Max(0.1f, maxTime); 
         }
 
         #endregion

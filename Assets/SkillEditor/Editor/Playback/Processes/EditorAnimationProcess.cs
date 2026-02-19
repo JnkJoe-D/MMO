@@ -36,11 +36,8 @@ namespace SkillEditor.Editor
 
         public override void OnUpdate(float currentTime, float deltaTime)
         {
-            // 仅控制播放状态和速度
-            animHandler?.SetLayerSpeed((int)clip.layer, clip.playbackSpeed * context.GlobalPlaySpeed); // 叠加全局播放速度
-            // 编辑器预览：手动 Sample（如果需要）
-            // 注意：AnimComponent 目前由 update 驱动，这里其实不需要每帧 manual update，
-            // 除非我们在 Seek 模式下。
+            // 仅控制播放状态
+            // 编辑器预览：手动 Sample
             animHandler?.Evaluate(currentTime-clip.startTime);
             // 手动驱动层逻辑（如权重 Fade），确保 Mixer 输入权重正确
             animHandler?.ManualUpdate(deltaTime);

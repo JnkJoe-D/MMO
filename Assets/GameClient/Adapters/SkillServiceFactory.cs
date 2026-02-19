@@ -42,6 +42,12 @@ namespace Game.Adapters
                  return new CharSkillActor(_owner);
             }
 
+            //4. 音频管理服务
+            if(serviceType == typeof(ISkillAudioHandler))
+            {
+                return _owner.AddComponent<GameSkillAudioHandler>();
+            }
+
             return null;
         }
     }
