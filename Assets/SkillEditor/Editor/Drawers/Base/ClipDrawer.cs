@@ -10,6 +10,11 @@ namespace SkillEditor.Editor
         {
             base.DrawInspector(clip);
         }
+
+        public virtual void DrawSceneGUI(ClipBase clip, SkillEditorState state)
+        {
+            // 供子类重写，用于在 Scene 窗口绘制辅助图形 (Gizmos/Handles)
+        }
     }
     
     public static class ClipDrawerFactory

@@ -115,7 +115,7 @@ namespace SkillEditor.Editor
             // 自定义骨骼名仅在 bindPoint == CustomBone 时显示
             if (field.Name == "customBoneName")
             {
-                if (obj is VFXClip vfx && vfx.bindPoint != VFXBindPoint.CustomBone)
+                if (obj is VFXClip vfx && vfx.bindPoint != BindPoint.CustomBone)
                 {
                     return false;
                 }

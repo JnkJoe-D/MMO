@@ -102,6 +102,7 @@ namespace SkillEditor.Editor
         public static string SettingsSnapEnabledLabel = "Enable Magnetic Snap";
         public static string SettingsSnapIntervalLabel = "Current Snap Interval: ";
         public static string SettingsDynamicStep = "Dynamic";
+        public static string SettingsDefaultPreviewTargetLabel = "Default Preview Target";
         public static string PreviewSpeedMultiplier = "Preview Speed Multiplier";
 
         public static string AddTrackMenuItem = "AddTrack";

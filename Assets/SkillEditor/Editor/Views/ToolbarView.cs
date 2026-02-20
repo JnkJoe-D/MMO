@@ -224,14 +224,23 @@ namespace SkillEditor.Editor
         private void DrawPreviewTargetSelector()
         {
             EditorGUILayout.LabelField(Lan.PreviewTarget, EditorStyles.miniLabel, GUILayout.Width(60));
+            
+            EditorGUI.BeginChangeCheck();
             state.previewTarget = (GameObject)EditorGUILayout.ObjectField(
                 state.previewTarget, typeof(GameObject), true, GUILayout.Width(120));
+            
+            if (EditorGUI.EndChangeCheck())
+            {
+                // 当目标改变时，强制重建上下文，供 Drawer 静态预览使用
+                window.InitPreview();
+                SceneView.RepaintAll();
+            }
         }
 
         /// <summary>
         /// 从 Editor/Resources 加载默认角色并实例化到场景
         /// </summary>
-        private void CreateDefaultPreviewCharacter()
+        public void CreateDefaultPreviewCharacter()
         {
             GameObject target = GameObject.Find("DefaultPreviewCharacter");
             if(target!=null)
@@ -240,7 +249,7 @@ namespace SkillEditor.Editor
                 return;
             }
             target = AssetDatabase.LoadAssetAtPath<GameObject>(
-                    "Assets/SkillEditor/Editor/Resources/DefaultPreviewCharacter.prefab");
+                    state.DefaultPreviewCharacterPath);
             if (target != null)
             {
                 state.previewTarget = Object.Instantiate(target);
@@ -248,7 +257,7 @@ namespace SkillEditor.Editor
             }
             else
             {
-                Debug.LogWarning("[SkillEditor] 默认预览角色 Prefab 未找到: Assets/SkillEditor/Editor/Resources/DefaultPreviewCharacter.prefab");
+                Debug.LogWarning($"[SkillEditor] 默认预览角色 Prefab 未找到: {state.DefaultPreviewCharacterPath}");
             }
         }
 

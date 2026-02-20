@@ -82,6 +82,7 @@ namespace SkillEditor
 
         private PlayMode playMode;
         private ProcessContext context;
+        public ProcessContext Context => context;
         private List<ProcessInstance> processes = new List<ProcessInstance>();
 
         /// <summary>
@@ -100,6 +101,14 @@ namespace SkillEditor
         public SkillRunner(PlayMode mode)
         {
             playMode = mode;
+        }
+
+        /// <summary>
+        /// 预热 Context（供编辑器静态预览等非播放状态使用）
+        /// </summary>
+        public void PrewarmContext(ProcessContext initialContext)
+        {
+            this.context = initialContext;
         }
 
         // ─── 播放控制 ───

@@ -103,6 +103,9 @@ namespace SkillEditor.Editor
             if (drawer != null)
             {
                 drawer.UndoContext = (trackObj.timeline != null) ? new Object[] { trackObj, trackObj.timeline } : new Object[] { trackObj };
+                drawer.OnInspectorChanged += () => {
+                    SceneView.RepaintAll();
+                };
                 drawer.DrawInspector(track);
             }
             else
@@ -145,6 +148,9 @@ namespace SkillEditor.Editor
             if (drawer != null)
             {
                 drawer.UndoContext = (clipObj.timeline != null) ? new Object[] { clipObj, clipObj.timeline } : new Object[] { clipObj };
+                drawer.OnInspectorChanged += () => {
+                    SceneView.RepaintAll();
+                };
                 drawer.DrawInspector(clip);
             }
             else

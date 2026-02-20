@@ -15,7 +15,7 @@ namespace SkillEditor
 
         [Header("挂点设置")]
         [SkillProperty("挂载位置")]
-        public VFXBindPoint bindPoint = VFXBindPoint.Root;
+        public BindPoint bindPoint = BindPoint.Root;
 
         [SkillProperty("自定义骨骼名")]
         public string customBoneName;
@@ -45,7 +45,7 @@ namespace SkillEditor
             clipName = "VFX Clip";
             duration = 1.0f;
             scale = Vector3.one;
-            bindPoint = VFXBindPoint.Root;
+            bindPoint = BindPoint.Root;
             destroyOnEnd = true;
             followTarget = true;
         }

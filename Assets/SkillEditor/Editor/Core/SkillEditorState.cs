@@ -77,7 +77,14 @@ namespace SkillEditor.Editor
         private const string PREF_SNAP_ENABLED = "SkillEditor_SnapEnabled";
         private const string PREF_FRAME_RATE = "SkillEditor_FrameRate";
         private const string PREF_TIME_STEP_MODE = "SkillEditor_TimeStepMode";
+        private const string PREF_DEFAULT_PREVIEW_TARGET = "SkillEditor_DefaultPreviewTarget";
         
+        public string DefaultPreviewCharacterPath
+        {
+            get => UnityEditor.EditorPrefs.GetString(PREF_DEFAULT_PREVIEW_TARGET, "Assets/SkillEditor/Editor/Resources/DefaultPreviewCharacter.prefab");
+            set => UnityEditor.EditorPrefs.SetString(PREF_DEFAULT_PREVIEW_TARGET, value);
+        }
+
         public string Language
         {
             get => Lan.CurrentLanguage;
@@ -129,6 +136,16 @@ namespace SkillEditor.Editor
 
         // 预览角色
         public GameObject previewTarget;
+
+        /// <summary>
+        /// 绑定的预览播放器实例（由 Window 注入，供 Drawer 获取上下文）
+        /// </summary>
+        public SkillRunner previewRunner;
+
+        /// <summary>
+        /// 获取当前的 ProcessContext（用于 Drawer 请求底层服务）
+        /// </summary>
+        public ProcessContext PreviewContext => previewRunner?.Context;
 
         // 选中项状态
         public Group selectedGroup;

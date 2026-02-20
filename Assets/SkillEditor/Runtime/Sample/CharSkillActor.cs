@@ -11,25 +11,25 @@ public class CharSkillActor : ISkillActor
         this.owner = owner;
     }
 
-    public Transform GetBone(VFXBindPoint point, string customName = "")
+    public Transform GetBone(BindPoint point, string customName = "")
     {
         var animator = owner.GetComponent<Animator>();
         // 例如：
         switch (point)
         {
-            case VFXBindPoint.Root:
+            case BindPoint.Root:
                 return owner.transform;
-            case VFXBindPoint.Body:
+            case BindPoint.Body:
                 return animator != null ? animator.GetBoneTransform(HumanBodyBones.Spine) : owner.transform; // 优先获取 Spine 作为身体中心
-            case VFXBindPoint.Head:
+            case BindPoint.Head:
                 return animator != null ? animator.GetBoneTransform(HumanBodyBones.Head) : owner.transform; // 优先获取 Head
-            case VFXBindPoint.LeftHand:
+            case BindPoint.LeftHand:
                 return animator != null ? animator.GetBoneTransform(HumanBodyBones.LeftHand) : owner.transform; // 优先获取 LeftHand
-            case VFXBindPoint.RightHand:
+            case BindPoint.RightHand:
                 return animator != null ? animator.GetBoneTransform(HumanBodyBones.RightHand) : owner.transform; // 优先获取 RightHand
-            case VFXBindPoint.WeaponLeft:
+            case BindPoint.WeaponLeft:
                 return owner.transform.Find("WeaponLeftHolder"); 
-            case VFXBindPoint.WeaponRight:
+            case BindPoint.WeaponRight:
                 return owner.transform.Find("WeaponRightHolder");
             default:
                 return owner.transform; // 默认返回根节点

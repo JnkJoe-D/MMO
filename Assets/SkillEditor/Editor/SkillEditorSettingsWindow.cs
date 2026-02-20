@@ -62,6 +62,21 @@ namespace SkillEditor.Editor
             GUILayout.Label(Lan.PreviewSpeedMultiplier, EditorStyles.boldLabel);
             _state.previewSpeedMultiplier = EditorGUILayout.Slider(_state.previewSpeedMultiplier, 0.1f, 3f);
 
+            EditorGUILayout.Space();
+            GUILayout.Label(Lan.SettingsDefaultPreviewTargetLabel, EditorStyles.boldLabel);
+            EditorGUI.BeginChangeCheck();
+            GameObject currentPrefab = null;
+            if (!string.IsNullOrEmpty(_state.DefaultPreviewCharacterPath))
+            {
+                currentPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(_state.DefaultPreviewCharacterPath);
+            }
+            GameObject newPrefab = (GameObject)EditorGUILayout.ObjectField(currentPrefab, typeof(GameObject), false);
+            if (EditorGUI.EndChangeCheck())
+            {
+                _state.DefaultPreviewCharacterPath = newPrefab != null ? AssetDatabase.GetAssetPath(newPrefab) : "";
+                _onSettingsChanged?.Invoke();
+            }
+
             // Language Selection
             EditorGUI.BeginChangeCheck();
 

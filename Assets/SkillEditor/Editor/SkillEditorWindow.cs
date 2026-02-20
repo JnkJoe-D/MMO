@@ -78,8 +78,17 @@ namespace SkillEditor.Editor
             // 初始化轨道ID
             InitializeTrackIds();
 
-            // 初始化预览播放器
+            // 如果没有预览目标，自动加载默认目标
+            if (state.previewTarget == null)
+            {
+                toolbarView.CreateDefaultPreviewCharacter();
+            }
+
+            // 初始化预览播放器 (如果在上面赋予了新的 previewTarget，这里会被正确注入)
             InitPreview();
+
+            // 注册 SceneView 绘制
+            SceneView.duringSceneGui += OnSceneGUI;
         }
 
         private void OnDisable()
@@ -106,6 +115,9 @@ namespace SkillEditor.Editor
 
             // 释放预览系统
             DisposePreview();
+
+            // 注销 SceneView 绘制
+            SceneView.duringSceneGui -= OnSceneGUI;
         }
 
         private void OnUndoRedo()
@@ -235,6 +247,7 @@ namespace SkillEditor.Editor
                 }
 
                 Repaint();
+                SceneView.RepaintAll();
             }
             else
             {
@@ -504,6 +517,21 @@ namespace SkillEditor.Editor
                 if (Selection.activeObject is ClipObject || Selection.activeObject is TrackObject || Selection.activeObject is GroupObject)
                 {
                     Selection.activeObject = null;
+                }
+            }
+        }
+
+        private void OnSceneGUI(SceneView sceneView)
+        {
+            if (state == null) return;
+
+            if (state.selectedClips.Count > 0)
+            {
+                var clip = state.selectedClips[0];
+                if (clip != null)
+                {
+                    var drawer = ClipDrawerFactory.CreateDrawer(clip);
+                    drawer?.DrawSceneGUI(clip, state);
                 }
             }
         }

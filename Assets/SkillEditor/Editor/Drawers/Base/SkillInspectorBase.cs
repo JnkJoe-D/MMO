@@ -15,6 +15,11 @@ namespace SkillEditor.Editor
     {
         public Object[] UndoContext { get; set; }
 
+        /// <summary>
+        /// 值发生改变时触发
+        /// </summary>
+        public event System.Action OnInspectorChanged;
+
         public virtual void DrawInspector(object target)
         {
             if (target == null) return;
@@ -132,10 +137,72 @@ namespace SkillEditor.Editor
             {
                 newValue = EditorGUILayout.EnumPopup(name, (Enum)value);
             }
-            // 简单的 List 支持
+            else if (value is HitBoxShape shape)
+            {
+                EditorGUILayout.LabelField(name, EditorStyles.boldLabel);
+                EditorGUI.indentLevel++;
+                
+                shape.shapeType = (HitBoxType)EditorGUILayout.EnumPopup("形状类型", shape.shapeType);
+                if (shape.shapeType == HitBoxType.Box)
+                {
+                    shape.size = EditorGUILayout.Vector3Field("尺寸 (Box)", shape.size);
+                }
+                if (shape.shapeType == HitBoxType.Sphere || shape.shapeType == HitBoxType.Capsule || shape.shapeType == HitBoxType.Sector || shape.shapeType == HitBoxType.Ring)
+                {
+                    shape.radius = EditorGUILayout.FloatField("半径", shape.radius);
+                }
+                if (shape.shapeType == HitBoxType.Capsule || shape.shapeType == HitBoxType.Ring || shape.shapeType == HitBoxType.Sector)
+                {
+                    shape.height = EditorGUILayout.FloatField("高度", shape.height);
+                }
+                if (shape.shapeType == HitBoxType.Sector)
+                {
+                    shape.angle = EditorGUILayout.Slider("角度", shape.angle, 0f, 360f);
+                }
+                if (shape.shapeType == HitBoxType.Ring)
+                {
+                    shape.innerRadius = EditorGUILayout.FloatField("内半径", shape.innerRadius);
+                }
+                EditorGUI.indentLevel--;
+                newValue = shape;
+            }
+            else if (value is List<SkillEventParam> paramList)
+            {
+                EditorGUILayout.BeginVertical("box");
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(name, EditorStyles.boldLabel);
+                if (GUILayout.Button("+", GUILayout.Width(20)))
+                {
+                    paramList.Add(new SkillEventParam());
+                    GUI.FocusControl(null);
+                }
+                EditorGUILayout.EndHorizontal();
+
+                for (int i = 0; i < paramList.Count; i++)
+                {
+                    var p = paramList[i];
+                    EditorGUILayout.BeginVertical("helpbox");
+                    EditorGUILayout.BeginHorizontal();
+                    p.key = EditorGUILayout.TextField("参数名", p.key);
+                    if (GUILayout.Button("X", GUILayout.Width(20)))
+                    {
+                        paramList.RemoveAt(i);
+                        GUI.FocusControl(null);
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.EndVertical();
+                        break;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    p.stringValue = EditorGUILayout.TextField("字符串", p.stringValue);
+                    p.floatValue = EditorGUILayout.FloatField("浮点数", p.floatValue);
+                    p.intValue = EditorGUILayout.IntField("整数", p.intValue);
+                    EditorGUILayout.EndVertical();
+                }
+                EditorGUILayout.EndVertical();
+                newValue = paramList;
+            }
             else if (typeof(IList).IsAssignableFrom(fieldType))
             {
-                // 暂不实现复杂 ListView，Clip 数据通常不包含复杂 List
                 EditorGUILayout.LabelField(name, "List (Not Implemented in Base)");
             }
             else
@@ -150,6 +217,7 @@ namespace SkillEditor.Editor
                     Undo.RecordObjects(UndoContext, "Inspector Change: " + name);
                 }
                 field.SetValue(obj, newValue);
+                OnInspectorChanged?.Invoke();
             }
         }
     }

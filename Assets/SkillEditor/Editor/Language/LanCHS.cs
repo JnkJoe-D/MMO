@@ -21,6 +21,7 @@ namespace SkillEditor.Editor
         public static string SettingsSnapEnabledLabel = "开启磁性吸附";
         public static string SettingsSnapIntervalLabel = "当前吸附间隔: ";
         public static string SettingsDynamicStep = "动态自适应";
+        public static string SettingsDefaultPreviewTargetLabel = "默认预览角色预制体";
         public static string PreviewSpeedMultiplier = "预览速率";
 
         public static string AddTrackMenuItem = "添加轨道";

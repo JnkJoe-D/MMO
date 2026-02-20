@@ -111,15 +111,15 @@ namespace SkillEditor.Editor
             return context.OwnerTransform;
         }
 
-        private Transform GetHumanBone(Animator animator, VFXBindPoint point)
+        private Transform GetHumanBone(Animator animator, BindPoint point)
         {
             switch (point)
             {
-                case VFXBindPoint.Head: return animator.GetBoneTransform(HumanBodyBones.Head);
-                case VFXBindPoint.LeftHand: return animator.GetBoneTransform(HumanBodyBones.LeftHand);
-                case VFXBindPoint.RightHand: return animator.GetBoneTransform(HumanBodyBones.RightHand);
-                case VFXBindPoint.Body: return animator.GetBoneTransform(HumanBodyBones.Spine); // or Hips
-                case VFXBindPoint.Root: return animator.transform;
+                case BindPoint.Head: return animator.GetBoneTransform(HumanBodyBones.Head);
+                case BindPoint.LeftHand: return animator.GetBoneTransform(HumanBodyBones.LeftHand);
+                case BindPoint.RightHand: return animator.GetBoneTransform(HumanBodyBones.RightHand);
+                case BindPoint.Body: return animator.GetBoneTransform(HumanBodyBones.Spine); // or Hips
+                case BindPoint.Root: return animator.transform;
                 // Weapon 无法直接从 Animator 获取，需自行约定或降级
                 default: return null;
             }

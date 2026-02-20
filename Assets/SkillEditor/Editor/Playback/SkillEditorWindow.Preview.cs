@@ -25,11 +25,21 @@ namespace SkillEditor.Editor
         public bool IsPlaying => previewRunner != null && previewRunner.CurrentState == SkillRunner.State.Playing;
 
         /// <summary>
-        /// 初始化预览系统（在 OnEnable 中调用）
+        /// 初始化预览系统（在 OnEnable 和 previewTarget 变更时调用）
         /// </summary>
-        private void InitPreview()
+        public void InitPreview()
         {
             previewRunner = new SkillRunner(PlayMode.EditorPreview);
+            if (state != null)
+            {
+                state.previewRunner = previewRunner;
+                if (state.previewTarget != null)
+                {
+                    var factory = new SkillServiceFactory(state.previewTarget);
+                    var ctx = new ProcessContext(state.previewTarget, PlayMode.EditorPreview, factory);
+                    previewRunner.PrewarmContext(ctx);
+                }
+            }
         }
 
         /// <summary>
@@ -241,6 +251,7 @@ namespace SkillEditor.Editor
             Debug.Log($"[SkillEditorWindow] SeekPreview finished. RunnerTime={previewRunner?.CurrentTime}, Indicator={state.timeIndicator}");
             // Seek 后确保不是 Stopped 状态，使红线可见
             state.isStopped = false;
+            SceneView.RepaintAll();
         }
 
         /// <summary>
@@ -284,6 +295,15 @@ namespace SkillEditor.Editor
 
             // 同步 Runner 的时间到 state（供 UI 时间指示器显示）
             state.timeIndicator = previewRunner.CurrentTime;
+
+            // 检查播放器是否在 Tick 之后由于到达末尾而变回 Idle 状态
+            if (previewRunner.CurrentState == SkillRunner.State.Idle)
+            {
+                state.isStopped = true;
+                state.timeIndicator = 0f;
+                Repaint();
+                SceneView.RepaintAll();
+            }
         }
     }
 }
