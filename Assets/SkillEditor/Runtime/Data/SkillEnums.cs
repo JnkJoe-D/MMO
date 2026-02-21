@@ -11,12 +11,7 @@ namespace SkillEditor
         Ring 
     }
 
-    public enum TargetType 
-    { 
-        Enemy, 
-        Ally, 
-        All 
-    }
+
 
     public enum HitFrequency 
     { 

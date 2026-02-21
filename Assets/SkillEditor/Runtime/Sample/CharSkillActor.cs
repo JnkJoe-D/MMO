@@ -28,9 +28,11 @@ public class CharSkillActor : ISkillActor
             case BindPoint.RightHand:
                 return animator != null ? animator.GetBoneTransform(HumanBodyBones.RightHand) : owner.transform; // 优先获取 RightHand
             case BindPoint.WeaponLeft:
-                return owner.transform.Find("WeaponLeftHolder"); 
+                return owner.transform.Find("WeaponLeftHolder")?? owner.transform; 
             case BindPoint.WeaponRight:
-                return owner.transform.Find("WeaponRightHolder");
+                return owner.transform.Find("WeaponRightHolder") ?? owner.transform;
+            case BindPoint.CustomBone:
+                return owner.transform.Find(customName) ?? owner.transform;
             default:
                 return owner.transform; // 默认返回根节点
         }

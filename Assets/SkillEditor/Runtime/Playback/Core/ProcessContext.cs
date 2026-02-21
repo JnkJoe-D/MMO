@@ -38,6 +38,12 @@ namespace SkillEditor
         public object UserData { get; set; }
         public float GlobalPlaySpeed { get; set; } = 1f; // 全局播放速度控制
         
+        /// <summary>
+        /// 标识当前的执行上下文是否正处于被打断清理状态
+        /// 供 Process 在 OnExit 时判断是自然结束还是被强制终止
+        /// </summary>
+        public bool IsInterrupted { get; set; } = false;
+        
         // 单层字典，Key 为服务接口类型
         private Dictionary<Type, object> _services = new Dictionary<Type, object>();
         private IServiceFactory _serviceFactory; // 服务工厂（懒加载）

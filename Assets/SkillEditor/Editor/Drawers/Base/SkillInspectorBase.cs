@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
+using SkillEditor;
 using Object = UnityEngine.Object;
 
 namespace SkillEditor.Editor
@@ -137,6 +139,13 @@ namespace SkillEditor.Editor
             {
                 newValue = EditorGUILayout.EnumPopup(name, (Enum)value);
             }
+            else if (fieldType == typeof(LayerMask))
+            {
+                // unity's built in LayerMask extension for EditorGUILayout
+                LayerMask tempMask = (LayerMask)value;
+                int maskField = EditorGUILayout.MaskField(name, InternalEditorUtility.LayerMaskToConcatenatedLayersMask(tempMask), InternalEditorUtility.layers);
+                newValue = InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(maskField);
+            }
             else if (value is HitBoxShape shape)
             {
                 EditorGUILayout.LabelField(name, EditorStyles.boldLabel);
@@ -200,6 +209,84 @@ namespace SkillEditor.Editor
                 }
                 EditorGUILayout.EndVertical();
                 newValue = paramList;
+            }
+            else if (fieldType == typeof(string[]))
+            {
+                var stringArray = (string[])value;
+                if (stringArray == null) stringArray = new string[0];
+
+                // 尝试搜寻本地配置
+                string[] availableTagsArray = null;
+                var guids = AssetDatabase.FindAssets("t:SkillTagConfig");
+                if (guids.Length > 0)
+                {
+                    var config = AssetDatabase.LoadAssetAtPath<global::SkillEditor.SkillTagConfig>(AssetDatabase.GUIDToAssetPath(guids[0]));
+                    if (config != null && config.availableTags != null)
+                    {
+                        availableTagsArray = config.availableTags.ToArray();
+                    }
+                }
+
+                EditorGUILayout.BeginVertical("box");
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(name, EditorStyles.boldLabel);
+                
+                // 没找到配置库警告
+                if (availableTagsArray == null || availableTagsArray.Length == 0)
+                {
+                    EditorGUILayout.HelpBox("未找到 SkillTagConfig 资产！", MessageType.Warning);
+                }
+
+                if (GUILayout.Button("+", GUILayout.Width(20)))
+                {
+                    Array.Resize(ref stringArray, stringArray.Length + 1);
+                    stringArray[stringArray.Length - 1] = (availableTagsArray != null && availableTagsArray.Length > 0) ? availableTagsArray[0] : "";
+                    GUI.FocusControl(null);
+                }
+                EditorGUILayout.EndHorizontal();
+
+                for (int i = 0; i < stringArray.Length; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+
+                    string currentVal = stringArray[i];
+
+                    if (availableTagsArray != null && availableTagsArray.Length > 0)
+                    {
+                        int currentIndex = Array.IndexOf(availableTagsArray, currentVal);
+
+                        if (currentIndex == -1) // 词库丢失或非法值
+                        {
+                            var oldColor = GUI.color;
+                            GUI.color = Color.red;
+                            stringArray[i] = EditorGUILayout.TextField($"[已丢失] {currentVal}");
+                            GUI.color = oldColor;
+                        }
+                        else
+                        {
+                            int newIndex = EditorGUILayout.Popup(currentIndex, availableTagsArray);
+                            stringArray[i] = availableTagsArray[newIndex];
+                        }
+                    }
+                    else
+                    {
+                        // 兜底方案：如果没有预设库，退化为文本框
+                        stringArray[i] = EditorGUILayout.TextField(stringArray[i]);
+                    }
+
+                    if (GUILayout.Button("X", GUILayout.Width(20)))
+                    {
+                        var list = new List<string>(stringArray);
+                        list.RemoveAt(i);
+                        stringArray = list.ToArray();
+                        GUI.FocusControl(null);
+                        EditorGUILayout.EndHorizontal();
+                        break;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.EndVertical();
+                newValue = stringArray;
             }
             else if (typeof(IList).IsAssignableFrom(fieldType))
             {

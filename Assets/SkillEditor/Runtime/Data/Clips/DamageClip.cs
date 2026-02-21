@@ -4,14 +4,14 @@ using UnityEngine;
 namespace SkillEditor
 {
     [Serializable]
-    public class DamageClip : ClipBase
+    public class DamageClip : ClipBase, ISerializationCallbackReceiver
     {
         [Header("Detection Strategy")]
         [SkillProperty("事件标签 (EventTag)")]
         public string eventTag = "Hit_Default";
 
-        [SkillProperty("目标类型")]
-        public TargetType targetType = TargetType.Enemy;
+        [SkillProperty("目标标签")]
+        public string[] targetTags = new string[0]; // 例如: ["Enemy", "Heal"]
 
         [SkillProperty("命中频率")]
         public HitFrequency hitFrequency = HitFrequency.Once;
@@ -24,6 +24,13 @@ namespace SkillEditor
 
         [SkillProperty("选择策略")]
         public TargetSortMode targetSortMode = TargetSortMode.Closest;
+
+        [Header("Physics Config")]
+        [SkillProperty("碰撞检测层级 (LayerMask)")]
+        public LayerMask hitLayerMask = -1; // 默认 everything
+
+        [SerializeField, HideInInspector]
+        private int serializedHitLayerMask = -1;
 
         [Header("Shape Config")]
         public HitBoxShape shape = new HitBoxShape();
@@ -58,11 +65,12 @@ namespace SkillEditor
                 isEnabled = this.isEnabled,
                 
                 eventTag = this.eventTag,
-                targetType = this.targetType,
+                targetTags = (this.targetTags != null) ? (string[])this.targetTags.Clone() : new string[0],
                 hitFrequency = this.hitFrequency,
                 checkInterval = this.checkInterval,
                 maxHitTargets = this.maxHitTargets,
                 targetSortMode = this.targetSortMode,
+                hitLayerMask = this.hitLayerMask,
 
                 shape = this.shape.Clone(),
 
@@ -71,6 +79,16 @@ namespace SkillEditor
                 positionOffset = this.positionOffset,
                 rotationOffset = this.rotationOffset
             };
+        }
+
+        public void OnBeforeSerialize()
+        {
+            serializedHitLayerMask = hitLayerMask.value;
+        }
+
+        public void OnAfterDeserialize()
+        {
+            hitLayerMask.value = serializedHitLayerMask;
         }
     }
 }

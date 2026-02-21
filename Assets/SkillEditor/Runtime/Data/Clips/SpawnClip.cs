@@ -32,9 +32,6 @@ namespace SkillEditor
         [SkillProperty("出生后是否脱离父节点")]
         public bool detach = true;
 
-        [SkillProperty("初始速度")]
-        public Vector3 initialVelocity = Vector3.zero;
-
         public SpawnClip()
         {
             clipName = "Spawn Clip";
@@ -59,8 +56,7 @@ namespace SkillEditor
                 customBoneName = this.customBoneName,
                 positionOffset = this.positionOffset,
                 rotationOffset = this.rotationOffset,
-                detach = this.detach,
-                initialVelocity = this.initialVelocity
+                detach = this.detach
             };
         }
     }

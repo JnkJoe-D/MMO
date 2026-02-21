@@ -6,7 +6,7 @@ namespace SkillEditor
     public class RuntimeSpawnProcess : ProcessBase<SpawnClip>
     {
         private ISkillSpawnHandler spawnHandler;
-        private GameObject spawnedInstance;
+        private ISkillProjectile spawnedProjectile;
 
         public override void OnEnable()
         {
@@ -19,34 +19,35 @@ namespace SkillEditor
 
             GetMatrix(out Vector3 pos, out Quaternion rot, out Transform parent);
 
-            spawnedInstance = spawnHandler.SpawnObject(
+            spawnedProjectile = spawnHandler.SpawnObject(
                 clip.prefab, 
                 pos, 
                 rot, 
                 clip.eventTag, 
-                clip.initialVelocity, 
                 clip.detach,
                 clip.detach ? null : parent
             );
+            
+            // 下发上下文初始化信息给业务端
+            spawnedProjectile?.Initialize(clip.eventTag, pos, rot, context);
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)
         {
-            // Do nothing on update for spawn
+            // SpawnProcess 作为纯种的"产出器"，在这里不负责强行接管投射物的位移
+            // 实体投射物的运动应该由生成的实体自身(或被注入的组件如Rigidbody/Dotween/ProjectileController)完全接管
         }
 
         public override void OnExit()
         {
-            // 如果技能被打断，且要求打断时销毁
-            // 简单判定打断的方法：判断父物体是否已失活或主动抛出打断事件（根据业务补充）
-            if (clip.destroyOnInterrupt && spawnedInstance != null)
+            // 如果技能被打断，且要求打断时连带销毁产生物
+            // 依赖于 SkillRunner 触发的 InterruptInternal 和 IsInterrupted 标记
+            if (clip.destroyOnInterrupt && spawnedProjectile != null && context != null && context.IsInterrupted)
             {
-                // 判断是否是正常结束
-                // Todo: Check if naturally finished. This needs proper context.IsInterrupted info.
-                // 暂时注释，待外部注入断言。
-                // spawnHandler?.DestroySpawnedObject(spawnedInstance);
+                spawnedProjectile.Terminate();
+                spawnHandler?.DestroySpawnedObject(spawnedProjectile);
             }
-            spawnedInstance = null;
+            spawnedProjectile = null;
         }
 
         private void GetMatrix(out Vector3 pos, out Quaternion rot, out Transform parent)
@@ -74,7 +75,7 @@ namespace SkillEditor
         {
             base.Reset();
             spawnHandler = null;
-            spawnedInstance = null;
+            spawnedProjectile = null;
         }
     }
 }

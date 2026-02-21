@@ -125,6 +125,7 @@ namespace SkillEditor
 
             this.Timeline = timeline;
             this.context = context;
+            this.context.IsInterrupted = false; // 重置打断状态
             CurrentTime = 0f;
             CurrentState = State.Playing;
 
@@ -281,6 +282,10 @@ namespace SkillEditor
         /// </summary>
         private void InterruptInternal()
         {
+            if (context != null)
+            {
+                context.IsInterrupted = true;
+            }
             OnInterrupt?.Invoke();
             FullCleanup();
             ClearEvents();

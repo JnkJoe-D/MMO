@@ -14,6 +14,14 @@ namespace SkillEditor
         /// <param name="targets">命中的碰撞体数组</param>
         /// <param name="eventTag">配置在 Timeline 上的技能标识（用于查表）</param>
         /// <param name="clipData">触发检测的 Clip 完整数据，可用于获取更多上下文</param>
-        void OnDamageDetect(Collider[] targets, string eventTag, DamageClip clipData);
+        /// <param name="actionTags">目标筛选，执行不同的技能效果</param>
+        void OnDamageDetect(DamageData damageData);
+    }
+    public struct DamageData
+    {
+        public GameObject deployer;
+        public Collider[] targets;
+        public string eventTag;
+        public string[] actionTags;
     }
 }

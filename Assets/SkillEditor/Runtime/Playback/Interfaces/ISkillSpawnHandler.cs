@@ -14,17 +14,16 @@ namespace SkillEditor
         /// <param name="prefab">待生成的预制体</param>
         /// <param name="position">计算后的初始世界坐标</param>
         /// <param name="rotation">计算后的初始世界旋转</param>
-        /// <param name="eventTag">配置在 Timeline 上的技能标识（如传递给投射物的伤害ID）</param>
-        /// <param name="initialVelocity">配置的初速度</param>
-        /// <param name="detach">是否脱离父节点</param>
+        /// <param name="eventTag">配置在 Timeline 上的技能标识（如传递给投射物的参数包ID）</param>
+        /// <param name="detach">是否脱离父节点挂载到世界根节点</param>
         /// <param name="parent">可选的父节点。如果不脱离，则挂载于此</param>
-        /// <returns>生成的 GameObject 实例，可用于控制生命周期</returns>
-        GameObject SpawnObject(GameObject prefab, Vector3 position, Quaternion rotation, string eventTag, Vector3 initialVelocity, bool detach, Transform parent);
+        /// <returns>生成的投射物逻辑控制接口，可用于被强行打断时回收</returns>
+        ISkillProjectile SpawnObject(GameObject prefab, Vector3 position, Quaternion rotation, string eventTag, bool detach, Transform parent);
         
         /// <summary>
         /// 技能提早或意外中断时，请求销毁相关的生成物
         /// </summary>
-        /// <param name="spawnedObject">之前生成的实例</param>
-        void DestroySpawnedObject(GameObject spawnedObject);
+        /// <param name="projectile">之前生成的实例接口</param>
+        void DestroySpawnedObject(ISkillProjectile projectile);
     }
 }

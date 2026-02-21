@@ -55,8 +55,8 @@ namespace SkillEditor
 
             var shape = clip.shape;
             
-            // 简化：这里取物理系统默认检测层，实际项目应根据 TargetType 转 LayerMask
-            int layerMask = Physics.DefaultRaycastLayers;
+            // 使用用户配置的 LayerMask
+            int layerMask = clip.hitLayerMask.value;
 
             Collider[] hits = null;
 
@@ -166,7 +166,15 @@ namespace SkillEditor
                     hitRecords[h] = Time.time;
                 }
                 currentHitCount += validHits.Count;
-                damageHandler.OnDamageDetect(validHits.ToArray(), clip.eventTag, clip);
+                DamageData damageData = new DamageData()
+                {
+                    deployer = context.Owner,
+                    targets = validHits.ToArray(),
+                    eventTag = clip.eventTag,
+                    actionTags = clip.targetTags
+
+                };
+                damageHandler.OnDamageDetect(damageData);
             }
         }
 
