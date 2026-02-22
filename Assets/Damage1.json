@@ -60,11 +60,19 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "eventTag": "Hit_Default",
-                    "targetType": 0,
+                    "targetTags": [
+                        "Enemy"
+                    ],
                     "hitFrequency": 0,
                     "checkInterval": 0.5,
                     "maxHitTargets": 0,
                     "targetSortMode": 1,
+                    "hitLayerMask": {
+                        "serializedVersion": "2",
+                        "m_Bits": 64
+                    },
+                    "serializedHitLayerMask": 64,
+                    "isSelfImpacted": false,
                     "shape": {
                         "shapeType": 0,
                         "size": {

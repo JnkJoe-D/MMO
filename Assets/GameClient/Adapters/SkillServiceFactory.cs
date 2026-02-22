@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using SkillEditor;
 using Game.MAnimSystem;
+using Game.Pool;
 
 namespace Game.Adapters
 {
@@ -28,10 +29,6 @@ namespace Game.Adapters
             // 优先查找现有的 MonoBehaviour 组件作为 Runner
             if (serviceType == typeof(MonoBehaviour))
             {
-                // 注意：这里返回任何一个可靠的 MonoBehaviour 即可
-                // 如果 GameClient 有专门的 SkillRunnerComponent 最好，否则复用 AnimComponent 也行
-                // 为了通用性，我们尝试获取一个名为 "SkillRunner" 的组件，或者 fallback 到 AnimComponent
-                
                 var mb = _owner.GetComponent<MonoBehaviour>(); // 获取任意一个
                 return mb;
             }
@@ -48,7 +45,40 @@ namespace Game.Adapters
                 return _owner.AddComponent<GameSkillAudioHandler>();
             }
 
+            //5. 伤害处理服务
+            if(serviceType == typeof(ISkillDamageHandler))
+            {
+                return new DamageHandler();
+            }
+
+            // 6. VFX 对象池服务
+            if (serviceType == typeof(IVFXPoolService))
+            {
+                return new VFXPoolServiceAdapter();
+            }
+
+            // 7. Spawn 服务
+            if (serviceType == typeof(ISkillSpawnHandler))
+            {
+                return new SkillSpawnHandler();
+            }
             return null;
+        }
+    }
+
+    /// <summary>
+    /// IVFXPoolService 适配器，委托给 GlobalPoolManager
+    /// </summary>
+    internal class VFXPoolServiceAdapter : IVFXPoolService
+    {
+        public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            return GlobalPoolManager.Spawn(prefab, position, rotation, parent);
+        }
+
+        public void Return(GameObject instance)
+        {
+            GlobalPoolManager.Return(instance);
         }
     }
 }

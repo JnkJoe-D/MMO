@@ -1,38 +1,38 @@
-﻿2025-11-03 18:17:02.262 [INFO] Begin to build package : DefaultPackage by BuiltinBuildPipeline
-2025-11-03 18:17:02.262 [INFO] --------------------------------------------->TaskPrepare<--------------------------------------------
-2025-11-03 18:17:02.349 [INFO] Delete package root directory: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage
-2025-11-03 18:17:02.349 [INFO] Create pipeline output directory: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache
-2025-11-03 18:17:02.349 [WARN] [ErrorCode130] Starting with UnityEngine2021, recommend use script build pipeline (SBP) !
-2025-11-03 18:17:02.349 [INFO] TaskPrepare It takes 0 seconds in total
-2025-11-03 18:17:02.349 [INFO] --------------------------------------------->TaskGetBuildMap<--------------------------------------------
-2025-11-03 18:17:06.933 [WARN] [ErrorCode201] Found undepended asset and remove it : Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/EntityArt/vehicle_enemyShip/vehicle_enemyShip_red_dff.tif
-2025-11-03 18:17:06.933 [WARN] [ErrorCode201] Found undepended asset and remove it : Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UIFont/LICENSE.txt
-2025-11-03 18:17:06.938 [INFO] TaskGetBuildMap It takes 4 seconds in total
-2025-11-03 18:17:06.938 [INFO] --------------------------------------------->TaskBuilding<--------------------------------------------
-2025-11-03 18:17:13.734 [INFO] UnityEngine build success !
-2025-11-03 18:17:13.734 [INFO] TaskBuilding It takes 6 seconds in total
-2025-11-03 18:17:13.734 [INFO] --------------------------------------------->TaskVerifyBuildResult<--------------------------------------------
-2025-11-03 18:17:13.734 [INFO] Build results verify success!
-2025-11-03 18:17:13.734 [INFO] TaskVerifyBuildResult It takes 0 seconds in total
-2025-11-03 18:17:13.739 [INFO] --------------------------------------------->TaskEncryption<--------------------------------------------
-2025-11-03 18:17:13.739 [INFO] TaskEncryption It takes 0 seconds in total
-2025-11-03 18:17:13.739 [INFO] --------------------------------------------->TaskUpdateBundleInfo<--------------------------------------------
-2025-11-03 18:17:13.895 [INFO] TaskUpdateBundleInfo It takes 0 seconds in total
-2025-11-03 18:17:13.895 [INFO] --------------------------------------------->TaskCreateManifest<--------------------------------------------
-2025-11-03 18:17:13.909 [INFO] Create package manifest file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/v1.3/DefaultPackage_v1.3.json
-2025-11-03 18:17:13.919 [INFO] Create package manifest file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/v1.3/DefaultPackage_v1.3.bytes
-2025-11-03 18:17:13.923 [INFO] Create package manifest hash file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/v1.3/DefaultPackage_v1.3.hash
-2025-11-03 18:17:13.923 [INFO] Create package manifest version file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/v1.3/DefaultPackage.version
-2025-11-03 18:17:13.923 [INFO] TaskCreateManifest It takes 0 seconds in total
-2025-11-03 18:17:13.923 [INFO] --------------------------------------------->TaskCreateReport<--------------------------------------------
-2025-11-03 18:17:13.932 [INFO] Create build report file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/v1.3/DefaultPackage_v1.3.report
-2025-11-03 18:17:13.932 [INFO] TaskCreateReport It takes 0 seconds in total
-2025-11-03 18:17:13.932 [INFO] --------------------------------------------->TaskCreatePackage<--------------------------------------------
-2025-11-03 18:17:13.932 [INFO] Start making patch package: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/v1.3
-2025-11-03 18:17:13.992 [INFO] TaskCreatePackage It takes 0 seconds in total
-2025-11-03 18:17:13.992 [INFO] --------------------------------------------->TaskCopyBuildinFiles<--------------------------------------------
-2025-11-03 18:17:13.992 [INFO] TaskCopyBuildinFiles It takes 0 seconds in total
-2025-11-03 18:17:13.992 [INFO] --------------------------------------------->TaskCreateCatalog<--------------------------------------------
-2025-11-03 18:17:13.992 [INFO] TaskCreateCatalog It takes 0 seconds in total
-2025-11-03 18:17:13.992 [INFO] Total build process time: 10 seconds
-2025-11-03 18:17:13.992 [INFO] Resource pipeline build success
+﻿2026-02-22 22:43:11.972 [INFO] Begin to build package : DefaultPackage by BuiltinBuildPipeline
+2026-02-22 22:43:11.972 [INFO] --------------------------------------------->TaskPrepare<--------------------------------------------
+2026-02-22 22:43:12.088 [INFO] Delete package root directory: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage
+2026-02-22 22:43:12.092 [INFO] Create pipeline output directory: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/OutputCache
+2026-02-22 22:43:12.092 [WARN] [ErrorCode130] Starting with UnityEngine2021, recommend use script build pipeline (SBP) !
+2026-02-22 22:43:12.092 [INFO] TaskPrepare It takes 0 seconds in total
+2026-02-22 22:43:12.092 [INFO] --------------------------------------------->TaskGetBuildMap<--------------------------------------------
+2026-02-22 22:43:25.092 [WARN] [ErrorCode201] Found undepended asset and remove it : Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/EntityArt/vehicle_enemyShip/vehicle_enemyShip_red_dff.tif
+2026-02-22 22:43:25.094 [WARN] [ErrorCode201] Found undepended asset and remove it : Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UIFont/LICENSE.txt
+2026-02-22 22:43:25.094 [INFO] TaskGetBuildMap It takes 13 seconds in total
+2026-02-22 22:43:25.094 [INFO] --------------------------------------------->TaskBuilding<--------------------------------------------
+2026-02-22 22:44:10.844 [INFO] UnityEngine build success !
+2026-02-22 22:44:10.844 [INFO] TaskBuilding It takes 45 seconds in total
+2026-02-22 22:44:10.844 [INFO] --------------------------------------------->TaskVerifyBuildResult<--------------------------------------------
+2026-02-22 22:44:10.851 [INFO] Build results verify success!
+2026-02-22 22:44:10.851 [INFO] TaskVerifyBuildResult It takes 0 seconds in total
+2026-02-22 22:44:10.852 [INFO] --------------------------------------------->TaskEncryption<--------------------------------------------
+2026-02-22 22:44:10.853 [INFO] TaskEncryption It takes 0 seconds in total
+2026-02-22 22:44:10.854 [INFO] --------------------------------------------->TaskUpdateBundleInfo<--------------------------------------------
+2026-02-22 22:44:11.034 [INFO] TaskUpdateBundleInfo It takes 0 seconds in total
+2026-02-22 22:44:11.034 [INFO] --------------------------------------------->TaskCreateManifest<--------------------------------------------
+2026-02-22 22:44:11.062 [INFO] Create package manifest file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/2026-02-22-1361/DefaultPackage_2026-02-22-1361.json
+2026-02-22 22:44:11.088 [INFO] Create package manifest file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/2026-02-22-1361/DefaultPackage_2026-02-22-1361.bytes
+2026-02-22 22:44:11.088 [INFO] Create package manifest hash file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/2026-02-22-1361/DefaultPackage_2026-02-22-1361.hash
+2026-02-22 22:44:11.092 [INFO] Create package manifest version file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/2026-02-22-1361/DefaultPackage.version
+2026-02-22 22:44:11.098 [INFO] TaskCreateManifest It takes 0 seconds in total
+2026-02-22 22:44:11.098 [INFO] --------------------------------------------->TaskCreateReport<--------------------------------------------
+2026-02-22 22:44:11.108 [INFO] Create build report file: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/2026-02-22-1361/DefaultPackage_2026-02-22-1361.report
+2026-02-22 22:44:11.108 [INFO] TaskCreateReport It takes 0 seconds in total
+2026-02-22 22:44:11.108 [INFO] --------------------------------------------->TaskCreatePackage<--------------------------------------------
+2026-02-22 22:44:11.108 [INFO] Start making patch package: D:/Unity/Server_Game/Bundles/StandaloneWindows64/DefaultPackage/2026-02-22-1361
+2026-02-22 22:44:11.186 [INFO] TaskCreatePackage It takes 0 seconds in total
+2026-02-22 22:44:11.186 [INFO] --------------------------------------------->TaskCopyBuildinFiles<--------------------------------------------
+2026-02-22 22:44:11.188 [INFO] TaskCopyBuildinFiles It takes 0 seconds in total
+2026-02-22 22:44:11.188 [INFO] --------------------------------------------->TaskCreateCatalog<--------------------------------------------
+2026-02-22 22:44:11.188 [INFO] TaskCreateCatalog It takes 0 seconds in total
+2026-02-22 22:44:11.188 [INFO] Total build process time: 58 seconds
+2026-02-22 22:44:11.188 [INFO] Resource pipeline build success

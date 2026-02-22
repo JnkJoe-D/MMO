@@ -87,7 +87,7 @@ namespace SkillEditor
             foreach (var hit in hits)
             {
                 // 自己免疫伤害
-                if (context.Owner != null && hit.gameObject == context.Owner) continue;
+                if (context.Owner != null && hit.gameObject == context.Owner &&!clip.isSelfImpacted) continue;
 
                 // 冷却过滤
                 if (hitRecords.TryGetValue(hit, out float lastHitTime))

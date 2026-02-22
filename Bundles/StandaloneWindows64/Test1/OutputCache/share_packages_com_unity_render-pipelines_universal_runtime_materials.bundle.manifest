@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 4150449643
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 15a69398eccac685a26ce27b05a5c838
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5e762ccb57c4caaabbb5a4199ac82c23
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 15a69398eccac685a26ce27b05a5c838
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
+Dependencies:
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/Test1/OutputCache/share_packages_com_unity_render-pipelines_universal_shaders.bundle

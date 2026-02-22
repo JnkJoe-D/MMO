@@ -66,6 +66,20 @@ namespace SkillEditor.Editor
                 if (obj is ClipBase c && !c.SupportsBlending) return false;
             }
 
+            // 硬编码的 CustomBoneName 显示逻辑
+            if (field.Name == "customBoneName")
+            {
+                var bindPointField = obj.GetType().GetField("bindPoint", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (bindPointField != null)
+                {
+                    var bindPointVal = bindPointField.GetValue(obj);
+                    if (bindPointVal is BindPoint bp && bp != BindPoint.CustomBone)
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
 

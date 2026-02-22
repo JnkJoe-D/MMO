@@ -16,7 +16,7 @@ namespace SkillEditor.Editor
         {
             if (clip.hitFrequency == HitFrequency.Once)
             {
-                // Debug.Log($"[SkillEditor Preview] <color=orange>Damage Triggered!</color> EventTag: {clip.eventTag}, Time: {context.Runner.CurrentTime:F2}");
+                Debug.Log($"[SkillEditor Preview] <color=orange>Damage Triggered!</color> EventTag: {clip.eventTag}, Time: OnEner");
             }
             lastCheckTime = clip.startTime;
         }

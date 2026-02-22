@@ -11,7 +11,7 @@ namespace SkillEditor
         public string eventTag = "Hit_Default";
 
         [SkillProperty("目标标签")]
-        public string[] targetTags = new string[0]; // 例如: ["Enemy", "Heal"]
+        public string[] targetTags = new string[0]; 
 
         [SkillProperty("命中频率")]
         public HitFrequency hitFrequency = HitFrequency.Once;
@@ -31,6 +31,8 @@ namespace SkillEditor
 
         [SerializeField, HideInInspector]
         private int serializedHitLayerMask = -1;
+        [SkillProperty("是否影响自身")]
+        public bool isSelfImpacted = false;
 
         [Header("Shape Config")]
         public HitBoxShape shape = new HitBoxShape();

@@ -1,0 +1,149 @@
+syntax = "proto3";
+
+package game.protocol;
+
+option csharp_namespace = "Game.Network.Protocol";
+
+import "common.proto";
+
+// ========== 房间相关 ==========
+
+message RoomInfo {
+    int32 room_id = 1;
+    string name = 2;
+    int64 owner_id = 3;
+    string owner_name = 4;
+    int32 player_count = 5;
+    int32 max_players = 6;
+    int32 room_type = 7;
+    int32 status = 8;
+}
+
+message RoomPlayer {
+    int64 player_id = 1;
+    string name = 2;
+    int32 team = 3;
+    bool is_ready = 4;
+    bool is_owner = 5;
+}
+
+message C2S_CreateRoom {
+    string name = 1;
+    int32 room_type = 2;
+    int32 max_players = 3;
+}
+
+message S2C_CreateRoom {
+    int32 code = 1;
+    string message = 2;
+    RoomInfo room = 3;
+}
+
+message C2S_GetRoomList {
+    int32 page = 1;
+    int32 page_size = 2;
+}
+
+message S2C_GetRoomList {
+    int32 code = 1;
+    repeated RoomInfo rooms = 2;
+    int32 total = 3;
+}
+
+message C2S_JoinRoom {
+    int32 room_id = 1;
+}
+
+message S2C_JoinRoom {
+    int32 code = 1;
+    string message = 2;
+    RoomInfo room = 3;
+    repeated RoomPlayer players = 4;
+}
+
+message C2S_LeaveRoom {
+}
+
+message S2C_LeaveRoom {
+    int32 code = 1;
+}
+
+message S2C_PlayerJoinRoom {
+    RoomPlayer player = 1;
+}
+
+message S2C_PlayerLeaveRoom {
+    int64 player_id = 1;
+}
+
+message C2S_Ready {
+    bool is_ready = 1;
+}
+
+message S2C_PlayerReady {
+    int64 player_id = 1;
+    bool is_ready = 2;
+}
+
+message C2S_StartGame {
+}
+
+message S2C_GameStart {
+    int32 countdown = 1;
+}
+
+// ========== 帧同步相关 ==========
+
+message FrameInput {
+    int64 player_id = 1;
+    bytes input_data = 2;
+}
+
+message C2S_FrameInput {
+    int32 frame = 1;
+    bytes input_data = 2;
+}
+
+message S2C_FrameData {
+    int32 frame = 1;
+    repeated FrameInput inputs = 2;
+}
+
+message S2C_GameEnd {
+    int32 winner_team = 1;
+    int32 duration = 2;
+}
+
+// ========== 匹配相关 ==========
+
+message C2S_StartMatch {
+    int32 match_type = 1;
+}
+
+message S2C_StartMatch {
+    int32 code = 1;
+    string message = 2;
+}
+
+message C2S_CancelMatch {
+}
+
+message S2C_CancelMatch {
+    int32 code = 1;
+}
+
+message S2C_MatchSuccess {
+    int32 room_id = 1;
+    int32 countdown = 2;
+}
+
+message C2S_MatchConfirm {
+    bool accept = 1;
+}
+
+message S2C_MatchConfirmResult {
+    int32 code = 1;
+    string message = 2;
+    int32 confirmed_count = 3;
+    int32 total_count = 4;
+}

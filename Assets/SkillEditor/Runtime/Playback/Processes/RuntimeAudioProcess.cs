@@ -5,8 +5,8 @@ namespace SkillEditor{
     /// 运行时：音频片段 Process
     /// 通过 ISkillAudioHandler 播放音频
     /// </summary>
-    [ProcessBinding(typeof(AudioClip), PlayMode.Runtime)]
-    public class RuntimeAudioProcess : ProcessBase<AudioClip>
+    [ProcessBinding(typeof(SkillAudioClip), PlayMode.Runtime)]
+    public class RuntimeAudioProcess : ProcessBase<SkillAudioClip>
     {
         private ISkillAudioHandler audioHandler;
         private int playingSoundId = -1;

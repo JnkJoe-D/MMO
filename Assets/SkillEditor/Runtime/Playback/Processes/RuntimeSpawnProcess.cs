@@ -19,17 +19,22 @@ namespace SkillEditor
 
             GetMatrix(out Vector3 pos, out Quaternion rot, out Transform parent);
 
-            spawnedProjectile = spawnHandler.SpawnObject(
-                clip.prefab, 
-                pos, 
-                rot, 
-                clip.eventTag, 
-                clip.detach,
-                clip.detach ? null : parent
-            );
+            var spawnData = new SpawnData
+            {
+                configPrefab = clip.prefab,
+                position = pos,
+                rotation = rot,
+                detach = clip.detach,
+                parent = clip.detach ? null : parent,
+                eventTag = clip.eventTag,
+                targetTags = clip.targetTags,
+                deployer = context.Owner
+            };
+
+            spawnedProjectile = spawnHandler.Spawn(spawnData);
             
             // 下发上下文初始化信息给业务端
-            spawnedProjectile?.Initialize(clip.eventTag, pos, rot, context);
+            spawnedProjectile?.Initialize(spawnData, spawnHandler);
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)
@@ -44,8 +49,7 @@ namespace SkillEditor
             // 依赖于 SkillRunner 触发的 InterruptInternal 和 IsInterrupted 标记
             if (clip.destroyOnInterrupt && spawnedProjectile != null && context != null && context.IsInterrupted)
             {
-                spawnedProjectile.Terminate();
-                spawnHandler?.DestroySpawnedObject(spawnedProjectile);
+                spawnedProjectile.Recycle();
             }
             spawnedProjectile = null;
         }

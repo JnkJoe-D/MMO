@@ -1,0 +1,19 @@
+{
+    "FileVersion": "1.0.0",
+    "PackageName": "Test1",
+    "PackageVersion": "2026-02-22-1407",
+    "Wrappers": [
+        {
+            "BundleGUID": "ee08c387fa149ee446fedc92000570c7",
+            "FileName": "assets_abassets_ee08c387fa149ee446fedc92000570c7.bundle"
+        },
+        {
+            "BundleGUID": "64bbc503fedc5400c07cd9ad259ba11d",
+            "FileName": "share_packages_com_unity_render-pipelines_universal_runtime_materials_64bbc503fedc5400c07cd9ad259ba11d.bundle"
+        },
+        {
+            "BundleGUID": "990b567afaa4b0121d3c44cad59b7e7d",
+            "FileName": "share_packages_com_unity_render-pipelines_universal_shaders_990b567afaa4b0121d3c44cad59b7e7d.bundle"
+        }
+    ]
+}

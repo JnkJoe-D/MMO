@@ -68,17 +68,17 @@ namespace SkillEditor
                     if (clip is SkillAnimationClip animClip)
                     {
                         if(animClip.animationClip != null)
-                            animClip.clipGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.animationClip));
+                            animClip.clipGuid = GetAssetGuid(animClip.animationClip);
                         if(animClip.overrideMask != null)
-                            animClip.maskGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(animClip.overrideMask));
+                            animClip.maskGuid = GetAssetGuid(animClip.overrideMask);
                     }
                     else if (clip is VFXClip vfxClip && vfxClip.effectPrefab != null)
                     {
-                        vfxClip.prefabGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(vfxClip.effectPrefab));
+                        vfxClip.prefabGuid = GetAssetGuid(vfxClip.effectPrefab);
                     }
-                    else if (clip is AudioClip audioClip && audioClip.audioClip != null)
+                    else if (clip is SkillAudioClip audioClip && audioClip.audioClip != null)
                     {
-                        audioClip.clipGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(audioClip.audioClip));
+                        audioClip.clipGuid = GetAssetGuid(audioClip.audioClip);
                     }
                 }
             }
@@ -99,27 +99,42 @@ namespace SkillEditor
                     {
                         if(!string.IsNullOrEmpty(animClip.clipGuid))
                         {
-                            string assetPath = AssetDatabase.GUIDToAssetPath(animClip.clipGuid);
-                            animClip.animationClip = AssetDatabase.LoadAssetAtPath<UnityEngine.AnimationClip>(assetPath);
+                            animClip.animationClip = ResolveAsset<AnimationClip>(animClip.clipGuid);
                         }
                         if(!string.IsNullOrEmpty(animClip.maskGuid))
                         {
-                            string assetPath = AssetDatabase.GUIDToAssetPath(animClip.maskGuid);
-                            animClip.overrideMask = AssetDatabase.LoadAssetAtPath<UnityEngine.AvatarMask>(assetPath);
+                            animClip.overrideMask = ResolveAsset<AvatarMask>(animClip.maskGuid);
                         }
                     }
                     else if (clip is VFXClip vfxClip && !string.IsNullOrEmpty(vfxClip.prefabGuid))
                     {
-                        string assetPath = AssetDatabase.GUIDToAssetPath(vfxClip.prefabGuid);
-                        vfxClip.effectPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+                        vfxClip.effectPrefab = ResolveAsset<GameObject>(vfxClip.prefabGuid);
                     }
-                    else if (clip is AudioClip audioClip && !string.IsNullOrEmpty(audioClip.clipGuid))
+                    else if (clip is SkillAudioClip audioClip && !string.IsNullOrEmpty(audioClip.clipGuid))
                     {
-                        string assetPath = AssetDatabase.GUIDToAssetPath(audioClip.clipGuid);
-                        audioClip.audioClip = AssetDatabase.LoadAssetAtPath<UnityEngine.AudioClip>(assetPath);
+                        audioClip.audioClip = ResolveAsset<AudioClip>(audioClip.clipGuid);
                     }
                 }
             }
+        }
+        private static string GetAssetGuid(Object asset)
+        {
+#if UNITY_EDITOR
+            string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(asset));
+            return guid;
+#else
+            return "";
+#endif
+        }
+        private static T ResolveAsset<T>(string guid) where T:Object
+        {
+#if UNITY_EDITOR
+            string assetPath =  AssetDatabase.GUIDToAssetPath(guid);
+            T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+            return asset;
+#else
+            return null;
+#endif
         }
     }
 }

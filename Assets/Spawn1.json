@@ -1,0 +1,85 @@
+{
+    "skillId": 0,
+    "skillName": "新技能",
+    "version": "1.0",
+    "duration": 1.3333333730697632,
+    "isLoop": false,
+    "groups": [
+        {
+            "groupId": "19978a9c-61c5-4262-813c-183f76fac45c",
+            "groupName": "分组 1",
+            "isCollapsed": false,
+            "isEnabled": true,
+            "isLocked": false,
+            "tracks": [
+                {
+                    "rid": 1000
+                }
+            ]
+        }
+    ],
+    "references": {
+        "version": 2,
+        "RefIds": [
+            {
+                "rid": 1000,
+                "type": {
+                    "class": "SpawnTrack",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "trackId": "10e14c35-1e70-4a23-84f4-04e28c71e77b",
+                    "trackType": "SpawnTrack",
+                    "trackName": "生成轨道",
+                    "isMuted": false,
+                    "isLocked": false,
+                    "isHidden": false,
+                    "isCollapsed": false,
+                    "isEnabled": true,
+                    "clips": [
+                        {
+                            "rid": 1001
+                        }
+                    ]
+                }
+            },
+            {
+                "rid": 1001,
+                "type": {
+                    "class": "SpawnClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "clipId": "0304c148-f827-4fbd-8474-7ddbee7ff3a9",
+                    "clipName": "生成轨道片段",
+                    "isEnabled": true,
+                    "startTime": 0.3333333432674408,
+                    "duration": 1.0,
+                    "blendInDuration": 0.0,
+                    "blendOutDuration": 0.0,
+                    "prefab": {
+                        "instanceID": 33960
+                    },
+                    "destroyOnInterrupt": false,
+                    "eventTag": "Spawn_Default",
+                    "targetTags": [],
+                    "bindPoint": 2,
+                    "customBoneName": "",
+                    "positionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotationOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "detach": true
+                }
+            }
+        ]
+    }
+}

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using SkillEditor;
 using UnityEngine;
+using Game.Pool;
 
 namespace Game.Adapters
 {
     /// <summary>
     /// 运行时音频适配器
-    /// 实现 ISkillAudioHandler 接口，管理运行时技能音效播放
+    /// 实现 ISkillAudioHandler 接口，通过 ComponentPool 管理 AudioSource
     /// </summary>
     public class GameSkillAudioHandler : MonoBehaviour, ISkillAudioHandler
     {
@@ -23,7 +24,8 @@ namespace Game.Adapters
         [SerializeField]
         private Transform audioRoot;
 
-        private List<AudioSourceInfo> _pool = new List<AudioSourceInfo>();
+        private ComponentPool<AudioSource> _audioPool;
+        private List<AudioSourceInfo> _activeInfos = new List<AudioSourceInfo>();
         private int _nextId = 1;
 
         private void Awake()
@@ -34,35 +36,48 @@ namespace Game.Adapters
 
         private void InitializePool()
         {
-            for (int i = 0; i < poolSize; i++)
+            var config = new ComponentPool<AudioSource>.Config
             {
-                CreateSource();
-            }
+                initialSize = poolSize,
+                maxSize = poolSize * 2
+            };
+
+            _audioPool = new ComponentPool<AudioSource>(CreateAudioSource, config);
+            _audioPool.OnGet = (source) =>
+            {
+                source.playOnAwake = false;
+            };
+            _audioPool.OnReturn = (source) =>
+            {
+                source.Stop();
+                source.clip = null;
+            };
+
+            // 注册到全局管理器（可选，便于统一管理生命周期）
+            GlobalPoolManager.RegisterComponentPool($"Audio_{GetInstanceID()}", _audioPool);
         }
 
-        private AudioSourceInfo CreateSource()
+        private AudioSource CreateAudioSource()
         {
-            var go = new GameObject($"SkillAudio_{_pool.Count}");
+            var go = new GameObject($"SkillAudio_{_activeInfos.Count}");
             go.transform.SetParent(audioRoot);
             var source = go.AddComponent<AudioSource>();
             source.playOnAwake = false;
-            
-            var info = new AudioSourceInfo { source = source, isBorrowed = false };
-            _pool.Add(info);
-            return info;
+            go.SetActive(false);
+            return source;
         }
 
         public int PlaySound(UnityEngine.AudioClip clip, AudioArgs args)
         {
             if (clip == null) return -1;
 
-            var info = GetAvailableSource();
-            if (info == null) return -1;
+            var source = _audioPool.Get();
+            if (source == null) return -1;
 
-            info.id = _nextId++;
-            info.isBorrowed = true;
-            
-            var source = info.source;
+            int id = _nextId++;
+            var info = new AudioSourceInfo { id = id, source = source, isBorrowed = true };
+            _activeInfos.Add(info);
+
             source.clip = clip;
             source.volume = args.volume;
             source.pitch = args.pitch;
@@ -76,12 +91,12 @@ namespace Game.Adapters
             }
 
             source.Play();
-            return info.id;
+            return id;
         }
 
         public void StopSound(int soundId)
         {
-            var info = GetSourceById(soundId);
+            var info = GetInfoById(soundId);
             if (info != null)
             {
                 ReturnSource(info);
@@ -90,7 +105,7 @@ namespace Game.Adapters
 
         public void UpdateSound(int soundId, float volume, float pitch, float time)
         {
-            var info = GetSourceById(soundId);
+            var info = GetInfoById(soundId);
             if (info != null && info.source != null)
             {
                 info.source.volume = volume;
@@ -107,28 +122,19 @@ namespace Game.Adapters
 
         public void StopAll()
         {
-            foreach (var info in _pool)
+            // 倒序移除，避免遍历修改问题
+            for (int i = _activeInfos.Count - 1; i >= 0; i--)
             {
-                if (info.isBorrowed)
+                if (_activeInfos[i].isBorrowed)
                 {
-                    ReturnSource(info);
+                    ReturnSource(_activeInfos[i]);
                 }
             }
         }
 
-        private AudioSourceInfo GetAvailableSource()
+        private AudioSourceInfo GetInfoById(int id)
         {
-            foreach (var info in _pool)
-            {
-                if (!info.isBorrowed) return info;
-            }
-            // 扩容
-            return CreateSource();
-        }
-
-        private AudioSourceInfo GetSourceById(int id)
-        {
-            foreach (var info in _pool)
+            foreach (var info in _activeInfos)
             {
                 if (info.isBorrowed && info.id == id) return info;
             }
@@ -139,11 +145,16 @@ namespace Game.Adapters
         {
             if (info.source != null)
             {
-                info.source.Stop();
-                info.source.clip = null;
+                _audioPool.Return(info.source);
             }
             info.isBorrowed = false;
             info.id = 0;
+            _activeInfos.Remove(info);
+        }
+
+        private void OnDestroy()
+        {
+            _audioPool?.Dispose();
         }
     }
 }

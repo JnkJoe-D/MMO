@@ -6,8 +6,8 @@ namespace SkillEditor.Editor
     /// 编辑器预览：音频片段 Process
     /// 通过 EditorAudioManager 获取/归还 AudioSource
     /// </summary>
-    [ProcessBinding(typeof(AudioClip), PlayMode.EditorPreview)]
-    public class EditorAudioProcess : ProcessBase<AudioClip>
+    [ProcessBinding(typeof(SkillAudioClip), PlayMode.EditorPreview)]
+    public class EditorAudioProcess : ProcessBase<SkillAudioClip>
     {
         private UnityEngine.AudioSource audioSource;
         private bool isScrubbing = false;

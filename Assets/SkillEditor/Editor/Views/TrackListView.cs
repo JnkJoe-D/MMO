@@ -170,7 +170,7 @@ namespace SkillEditor.Editor
             };
             GUI.Label(new Rect(0, 0, 150, height), "轨道列表", titleStyle);
             
-            if (GUI.Button(new Rect(width - height, 0, height, height), "+", EditorStyles.miniButton))
+            if (GUI.Button(new Rect(width - height, 0, height, height), "+"))
             {
                 CreateNewGroup();
             }

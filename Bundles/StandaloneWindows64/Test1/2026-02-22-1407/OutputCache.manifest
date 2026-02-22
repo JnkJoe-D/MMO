@@ -1,0 +1,15 @@
+ManifestFileVersion: 0
+CRC: 4158132880
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: assets_abassets.bundle
+      Dependencies:
+        Dependency_0: share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
+    Info_1:
+      Name: share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
+      Dependencies:
+        Dependency_0: share_packages_com_unity_render-pipelines_universal_shaders.bundle
+    Info_2:
+      Name: share_packages_com_unity_render-pipelines_universal_shaders.bundle
+      Dependencies: {}

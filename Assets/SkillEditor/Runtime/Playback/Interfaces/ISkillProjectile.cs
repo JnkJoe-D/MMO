@@ -12,15 +12,20 @@ namespace SkillEditor
         /// <summary>
         /// 投射物被生成时的初始化数据灌入
         /// </summary>
-        /// <param name="eventTag">技能传递过来的参数（例如伤害ID的标识）</param>
-        /// <param name="spawnPosition">初始世界坐标</param>
-        /// <param name="spawnRotation">初始世界旋转</param>
-        /// <param name="context">技能执行上下文（如果需要反算施法者等信息）</param>
-        void Initialize(string eventTag, Vector3 spawnPosition, Quaternion spawnRotation, ProcessContext context);
+        /// <param name="data">包含位置、旋转、标签等在内的生成参数包</param>
+        /// <param name="handler">生成器接口引用（用于后续可能的销毁/回调反馈）</param>
+        void Initialize(SpawnData data, ISkillSpawnHandler handler);
 
         /// <summary>
-        /// 销毁逻辑（如果是被中断等外部强制回收）
+        /// 逻辑销毁回调（如：停止粒子、音效淡出、逻辑停更等）
+        /// 由外部进程或 Recycle 调用，不负责真实的入池/销毁。
         /// </summary>
         void Terminate();
+
+        /// <summary>
+        /// 执行真实的对象回收/入池。
+        /// 内部应先触发 Terminate()。
+        /// </summary>
+        void Recycle();
     }
 }

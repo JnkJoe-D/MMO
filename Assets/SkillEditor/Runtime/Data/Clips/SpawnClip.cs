@@ -16,6 +16,9 @@ namespace SkillEditor
         [SkillProperty("事件标签 (透传给投射物)")]
         public string eventTag = "Spawn_Default";
 
+        [SkillProperty("目标标签")]
+        public string[] targetTags = new string[0]; // 例如: ["Enemy", "Heal"]
+
         [Header("Transform Config")]
         [SkillProperty("生成绑定点")]
         public BindPoint bindPoint = BindPoint.Root;
@@ -51,6 +54,7 @@ namespace SkillEditor
                 prefab = this.prefab,
                 destroyOnInterrupt = this.destroyOnInterrupt,
                 eventTag = this.eventTag,
+                targetTags = (this.targetTags != null) ? (string[])this.targetTags.Clone() : new string[0],
 
                 bindPoint = this.bindPoint,
                 customBoneName = this.customBoneName,

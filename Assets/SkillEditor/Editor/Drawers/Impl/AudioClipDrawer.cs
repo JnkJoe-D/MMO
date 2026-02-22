@@ -3,12 +3,12 @@ using SkillEditor;
 
 namespace SkillEditor.Editor
 {
-    [CustomDrawer(typeof(AudioClip))]
+    [CustomDrawer(typeof(SkillAudioClip))]
     public class AudioClipDrawer : ClipDrawer
     {
         public override void DrawInspector(ClipBase clip)
         {
-            var audioClip = clip as AudioClip;
+            var audioClip = clip as SkillAudioClip;
             if (audioClip == null) return;
 
             EditorGUILayout.LabelField("音频片段设置", EditorStyles.boldLabel);

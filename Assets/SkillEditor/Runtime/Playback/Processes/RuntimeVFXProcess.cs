@@ -13,6 +13,7 @@ namespace SkillEditor
         }
         private ParticleSpeedInfo[] particleInfos;
         private GameObject vfxInstance;
+        private IVFXPoolService vfxPoolService;
         public override void OnEnable()
         {
             base.OnEnable();
@@ -48,7 +49,16 @@ namespace SkillEditor
 
             // 2. 实例化
             Transform parent = clip.followTarget ? targetTransform : null;
-            vfxInstance = VFXPoolManager.Spawn(clip.effectPrefab, spawnPos, spawnRot, parent);
+            vfxPoolService = context.GetService<IVFXPoolService>();
+            if (vfxPoolService != null)
+            {
+                vfxInstance = vfxPoolService.Spawn(clip.effectPrefab, spawnPos, spawnRot, parent);
+            }
+            else
+            {
+                // 降级处理：无池服务时直接实例化
+                // vfxInstance = Object.Instantiate(clip.effectPrefab, spawnPos, spawnRot, parent);
+            }
 
             if (vfxInstance != null)
             {
@@ -134,7 +144,6 @@ namespace SkillEditor
                             maxLifetime = ps.main.startLifetime.constantMax;
                     }
 
-                    // 尝试获取 CoroutineRunner
                     // 尝试获取通用协程 Runner (由 Factory 提供)
                     var runner = context.GetService<MonoBehaviour>();
 
@@ -145,13 +154,13 @@ namespace SkillEditor
                     else
                     {
                         // 无 Runner，强行回收
-                        VFXPoolManager.Return(vfxInstance);
+                        ReturnVFX(vfxInstance);
                     }
                 }
                 else
                 {
                     // 硬结束
-                    VFXPoolManager.Return(vfxInstance);
+                    ReturnVFX(vfxInstance);
                 }
             }
             else
@@ -169,13 +178,29 @@ namespace SkillEditor
             base.Reset();
             particleInfos = null;
             vfxInstance = null;
+            vfxPoolService = null;
+        }
+
+        /// <summary>
+        /// 归还 VFX 实例（优先通过池服务，降级为直接销毁）
+        /// </summary>
+        private void ReturnVFX(GameObject inst)
+        {
+            if (vfxPoolService != null)
+            {
+                vfxPoolService.Return(inst);
+            }
+            else
+            {
+                Object.Destroy(inst);
+            }
         }
             
         private IEnumerator DelayReturn(GameObject inst, float delay)
         {
             if (delay > 0)
                 yield return new WaitForSeconds(delay);
-            VFXPoolManager.Return(inst);
+            ReturnVFX(inst);
         }
     }
 }

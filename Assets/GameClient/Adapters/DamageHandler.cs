@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using SkillEditor;
 using UnityEngine;
-namespace Game.Adapters{
-public class DamageHandler : MonoBehaviour,ISkillDamageHandler
+namespace Game.Adapters
+{
+public class DamageHandler : ISkillDamageHandler
 {
 	public void OnDamageDetect(DamageData damageData)
 	{
@@ -11,7 +10,7 @@ public class DamageHandler : MonoBehaviour,ISkillDamageHandler
 
         foreach (var c in colliders)
         {
-            Debug.Log($"{c.gameObject.name}:take damage");
+            Debug.Log($"{c.gameObject.name}:<color=orange>Damage Triggered!</color>");
         }
 	}
 }
