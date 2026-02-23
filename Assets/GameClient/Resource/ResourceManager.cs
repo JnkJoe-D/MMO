@@ -161,7 +161,7 @@ namespace Game.Resource
         {
             var param = new OfflinePlayModeParameters();
             param.BuildinFileSystemParameters =
-                FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
+                FileSystemParameters.CreateDefaultBuildinFileSystemParameters(null, GetBuildinRootPath(_config.defaultPackageName));
             return _package.InitializeAsync(param);
         }
 
@@ -175,10 +175,17 @@ namespace Game.Resource
             );
             var param = new HostPlayModeParameters();
             param.BuildinFileSystemParameters =
-                FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
+                FileSystemParameters.CreateDefaultBuildinFileSystemParameters(null, GetBuildinRootPath(config.defaultPackageName));
             param.CacheFileSystemParameters =
-                FileSystemParameters.CreateDefaultCacheFileSystemParameters(_remoteServices);
+                FileSystemParameters.CreateDefaultCacheFileSystemParameters(_remoteServices, null);
             return _package.InitializeAsync(param);
+        }
+
+        private string GetBuildinRootPath(string packageName)
+        {
+            // YooAsset 2.x 的 Buildin Root 需要指向包含 BuildinCatalog.bytes 的目录
+            // 在我们的结构中是 StreamingAssets/yoo/<PackageName>
+            return System.IO.Path.Combine(Application.streamingAssetsPath, "yoo", packageName);
         }
 
         /// <summary>

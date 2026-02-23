@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.code-philosophy.luban": "https://github.com/focus-creative-games/luban_unity.git",
     "com.greenbamboogames.playablegraphmonitor": "https://github.com/SolarianZ/UnityPlayableGraphMonitorTool.git",
     "com.tuyoogame.yooasset": "2.3.17",
     "com.unity.2d.sprite": "1.0.0",

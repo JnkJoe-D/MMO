@@ -5,6 +5,8 @@ using Game.Resource;
 using Game.Network;
 using Game.Scene;
 using Game.UI;
+using Game.Config;
+
 
 namespace Game.Framework
 {
@@ -17,7 +19,7 @@ namespace Game.Framework
     ///   3. DontDestroyOnLoad，贯穿整个应用生命周期
     ///
     /// 初始化顺序（关键，不可随意调整）：
-    ///   Config → Pool → Asset → Lua → Net → Audio → UI → Scene
+    ///   Asset → Config → Pool → Lua → Net → Audio → UI → Scene
     ///
     /// 使用方式：
     ///   将此脚本挂在场景中名为 "[GameRoot]" 的 GameObject 上
@@ -94,18 +96,7 @@ namespace Game.Framework
         {
             Debug.Log("[GameRoot] ===== 游戏启动 =====");
 
-            // ── Step 1: 基础配置加载 ──────────────────
-            // TODO: 读取本地配置表（游戏参数、服务器地址等）
-            // yield return StartCoroutine(InitConfig());
-            Debug.Log("[GameRoot] [1/7] Config ... (TODO)");
-            yield return null;
-
-            // ── Step 2: 全局对象池 ────────────────────
-            InitPool();
-            Debug.Log("[GameRoot] [2/7] Pool ... OK");
-            yield return null;
-
-            // ── Step 3: 资源管理器（YooAsset）────────────────
+            // ── Step 1: 资源管理器（YooAsset）────────────────
             _resourceManager = new ResourceManager();
             yield return StartCoroutine(
                 _resourceManager.InitializeAsync(_resourceConfig, this)
@@ -115,7 +106,18 @@ namespace Game.Framework
                 Debug.LogError("[GameRoot] 资源管理器初始化失败，游戏终止");
                 yield break;
             }
-            Debug.Log("[GameRoot] [3/7] Assets ... OK");
+            Debug.Log("[GameRoot] [1/9] Assets ... OK");
+            yield return null;
+
+            // ── Step 2: 基础配置加载 ──────────────────
+            var configMgrTask = ConfigManager.Instance.InitializeAsync();
+            while (!configMgrTask.IsCompleted) yield return null;
+            Debug.Log("[GameRoot] [2/9] Config ... OK");
+            yield return null;
+
+            // ── Step 3: 全局对象池 ────────────────────
+            InitPool();
+            Debug.Log("[GameRoot] [3/9] Pool ... OK");
             yield return null;
 
             // ── Step 4: Lua 虚拟机 ────────────────────

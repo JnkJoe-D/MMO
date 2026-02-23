@@ -3,6 +3,7 @@ using Game.Framework;
 using Game.Network;
 using Game.Network.Protocol;
 using Game.UI;
+using Game.Config;
 
 namespace Game.Test
 {
@@ -67,6 +68,28 @@ namespace Game.Test
             {
                 Debug.Log("[NetworkTest] 尝试打开测试 UI...");
                 UIManager.Instance.Open<Game.UI.Test.LoginModule>();
+            }
+
+            // --- Luban 配置测试 ---
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                var tables = ConfigManager.Instance.Tables;
+                if (tables != null)
+                {
+                    var item = tables.Tbitem.Get(1001);
+                    if (item != null)
+                    {
+                        Debug.Log($"<color=orange>[LubanTest] 成功读取道具: ID={item.Id}, Name={item.Name}, Desc={item.Desc}</color>");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[LubanTest] 找不到 ID 为 1 的道具");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("[LubanTest] ConfigManager Tables 尚未初始化！");
+                }
             }
         }
 

@@ -18,9 +18,9 @@
 |                                | 对象池 (`GlobalPoolManager`) | ✅ | `GameObject` 与 `Component` 缓存管理，避免频繁 Instantiate 带来的性能开销。 |
 |                                | 资源更新 (`ResourceManager`) | ✅ | 接入 YooAsset，支持 Editor/离线/联机的增量热更新与异步并发加载。 |
 |                                | 网络通信 (`NetworkManager`) | ✅ | 基于 TCP(可靠通信) 与 UDP(帧同步)，处理 Protobuf 分包/粘包、重连和心跳逻辑。 |
-| **通用系统层<br/>(Systems)**     | UI 框架 (`UIManager`) | ❌ | **[待开发]** 面板层级管理、弹窗栈调度、MVVM 或 MVP 模式绑定。 |
-|                                | 配置数据 (`ConfigManager`) | ❌ | **[待开发]** 静态配置表（JSON/CSV/Luban等）的读取及内存字典映射。 |
-|                                | 场景流转 (`SceneManager`) | ❌ | **[待开发]** 处理登录、大厅、加载中进度条、战斗场景之间的平滑切换与旧资源卸载。 |
+| **通用系统层<br/>(Systems)**     | UI 框架 (`UIManager`) | ✅ | 基于 `UIView/UIModel/UIModule` 的解耦架构，支持层级排序、导航栈管理与 YooAsset 异步加载。 |
+|                                | 配置数据 (`ConfigManager`) | ✅ | 基于 Luban 的跨平台配置方案，支持 JSON 全量解析、强类型代码生成及 YooAsset 同步加载。 |
+|                                | 场景流转 (`SceneManager`) | ✅ | 包含异步进度处理、防重入保护、场景切换前后的资源与对象池自动清理挂钩。 |
 |                                | 音频管理 (`AudioManager`) | ❌ | **[待开发]** 封装 BGM 切换过渡、SFX 混音组控制与内存管理。 |
 |                                | 用户输入系统 (`InputSystem`) | ❌ | **[待开发]** 统一捕获移动端摇杆、按键与 PC 键鼠滑动，分发给角色状态机。 |
 | **业务逻辑层<br/>(Logic)**       | 登录/角色选择 (`Login/Role`) | ❌ | **[待开发]** 帐号注册登录、Token 获取、角色创建与列表拉取。 |
@@ -38,11 +38,12 @@
 - 基于时间轴的**技能全流程演绎**及**动画融合** (`SkillEditor` / `MAnim`)。
 - 全套**内存管理与资产热分发** (`GlobalPool` / `YooAsset`)。
 - 坚如磐石的**双通道网络底座** (`TCP` / `UDP` / 心跳重连)。
+- 完整的**核心框架链路** (Config 管理 / UI 管道 / 场景自动伸缩流)。
 
 ### 📌 里程碑 2：业务驱动中台 (下一阶段建议)
 为了让游戏“动起来”，我们需要：
-1. **SceneManager + UIManager**：跑通完整的 `Logo -> Loading -> 登录界面 -> 大厅场景` 表现流。
-2. **ConfigManager + XLua**：打通数据流转，用 Lua 编写 UI 胶水逻辑快速迭代界面。
+1. **XLua 虚拟机**：接入并打通数据流转，用 Lua 编写 UI 胶水逻辑快速迭代界面。
+2. **正式业务逻辑**：实现 `Logo -> Loading -> 登录界面 -> 大厅场景` 的具体业务面板。
 3. **InputSystem**：能用手指/键盘驱动角色跑出第一步。
 
 ### ⚔️ 里程碑 3：战斗系统与联机闭环 (最终攻坚)

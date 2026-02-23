@@ -10,7 +10,7 @@
     "BuildPipeline": "EditorSimulateBuildPipeline",
     "PackageName": "Test1",
     "PackageVersion": "Simulate",
-    "PackageNote": "2026/2/23 17:19:17",
+    "PackageNote": "2026/2/23 19:52:36",
     "AssetList": [
         {
             "Address": "Cube",
@@ -23,13 +23,23 @@
             "DependBundleIDs": []
         },
         {
+            "Address": "demo_tbitem",
+            "AssetPath": "Assets/Configs/demo_tbitem.json",
+            "AssetGUID": "3fa21003b0d3d264da7ac26bdb98582c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 1,
+            "DependBundleIDs": []
+        },
+        {
             "Address": "LoginPanel",
             "AssetPath": "Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab",
             "AssetGUID": "615468921ae2c0a4089a5b32cc9bae0c",
             "AssetTags": [
                 "Test1"
             ],
-            "BundleID": 1,
+            "BundleID": 2,
             "DependBundleIDs": []
         }
     ],
@@ -40,6 +50,18 @@
             "FileHash": "d0c654b3230b057bfff049cacab4863a",
             "FileCRC": 0,
             "FileSize": 3021,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        },
+        {
+            "BundleName": "assets_configs.bundle",
+            "UnityCRC": 0,
+            "FileHash": "4af56238218f6c66e7432eb56d95e43e",
+            "FileCRC": 0,
+            "FileSize": 190,
             "Encrypted": false,
             "Tags": [
                 "Test1"
