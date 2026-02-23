@@ -2,6 +2,7 @@ using UnityEngine;
 using Game.Framework;
 using Game.Network;
 using Game.Network.Protocol;
+using Game.UI;
 
 namespace Game.Test
 {
@@ -15,6 +16,8 @@ namespace Game.Test
         public KeyCode connectKey = KeyCode.C;
         public KeyCode disconnectKey = KeyCode.D;
         public KeyCode loginTestKey = KeyCode.L;
+
+        public KeyCode uiTestKey    = KeyCode.U;
 
         private void Start()
         {
@@ -58,6 +61,12 @@ namespace Game.Test
                 // 这里只能演示发包结构，暂时无法发送真正的 C2S_Login 对象
                 // 除非手动在 GeneratedMessages.cs 里也手写一份 C2S_Login
                 Debug.Log("[NetworkTest] 登录协议尚未编译，目前仅支持心跳测试");
+            }
+
+            if (Input.GetKeyDown(uiTestKey))
+            {
+                Debug.Log("[NetworkTest] 尝试打开测试 UI...");
+                UIManager.Instance.Open<Game.UI.Test.LoginModule>();
             }
         }
 

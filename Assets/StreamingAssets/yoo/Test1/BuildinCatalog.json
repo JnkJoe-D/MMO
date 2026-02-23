@@ -1,11 +1,15 @@
 {
     "FileVersion": "1.0.0",
     "PackageName": "Test1",
-    "PackageVersion": "2026-02-22-1407",
+    "PackageVersion": "2026-02-23-1005",
     "Wrappers": [
         {
             "BundleGUID": "ee08c387fa149ee446fedc92000570c7",
             "FileName": "assets_abassets_ee08c387fa149ee446fedc92000570c7.bundle"
+        },
+        {
+            "BundleGUID": "336d3f3950b56749e5d6f9b162c97b8c",
+            "FileName": "assets_gameclient_ui_test_prefab_336d3f3950b56749e5d6f9b162c97b8c.bundle"
         },
         {
             "BundleGUID": "64bbc503fedc5400c07cd9ad259ba11d",

@@ -3,6 +3,8 @@ using UnityEngine;
 using Game.Pool;
 using Game.Resource;
 using Game.Network;
+using Game.Scene;
+using Game.UI;
 
 namespace Game.Framework
 {
@@ -30,9 +32,10 @@ namespace Game.Framework
         // ── 子系统引用 ─────────────────────────
         private ResourceManager _resourceManager;
         private NetworkManager  _networkManager;
+        private SceneManager    _sceneManager;
+        private UIManager       _uiManager;
         // private LuaManager _luaManager;
         // private AudioManager _audioManager;
-        // private UIManager _uiManager;
 
         [Header("资源管理配置")]
         [SerializeField] private ResourceConfig _resourceConfig;
@@ -136,11 +139,15 @@ namespace Game.Framework
             yield return null;
 
             // ── Step 7: UI 管理器 ─────────────────────
-            // TODO: 初始化 UIManager，打开加载/登录界面
-            // _uiManager = new UIManager();
-            // _uiManager.Init();
-            // _uiManager.Open<LoginPanel>();
-            Debug.Log("[GameRoot] [7/7] UI ... (TODO: UIManager)");
+            _uiManager = new UIManager();
+            _uiManager.Initialize(this);
+            Debug.Log("[GameRoot] [7/9] UI ... OK");
+            yield return null;
+
+            // ── Step 8: 场景管理器 ────────────────────
+            _sceneManager = new SceneManager();
+            _sceneManager.Initialize(this);
+            Debug.Log("[GameRoot] [8/9] Scene ... OK");
             yield return null;
 
             // ── 完成 ──────────────────────────────────
@@ -175,6 +182,8 @@ namespace Game.Framework
             _networkManager?.Shutdown();
             // _luaManager?.Dispose();
 
+            _uiManager?.Shutdown();
+            _sceneManager?.Shutdown();
             _resourceManager?.Shutdown();
             EventCenter.ClearAll();
             GlobalPoolManager.DisposeAll();
@@ -208,24 +217,4 @@ namespace Game.Framework
     /// 所有子系统初始化完毕后由 GameRoot 发布
     /// </summary>
     public struct GameInitializedEvent : IGameEvent { }
-
-    /// <summary>
-    /// 场景切换请求事件
-    /// 由 UI 或逻辑层发布，SceneManager 监听并执行
-    /// </summary>
-    public struct SceneChangeRequestEvent : IGameEvent
-    {
-        /// <summary>目标场景名</summary>
-        public string SceneName;
-        /// <summary>是否显示加载界面</summary>
-        public bool ShowLoadingScreen;
-    }
-
-    /// <summary>
-    /// 场景加载完成事件
-    /// </summary>
-    public struct SceneLoadedEvent : IGameEvent
-    {
-        public string SceneName;
-    }
 }

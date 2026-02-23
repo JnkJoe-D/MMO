@@ -9,8 +9,8 @@
     "BuildBundleType": 2,
     "BuildPipeline": "BuiltinBuildPipeline",
     "PackageName": "Test1",
-    "PackageVersion": "2026-02-22-1407",
-    "PackageNote": "2026/2/22 23:27:14",
+    "PackageVersion": "2026-02-23-1005",
+    "PackageNote": "2026/2/23 16:45:59",
     "AssetList": [
         {
             "Address": "Cube",
@@ -21,9 +21,19 @@
             ],
             "BundleID": 0,
             "DependBundleIDs": [
-                1,
-                2
+                2,
+                3
             ]
+        },
+        {
+            "Address": "LoginPanel",
+            "AssetPath": "Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab",
+            "AssetGUID": "615468921ae2c0a4089a5b32cc9bae0c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 1,
+            "DependBundleIDs": []
         }
     ],
     "BundleList": [
@@ -38,9 +48,21 @@
                 "Test1"
             ],
             "DependBundleIDs": [
-                1,
-                2
+                2,
+                3
             ]
+        },
+        {
+            "BundleName": "assets_gameclient_ui_test_prefab.bundle",
+            "UnityCRC": 1538109835,
+            "FileHash": "336d3f3950b56749e5d6f9b162c97b8c",
+            "FileCRC": 484381263,
+            "FileSize": 10678,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
         },
         {
             "BundleName": "share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle",
@@ -53,7 +75,7 @@
                 "Test1"
             ],
             "DependBundleIDs": [
-                2
+                3
             ]
         },
         {

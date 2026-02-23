@@ -103,11 +103,35 @@ namespace Game.Resource
 
             Debug.Log("[ResourceManager] Package 初始化成功");
 
-            // ── 4. 联机模式下执行热更流程 ────────────────────
+            // ── 4. 加载资源清单 (YooAsset 2.x 规定所有模式都必须更新清单) ──
             if (config.playMode == EPlayMode.HostPlayMode && config.autoUpdate)
             {
+                // 联机模式交由 Updater 处理完整热更（对比版本、下载、加载清单）
                 var updater = new ResourceUpdater(_package, config);
                 yield return runner.StartCoroutine(updater.Run());
+            }
+            else
+            {
+                // 单机模拟或离线模式：直接获取本地版本并激活清单
+                Debug.Log($"[ResourceManager] 当前模式 {config.playMode}，正在加载本地清单...");
+                
+                var versionOp = _package.RequestPackageVersionAsync(appendTimeTicks: false);
+                yield return versionOp;
+                if (versionOp.Status != EOperationStatus.Succeed)
+                {
+                    Debug.LogError($"[ResourceManager] 获取本地版本失败: {versionOp.Error}");
+                    yield break;
+                }
+
+                var manifestOp = _package.UpdatePackageManifestAsync(versionOp.PackageVersion);
+                yield return manifestOp;
+                if (manifestOp.Status != EOperationStatus.Succeed)
+                {
+                    Debug.LogError($"[ResourceManager] 激活本地清单失败: {manifestOp.Error}");
+                    yield break;
+                }
+                
+                Debug.Log($"[ResourceManager] 本地清单加载成功，版本号: {versionOp.PackageVersion}");
             }
 
             // ── 5. 完成 ──────────────────────────────────────
@@ -255,9 +279,10 @@ namespace Game.Resource
         /// 异步加载场景
         /// </summary>
         public IEnumerator LoadSceneAsync(
-            string   scenePath,
-            Action   onComplete = null,
-            bool     isAdditive = false
+            string        scenePath,
+            Action        onComplete = null,
+            Action<float> onProgress = null,
+            bool          isAdditive = false
         )
         {
             var loadMode = isAdditive
@@ -265,7 +290,12 @@ namespace Game.Resource
                 : UnityEngine.SceneManagement.LoadSceneMode.Single;
 
             var handle = _package.LoadSceneAsync(scenePath, loadMode);
-            yield return handle;
+            
+            while (!handle.IsDone)
+            {
+                onProgress?.Invoke(handle.Progress);
+                yield return null;
+            }
 
             if (handle.Status != EOperationStatus.Succeed)
             {

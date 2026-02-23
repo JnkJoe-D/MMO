@@ -38,3 +38,11 @@ MonoBehaviour:
         FilterRuleName: CollectPrefab
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab
+        CollectorGUID: 615468921ae2c0a4089a5b32cc9bae0c
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 

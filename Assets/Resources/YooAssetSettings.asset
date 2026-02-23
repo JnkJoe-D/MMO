@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c56e6ead10ec6548b3c2bba999ea1ad, type: 3}
-  m_Name: ResourceConfig
+  m_Script: {fileID: 11500000, guid: 5bd1afdce9715f84eb4cbc901922afc2, type: 3}
+  m_Name: YooAssetSettings
   m_EditorClassIdentifier: 
-  defaultPackageName: Test1
-  playMode: 2
-  hostServerURL: http://8.134.90.3:80
-  fallbackServerURL: http://8.134.90.3:80
-  appendVersionToURL: 0
-  autoUpdate: 1
-  downloadRetryCount: 3
+  DefaultYooFolderName: Test1
+  PackageManifestPrefix: 

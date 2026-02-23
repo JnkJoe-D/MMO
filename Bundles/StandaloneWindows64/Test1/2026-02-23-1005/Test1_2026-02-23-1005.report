@@ -2,14 +2,14 @@
     "Summary": {
         "YooVersion": "2.3.17",
         "UnityVersion": "2022.3.44f1c1",
-        "BuildDate": "2026/2/22 23:27:25",
-        "BuildSeconds": 9,
+        "BuildDate": "2026/2/23 16:46:36",
+        "BuildSeconds": 36,
         "BuildTarget": 19,
         "BuildPipeline": "BuiltinBuildPipeline",
         "BuildBundleType": 2,
         "BuildPackageName": "Test1",
-        "BuildPackageVersion": "2026-02-22-1407",
-        "BuildPackageNote": "2026/2/22 23:27:14",
+        "BuildPackageVersion": "2026-02-23-1005",
+        "BuildPackageNote": "2026/2/23 16:45:59",
         "UniqueBundleName": false,
         "EnableAddressable": true,
         "SupportExtensionless": true,
@@ -34,10 +34,10 @@
         "CacheServerPort": 0,
         "BuiltinShadersBundleName": "",
         "MonoScriptsBundleName": "",
-        "AssetFileTotalCount": 3,
-        "MainAssetTotalCount": 1,
-        "AllBundleTotalCount": 3,
-        "AllBundleTotalSize": 55761,
+        "AssetFileTotalCount": 4,
+        "MainAssetTotalCount": 2,
+        "AllBundleTotalCount": 4,
+        "AllBundleTotalSize": 66439,
         "EncryptedBundleTotalCount": 0,
         "EncryptedBundleTotalSize": 0
     },
@@ -65,6 +65,18 @@
                 "share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle",
                 "share_packages_com_unity_render-pipelines_universal_shaders.bundle"
             ]
+        },
+        {
+            "Address": "LoginPanel",
+            "AssetPath": "Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab",
+            "AssetGUID": "615468921ae2c0a4089a5b32cc9bae0c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "MainBundleName": "assets_gameclient_ui_test_prefab.bundle",
+            "MainBundleSize": 10678,
+            "DependAssets": [],
+            "DependBundles": []
         }
     ],
     "BundleInfos": [
@@ -87,6 +99,25 @@
                 {
                     "AssetPath": "Assets/ABAssets/Cube.prefab",
                     "AssetGUID": "85717eb5de8c732418d1330f0711e933"
+                }
+            ]
+        },
+        {
+            "BundleName": "assets_gameclient_ui_test_prefab.bundle",
+            "FileName": "assets_gameclient_ui_test_prefab_336d3f3950b56749e5d6f9b162c97b8c.bundle",
+            "FileHash": "336d3f3950b56749e5d6f9b162c97b8c",
+            "FileCRC": 484381263,
+            "FileSize": 10678,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab",
+                    "AssetGUID": "615468921ae2c0a4089a5b32cc9bae0c"
                 }
             ]
         },
