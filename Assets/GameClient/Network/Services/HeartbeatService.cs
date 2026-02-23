@@ -62,6 +62,8 @@ namespace Game.Network
             _lastSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             _missedCount++;
 
+            Debug.Log($"[Heartbeat] 发送心跳... (ClientTime: {_lastSendTime})");
+
             var msg = new C2S_Heartbeat
             {
                 ClientTime = _lastSendTime
@@ -92,8 +94,10 @@ namespace Game.Network
 
         public void Reset()
         {
-            _timer       = 0f;
+            // 通过将 timer 设置为间隔时间，保证连接成功后的第一帧 Update 立即发送一次心跳
+            _timer       = HeartbeatInterval;
             _missedCount = 0;
+            CurrentRttMs = 0;
         }
 
         public void Dispose()

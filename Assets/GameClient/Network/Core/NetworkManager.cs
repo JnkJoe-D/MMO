@@ -80,6 +80,8 @@ namespace Game.Network
         /// <summary>连接 TCP 通道</summary>
         public void ConnectTcp()
         {
+            _reconnect?.Stop(); // 手动请求连接时，停止任何正在进行的重连流程
+
             try
             {
                 _tcp.Connect(_host, _tcpPort);
@@ -90,6 +92,21 @@ namespace Game.Network
             {
                 Debug.LogError($"[NetworkManager] TCP 连接失败: {e.Message}");
             }
+        }
+
+        /// <summary>主动断开 TCP 连接</summary>
+        public void DisconnectTcp()
+        {
+            _reconnect?.Stop(); // 停止重连服务
+            _tcp?.Disconnect();
+            // 注意：TcpChannel.Disconnect 内部不触发 OnDisconnected 事件，
+            // 这样就不会进入自动重连循环。
+            
+            EventCenter.Publish(new NetDisconnectedEvent
+            {
+                Reason = DisconnectReason.Manual,
+                Message = "玩家主动断开连接"
+            });
         }
 
         /// <summary>连接 UDP 通道（通常在进入帧同步战斗时调用）</summary>

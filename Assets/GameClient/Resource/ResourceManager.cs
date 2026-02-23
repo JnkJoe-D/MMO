@@ -141,9 +141,11 @@ namespace Game.Resource
             return _package.InitializeAsync(param);
         }
 
+        private DefaultRemoteServices _remoteServices;
+
         private InitializationOperation InitHostPlay(ResourceConfig config)
         {
-            var remoteServices = new DefaultRemoteServices(
+            _remoteServices = new DefaultRemoteServices(
                 config.GetHostServerURL(),
                 config.GetFallbackServerURL()
             );
@@ -151,8 +153,20 @@ namespace Game.Resource
             param.BuildinFileSystemParameters =
                 FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
             param.CacheFileSystemParameters =
-                FileSystemParameters.CreateDefaultCacheFileSystemParameters(remoteServices);
+                FileSystemParameters.CreateDefaultCacheFileSystemParameters(_remoteServices);
             return _package.InitializeAsync(param);
+        }
+
+        /// <summary>
+        /// 设置远程服务的版本号（用于动态构建 URL 子路径）
+        /// </summary>
+        public void SetRemoteVersion(string version)
+        {
+            if (_remoteServices != null)
+            {
+                _remoteServices.Version = version;
+                Debug.Log($"[ResourceManager] 远程服务版本已更新: {version}");
+            }
         }
 
         // ────────────────────────────────────────
@@ -295,6 +309,7 @@ namespace Game.Resource
         {
             private readonly string _main;
             private readonly string _fallback;
+            public string Version { get; set; }
 
             public DefaultRemoteServices(string main, string fallback)
             {
@@ -302,8 +317,19 @@ namespace Game.Resource
                 _fallback = fallback;
             }
 
-            string IRemoteServices.GetRemoteMainURL(string fileName)     => $"{_main}/{fileName}";
-            string IRemoteServices.GetRemoteFallbackURL(string fileName)  => $"{_fallback}/{fileName}";
+            string IRemoteServices.GetRemoteMainURL(string fileName)
+            {
+                if (string.IsNullOrEmpty(Version))
+                    return $"{_main}/{fileName}";
+                return $"{_main}/{Version}/{fileName}";
+            }
+
+            string IRemoteServices.GetRemoteFallbackURL(string fileName)
+            {
+                if (string.IsNullOrEmpty(Version))
+                    return $"{_fallback}/{fileName}";
+                return $"{_fallback}/{Version}/{fileName}";
+            }
         }
     }
 }

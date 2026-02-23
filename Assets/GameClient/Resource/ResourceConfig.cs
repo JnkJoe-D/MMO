@@ -30,7 +30,8 @@ namespace Game.Resource
 
         [Space]
         [Header("热更设置（仅 HostPlay 模式生效）")]
-        [Tooltip("是否在 URL 中追加 App 版本号目录 (例如 /CDN/PC/1.0/)\n建议：正式环境通常关闭此项，直接指向包名目录，由 .version 文件决定子路径")]
+        [Tooltip("是否在 URL 中追加 App 编译版本号目录 (例如 /CDN/PC/1.0/)\n" +
+                 "注意：资源版本子目录 (例如 /CDN/PC/2026-xx-xx/) 已在架构层自动处理，无需开启此项。")]
         public bool appendVersionToURL = false;
         [Tooltip("是否在启动时自动检查并下载更新")]
         public bool autoUpdate = true;

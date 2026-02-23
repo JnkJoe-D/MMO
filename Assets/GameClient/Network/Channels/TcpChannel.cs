@@ -96,7 +96,7 @@ namespace Game.Network
             {
                 Debug.LogError($"[TcpChannel] 连接失败: {e.Message}");
                 Cleanup();
-                throw;
+                // 移除 throw，让上层决定如何处理
             }
         }
 

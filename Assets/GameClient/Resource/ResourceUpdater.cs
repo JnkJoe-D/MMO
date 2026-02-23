@@ -47,6 +47,9 @@ namespace Game.Resource
             var packageVersion = versionOp.PackageVersion;
             Debug.Log($"[ResourceUpdater] 最新版本: {packageVersion}");
 
+            // ── 更新远程服务版本信息，使后续 Manifest 和 Bundle 请求追加版本子目录 ────
+            ResourceManager.Instance.SetRemoteVersion(packageVersion);
+
             // ── Step 2: 更新资源清单 ──────────────────────────
             var manifestOp = _package.UpdatePackageManifestAsync(packageVersion);
             yield return manifestOp;

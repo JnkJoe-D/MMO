@@ -154,6 +154,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resourceConfig: {fileID: 11400000, guid: a3a7eb20d2b296d4d9fe9e2ebd5b7b21, type: 2}
+  _serverHost: 127.0.0.1
+  _tcpPort: 33333
+  _udpPort: 33334
 --- !u!114 &226008223
 MonoBehaviour:
   m_ObjectHideFlags: 0

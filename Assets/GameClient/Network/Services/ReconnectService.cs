@@ -14,7 +14,7 @@ namespace Game.Network
     public class ReconnectService
     {
         // ── 配置 ────────────────────────────────
-        private const float InitialDelay    = 1f;
+        private const float InitialDelay    = 3f;
         private const float MaxDelay        = 30f;
         private const int   MaxAttempts     = 10;
 

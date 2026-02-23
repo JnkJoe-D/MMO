@@ -39,8 +39,8 @@ namespace Game.Framework
 
         [Header("网络配置")]
         [SerializeField] private string _serverHost = "8.134.90.3";
-        [SerializeField] private int    _tcpPort    = 9100;
-        [SerializeField] private int    _udpPort    = 9200;
+        [SerializeField] private int    _tcpPort    = 33333;
+        [SerializeField] private int    _udpPort    = 33334;
 
         // ────────────────────────────────────────
         // Unity 生命周期
@@ -62,6 +62,8 @@ namespace Game.Framework
 
         private void Update()
         {
+            if (!IsInitialized) return;
+
             // 驱动延迟事件队列（每帧刷新一次）
             EventCenter.FlushPending();
 
