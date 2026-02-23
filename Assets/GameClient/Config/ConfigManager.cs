@@ -39,14 +39,16 @@ namespace Game.Config
 
         /// <summary>
         /// Luban 内部加载委托 (适配 SimpleJSON)
+        /// 【生产环境补充】：
+        /// 在 HostPlayMode 下，同步加载 (LoadAssetSync) 仅在资源已存在于本地缓存时有效。
+        /// 本架构通过 GameRoot 保证了 ResourceManager 初始化（及热更新下载）先于 ConfigManager 运行，
+        /// 因此此处同步加载是安全且符合生产环境规范的。
         /// </summary>
         /// <param name="file">JSON 文件名 (不带后缀)</param>
         /// <returns>解析后的 JSONNode</returns>
         private JSONNode LoadConfigJson(string file)
         {
-            // 注意：Luban 给的文件名可能是 a_b 这种格式
-            // 我们的 JSON 存放在 Assets/Configs 下
-            // YooAsset 默认需要完整的项目路径 (Assets/...) 且包含扩展名
+            // 拼接寻址路径：Assets/Configs/{file}.json
             string assetPath = $"Assets/Configs/{file}.json";
             var asset = ResourceManager.Instance.LoadAsset<TextAsset>(assetPath);
             if (asset == null)
