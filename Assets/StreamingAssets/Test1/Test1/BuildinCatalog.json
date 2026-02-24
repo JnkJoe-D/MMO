@@ -1,0 +1,55 @@
+{
+    "FileVersion": "1.0.0",
+    "PackageName": "Test1",
+    "PackageVersion": "2026-02-24-594",
+    "Wrappers": [
+        {
+            "BundleGUID": "2ebbed31265f6c8f01635a18363b0748",
+            "FileName": "assets_abassets_2ebbed31265f6c8f01635a18363b0748.bundle"
+        },
+        {
+            "BundleGUID": "df4513cfe3b1a7b417387ab0d59a8415",
+            "FileName": "assets_configs_df4513cfe3b1a7b417387ab0d59a8415.bundle"
+        },
+        {
+            "BundleGUID": "3bb19c098844998741c2085f4ad91f84",
+            "FileName": "assets_gameclient_ui_test_prefab_3bb19c098844998741c2085f4ad91f84.bundle"
+        },
+        {
+            "BundleGUID": "b8108cacb0bf1bcbcd27bcb355668123",
+            "FileName": "assets_resources_prefab_ui_panelview_b8108cacb0bf1bcbcd27bcb355668123.bundle"
+        },
+        {
+            "BundleGUID": "3dabc6eca6b72ecc3274e50de8e8f561",
+            "FileName": "assets_resources_prefab_ui_panelview_common_3dabc6eca6b72ecc3274e50de8e8f561.bundle"
+        },
+        {
+            "BundleGUID": "9b748ce0192edbf07920059d5a174527",
+            "FileName": "share_assets_resources_sprites_ui_9b748ce0192edbf07920059d5a174527.bundle"
+        },
+        {
+            "BundleGUID": "e5ed464dbbda0b1e714875fe7cdb3252",
+            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart_e5ed464dbbda0b1e714875fe7cdb3252.bundle"
+        },
+        {
+            "BundleGUID": "3af8e649732e41b6a712e9f0ffc44ce3",
+            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame_3af8e649732e41b6a712e9f0ffc44ce3.bundle"
+        },
+        {
+            "BundleGUID": "2a14303ad7479e31ebcca27c514ecc50",
+            "FileName": "share_assets_textmesh_pro_fonts_2a14303ad7479e31ebcca27c514ecc50.bundle"
+        },
+        {
+            "BundleGUID": "ad0de417081cf4aed006d894f0675cb1",
+            "FileName": "share_assets_textmesh_pro_shaders_ad0de417081cf4aed006d894f0675cb1.bundle"
+        },
+        {
+            "BundleGUID": "64bbc503fedc5400c07cd9ad259ba11d",
+            "FileName": "share_packages_com_unity_render-pipelines_universal_runtime_materials_64bbc503fedc5400c07cd9ad259ba11d.bundle"
+        },
+        {
+            "BundleGUID": "990b567afaa4b0121d3c44cad59b7e7d",
+            "FileName": "share_packages_com_unity_render-pipelines_universal_shaders_990b567afaa4b0121d3c44cad59b7e7d.bundle"
+        }
+    ]
+}

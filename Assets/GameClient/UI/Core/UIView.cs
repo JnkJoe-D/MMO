@@ -27,6 +27,9 @@ namespace Game.UI
                 return _canvas;
             }
         }
+        //
+        private GameObject _view;
+        public GameObject View => _view??transform.Find("View").gameObject;
 
         /// <summary>Canvas 的渲染排序</summary>
         public int SortingOrder
@@ -73,7 +76,7 @@ namespace Game.UI
 
         public void SetVisible(bool visible)
         {
-            gameObject.SetActive(visible);
+            View.SetActive(visible);
 
             if (visible)
                 OnShow();

@@ -67,7 +67,6 @@ namespace Game.Test
             if (Input.GetKeyDown(uiTestKey))
             {
                 Debug.Log("[NetworkTest] 尝试打开测试 UI...");
-                UIManager.Instance.Open<Game.UI.Test.LoginModule>();
             }
 
             // --- Luban 配置测试 ---

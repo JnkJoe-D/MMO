@@ -46,8 +46,16 @@ MonoBehaviour:
         FilterRuleName: CollectPrefab
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/Configs/demo_tbitem.json
-        CollectorGUID: 3fa21003b0d3d264da7ac26bdb98582c
+      - CollectPath: Assets/Configs
+        CollectorGUID: 34cb2ce9ed66f664cb3f937696637655
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Resources/Prefab
+        CollectorGUID: 7d77e75ba0dc1b54fae353ceec749ce3
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory

@@ -1,0 +1,445 @@
+{
+    "Summary": {
+        "YooVersion": "2.3.17",
+        "UnityVersion": "2022.3.44f1c1",
+        "BuildDate": "2026/2/24 9:55:09",
+        "BuildSeconds": 16,
+        "BuildTarget": 19,
+        "BuildPipeline": "BuiltinBuildPipeline",
+        "BuildBundleType": 2,
+        "BuildPackageName": "Test1",
+        "BuildPackageVersion": "2026-02-24-594",
+        "BuildPackageNote": "2026/2/24 9:54:52",
+        "UniqueBundleName": false,
+        "EnableAddressable": true,
+        "SupportExtensionless": true,
+        "LocationToLower": false,
+        "IncludeAssetGUID": true,
+        "AutoCollectShaders": false,
+        "IgnoreRuleName": "YooAsset.Editor.NormalIgnoreRule",
+        "ClearBuildCacheFiles": true,
+        "UseAssetDependencyDB": false,
+        "EnableSharePackRule": true,
+        "SingleReferencedPackAlone": true,
+        "EncryptionServicesClassName": "YooAsset.Editor.EncryptionNone",
+        "ManifestProcessServicesClassName": "YooAsset.Editor.ManifestProcessNone",
+        "ManifestRestoreServicesClassName": "YooAsset.Editor.ManifestRestoreNone",
+        "FileNameStyle": 2,
+        "CompressOption": 2,
+        "DisableWriteTypeTree": false,
+        "IgnoreTypeTreeChanges": true,
+        "ReplaceAssetPathWithAddress": false,
+        "WriteLinkXML": true,
+        "CacheServerHost": "",
+        "CacheServerPort": 0,
+        "BuiltinShadersBundleName": "",
+        "MonoScriptsBundleName": "",
+        "AssetFileTotalCount": 13,
+        "MainAssetTotalCount": 6,
+        "AllBundleTotalCount": 12,
+        "AllBundleTotalSize": 15985089,
+        "EncryptedBundleTotalCount": 0,
+        "EncryptedBundleTotalSize": 0
+    },
+    "AssetInfos": [
+        {
+            "Address": "Cube",
+            "AssetPath": "Assets/ABAssets/Cube.prefab",
+            "AssetGUID": "85717eb5de8c732418d1330f0711e933",
+            "AssetTags": [
+                "Test1"
+            ],
+            "MainBundleName": "assets_abassets.bundle",
+            "MainBundleSize": 3270,
+            "DependAssets": [
+                {
+                    "AssetPath": "Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat",
+                    "AssetGUID": "31321ba15b8f8eb4c954353edc038b1d"
+                },
+                {
+                    "AssetPath": "Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader",
+                    "AssetGUID": "933532a4fcc9baf4fa0491de14d08ed7"
+                }
+            ],
+            "DependBundles": [
+                "share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle",
+                "share_packages_com_unity_render-pipelines_universal_shaders.bundle"
+            ]
+        },
+        {
+            "Address": "demo_tbitem",
+            "AssetPath": "Assets/Configs/demo_tbitem.json",
+            "AssetGUID": "3fa21003b0d3d264da7ac26bdb98582c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "MainBundleName": "assets_configs.bundle",
+            "MainBundleSize": 1418,
+            "DependAssets": [],
+            "DependBundles": []
+        },
+        {
+            "Address": "demo_tbskill",
+            "AssetPath": "Assets/Configs/demo_tbskill.json",
+            "AssetGUID": "1bfdea24c2ab8ca46a772e2909ee7c1c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "MainBundleName": "assets_configs.bundle",
+            "MainBundleSize": 1418,
+            "DependAssets": [],
+            "DependBundles": []
+        },
+        {
+            "Address": "LoginPanel",
+            "AssetPath": "Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab",
+            "AssetGUID": "615468921ae2c0a4089a5b32cc9bae0c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "MainBundleName": "assets_gameclient_ui_test_prefab.bundle",
+            "MainBundleSize": 10508,
+            "DependAssets": [],
+            "DependBundles": []
+        },
+        {
+            "Address": "MessageBoxPanel",
+            "AssetPath": "Assets/Resources/Prefab/UI/PanelView/Common/MessageBoxPanel.prefab",
+            "AssetGUID": "ddf75b3081a16f649a30a4e6b4d2dafd",
+            "AssetTags": [
+                "Test1"
+            ],
+            "MainBundleName": "assets_resources_prefab_ui_panelview_common.bundle",
+            "MainBundleSize": 9829,
+            "DependAssets": [
+                {
+                    "AssetPath": "Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UIPanelArt/Space.jpg",
+                    "AssetGUID": "b76b8b216adf64f4bbdb78f7977f0310"
+                },
+                {
+                    "AssetPath": "Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UISprite/atlas_frame/frame.png",
+                    "AssetGUID": "ddd541edadc7b104393f8973da3a3f7f"
+                },
+                {
+                    "AssetPath": "Assets/TextMesh Pro/Fonts/NotoSansSC-Regular SDF.asset",
+                    "AssetGUID": "eb8bacd46357fb4418b3d529965e7b08"
+                },
+                {
+                    "AssetPath": "Assets/TextMesh Pro/Shaders/TMP_SDF.shader",
+                    "AssetGUID": "68e6db2ebdc24f95958faec2be5558d6"
+                }
+            ],
+            "DependBundles": [
+                "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle",
+                "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle",
+                "share_assets_textmesh_pro_fonts.bundle",
+                "share_assets_textmesh_pro_shaders.bundle"
+            ]
+        },
+        {
+            "Address": "HotUpdatePanel",
+            "AssetPath": "Assets/Resources/Prefab/UI/PanelView/HotUpdatePanel.prefab",
+            "AssetGUID": "489192844c00a0a4bbea3827025bf090",
+            "AssetTags": [
+                "Test1"
+            ],
+            "MainBundleName": "assets_resources_prefab_ui_panelview.bundle",
+            "MainBundleSize": 8565,
+            "DependAssets": [
+                {
+                    "AssetPath": "Assets/Resources/Sprites/UI/background1.png",
+                    "AssetGUID": "d82e622edf46a0f4c872ddb98b53b12d"
+                },
+                {
+                    "AssetPath": "Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UIPanelArt/Space.jpg",
+                    "AssetGUID": "b76b8b216adf64f4bbdb78f7977f0310"
+                },
+                {
+                    "AssetPath": "Assets/TextMesh Pro/Fonts/NotoSansSC-Regular SDF.asset",
+                    "AssetGUID": "eb8bacd46357fb4418b3d529965e7b08"
+                },
+                {
+                    "AssetPath": "Assets/TextMesh Pro/Shaders/TMP_SDF.shader",
+                    "AssetGUID": "68e6db2ebdc24f95958faec2be5558d6"
+                }
+            ],
+            "DependBundles": [
+                "share_assets_resources_sprites_ui.bundle",
+                "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle",
+                "share_assets_textmesh_pro_fonts.bundle",
+                "share_assets_textmesh_pro_shaders.bundle"
+            ]
+        }
+    ],
+    "BundleInfos": [
+        {
+            "BundleName": "assets_abassets.bundle",
+            "FileName": "assets_abassets_2ebbed31265f6c8f01635a18363b0748.bundle",
+            "FileHash": "2ebbed31265f6c8f01635a18363b0748",
+            "FileCRC": 2563493816,
+            "FileSize": 3270,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [
+                "share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle",
+                "share_packages_com_unity_render-pipelines_universal_shaders.bundle"
+            ],
+            "ReferenceBundles": [],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/ABAssets/Cube.prefab",
+                    "AssetGUID": "85717eb5de8c732418d1330f0711e933"
+                }
+            ]
+        },
+        {
+            "BundleName": "assets_configs.bundle",
+            "FileName": "assets_configs_df4513cfe3b1a7b417387ab0d59a8415.bundle",
+            "FileHash": "df4513cfe3b1a7b417387ab0d59a8415",
+            "FileCRC": 408524744,
+            "FileSize": 1418,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/Configs/demo_tbitem.json",
+                    "AssetGUID": "3fa21003b0d3d264da7ac26bdb98582c"
+                },
+                {
+                    "AssetPath": "Assets/Configs/demo_tbskill.json",
+                    "AssetGUID": "1bfdea24c2ab8ca46a772e2909ee7c1c"
+                }
+            ]
+        },
+        {
+            "BundleName": "assets_gameclient_ui_test_prefab.bundle",
+            "FileName": "assets_gameclient_ui_test_prefab_3bb19c098844998741c2085f4ad91f84.bundle",
+            "FileHash": "3bb19c098844998741c2085f4ad91f84",
+            "FileCRC": 91212393,
+            "FileSize": 10508,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab",
+                    "AssetGUID": "615468921ae2c0a4089a5b32cc9bae0c"
+                }
+            ]
+        },
+        {
+            "BundleName": "assets_resources_prefab_ui_panelview.bundle",
+            "FileName": "assets_resources_prefab_ui_panelview_b8108cacb0bf1bcbcd27bcb355668123.bundle",
+            "FileHash": "b8108cacb0bf1bcbcd27bcb355668123",
+            "FileCRC": 2644281327,
+            "FileSize": 8565,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [
+                "share_assets_resources_sprites_ui.bundle",
+                "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle",
+                "share_assets_textmesh_pro_fonts.bundle",
+                "share_assets_textmesh_pro_shaders.bundle"
+            ],
+            "ReferenceBundles": [],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/Resources/Prefab/UI/PanelView/HotUpdatePanel.prefab",
+                    "AssetGUID": "489192844c00a0a4bbea3827025bf090"
+                }
+            ]
+        },
+        {
+            "BundleName": "assets_resources_prefab_ui_panelview_common.bundle",
+            "FileName": "assets_resources_prefab_ui_panelview_common_3dabc6eca6b72ecc3274e50de8e8f561.bundle",
+            "FileHash": "3dabc6eca6b72ecc3274e50de8e8f561",
+            "FileCRC": 1032280513,
+            "FileSize": 9829,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [
+                "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle",
+                "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle",
+                "share_assets_textmesh_pro_fonts.bundle",
+                "share_assets_textmesh_pro_shaders.bundle"
+            ],
+            "ReferenceBundles": [],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/Resources/Prefab/UI/PanelView/Common/MessageBoxPanel.prefab",
+                    "AssetGUID": "ddf75b3081a16f649a30a4e6b4d2dafd"
+                }
+            ]
+        },
+        {
+            "BundleName": "share_assets_resources_sprites_ui.bundle",
+            "FileName": "share_assets_resources_sprites_ui_9b748ce0192edbf07920059d5a174527.bundle",
+            "FileHash": "9b748ce0192edbf07920059d5a174527",
+            "FileCRC": 2274502201,
+            "FileSize": 5689005,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [
+                "assets_resources_prefab_ui_panelview.bundle"
+            ],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/Resources/Sprites/UI/background1.png",
+                    "AssetGUID": "d82e622edf46a0f4c872ddb98b53b12d"
+                }
+            ]
+        },
+        {
+            "BundleName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle",
+            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart_e5ed464dbbda0b1e714875fe7cdb3252.bundle",
+            "FileHash": "e5ed464dbbda0b1e714875fe7cdb3252",
+            "FileCRC": 227416973,
+            "FileSize": 1111993,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [
+                "assets_resources_prefab_ui_panelview.bundle",
+                "assets_resources_prefab_ui_panelview_common.bundle"
+            ],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UIPanelArt/Space.jpg",
+                    "AssetGUID": "b76b8b216adf64f4bbdb78f7977f0310"
+                }
+            ]
+        },
+        {
+            "BundleName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle",
+            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame_3af8e649732e41b6a712e9f0ffc44ce3.bundle",
+            "FileHash": "3af8e649732e41b6a712e9f0ffc44ce3",
+            "FileCRC": 1920510715,
+            "FileSize": 234926,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [
+                "assets_resources_prefab_ui_panelview_common.bundle"
+            ],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/Samples/YooAsset/2.3.17/Space Shooter/GameRes/UISprite/atlas_frame/frame.png",
+                    "AssetGUID": "ddd541edadc7b104393f8973da3a3f7f"
+                }
+            ]
+        },
+        {
+            "BundleName": "share_assets_textmesh_pro_fonts.bundle",
+            "FileName": "share_assets_textmesh_pro_fonts_2a14303ad7479e31ebcca27c514ecc50.bundle",
+            "FileHash": "2a14303ad7479e31ebcca27c514ecc50",
+            "FileCRC": 1617320607,
+            "FileSize": 8839538,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [
+                "share_assets_textmesh_pro_shaders.bundle"
+            ],
+            "ReferenceBundles": [
+                "assets_resources_prefab_ui_panelview.bundle",
+                "assets_resources_prefab_ui_panelview_common.bundle"
+            ],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/TextMesh Pro/Fonts/NotoSansSC-Regular SDF.asset",
+                    "AssetGUID": "eb8bacd46357fb4418b3d529965e7b08"
+                }
+            ]
+        },
+        {
+            "BundleName": "share_assets_textmesh_pro_shaders.bundle",
+            "FileName": "share_assets_textmesh_pro_shaders_ad0de417081cf4aed006d894f0675cb1.bundle",
+            "FileHash": "ad0de417081cf4aed006d894f0675cb1",
+            "FileCRC": 1019429993,
+            "FileSize": 23546,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [
+                "assets_resources_prefab_ui_panelview.bundle",
+                "assets_resources_prefab_ui_panelview_common.bundle",
+                "share_assets_textmesh_pro_fonts.bundle"
+            ],
+            "BundleContents": [
+                {
+                    "AssetPath": "Assets/TextMesh Pro/Shaders/TMP_SDF.shader",
+                    "AssetGUID": "68e6db2ebdc24f95958faec2be5558d6"
+                }
+            ]
+        },
+        {
+            "BundleName": "share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle",
+            "FileName": "share_packages_com_unity_render-pipelines_universal_runtime_materials_64bbc503fedc5400c07cd9ad259ba11d.bundle",
+            "FileHash": "64bbc503fedc5400c07cd9ad259ba11d",
+            "FileCRC": 2292265684,
+            "FileSize": 3025,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [
+                "share_packages_com_unity_render-pipelines_universal_shaders.bundle"
+            ],
+            "ReferenceBundles": [
+                "assets_abassets.bundle"
+            ],
+            "BundleContents": [
+                {
+                    "AssetPath": "Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat",
+                    "AssetGUID": "31321ba15b8f8eb4c954353edc038b1d"
+                }
+            ]
+        },
+        {
+            "BundleName": "share_packages_com_unity_render-pipelines_universal_shaders.bundle",
+            "FileName": "share_packages_com_unity_render-pipelines_universal_shaders_990b567afaa4b0121d3c44cad59b7e7d.bundle",
+            "FileHash": "990b567afaa4b0121d3c44cad59b7e7d",
+            "FileCRC": 4039182185,
+            "FileSize": 49466,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundles": [],
+            "ReferenceBundles": [
+                "assets_abassets.bundle",
+                "share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle"
+            ],
+            "BundleContents": [
+                {
+                    "AssetPath": "Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader",
+                    "AssetGUID": "933532a4fcc9baf4fa0491de14d08ed7"
+                }
+            ]
+        }
+    ],
+    "IndependAssets": []
+}

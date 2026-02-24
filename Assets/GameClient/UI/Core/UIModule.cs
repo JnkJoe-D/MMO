@@ -20,7 +20,7 @@ namespace Game.UI
         public bool IsVisible { get; private set; }
 
         /// <summary>关联的 UIView 基类引用（由框架注入）</summary>
-        internal UIView ViewBase { get; private set; }
+        internal UIView View { get; private set; }
 
         // ────────────────────────────────────────
         // 框架内部调用（由 UIManager 调用）
@@ -28,7 +28,7 @@ namespace Game.UI
 
         internal void Internal_Create(UIView view)
         {
-            ViewBase = view;
+            View = view;
             view.OnInit();
             OnCreate();
         }
@@ -36,7 +36,7 @@ namespace Game.UI
         internal void Internal_Show(object data)
         {
             IsVisible = true;
-            ViewBase?.SetVisible(true);
+            View?.SetVisible(true);
             OnShow(data);
         }
 
@@ -44,17 +44,17 @@ namespace Game.UI
         {
             IsVisible = false;
             OnHide();
-            ViewBase?.SetVisible(false);
+            View?.SetVisible(false);
         }
 
         internal void Internal_Destroy()
         {
             OnRemove();
-            if (ViewBase != null)
+            if (View != null)
             {
-                ViewBase.OnRemove();
-                Object.Destroy(ViewBase.gameObject);
-                ViewBase = null;
+                View.OnRemove();
+                Object.Destroy(View.gameObject);
+                View = null;
             }
             IsVisible = false;
         }
@@ -110,7 +110,7 @@ namespace Game.UI
         where TModel : UIModel, new()
     {
         /// <summary>强类型的 View 引用</summary>
-        protected new TView View => ViewBase as TView;
+        protected new TView View => base.View as TView;
 
         /// <summary>强类型的 Model 引用（自动创建）</summary>
         protected TModel Model { get; private set; }

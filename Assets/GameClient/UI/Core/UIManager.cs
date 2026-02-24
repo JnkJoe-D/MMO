@@ -260,10 +260,36 @@ namespace Game.UI
 
             // 1. 异步加载 Prefab
             GameObject prefab = null;
-            yield return ResourceManager.Instance.LoadAssetAsync<GameObject>(
-                attr.ViewPrefab,
-                result => prefab = result
-            );
+
+            // 【架构容错与启动级 UI 保护】
+            // 如果 ResourceManager 尚未启动，或者明确路径位于 Resources/ 目录中，直接使用原生加载（脱离 YooAsset 流程）
+            if (ResourceManager.Instance == null || attr.ViewPrefab.Contains("Resources/"))
+            {
+                // 提取 Resources 相对路径（去掉扩展名）
+                int resIndex = attr.ViewPrefab.IndexOf("Resources/") + 10;
+                string resPath = attr.ViewPrefab.Substring(resIndex);
+                if (resPath.LastIndexOf('.') != -1)
+                {
+                    resPath = resPath.Substring(0, resPath.LastIndexOf('.'));
+                }
+                
+                var req = Resources.LoadAsync<GameObject>(resPath);
+                yield return req;
+                prefab = req.asset as GameObject;
+                
+                if (prefab != null)
+                {
+                    Debug.Log($"[UIManager] <color=orange>原生/降级加载面板: {attr.ViewPrefab}</color>");
+                }
+            }
+            else
+            {
+                // 正常的 YooAsset 加载流程
+                yield return ResourceManager.Instance.LoadAssetAsync<GameObject>(
+                    attr.ViewPrefab,
+                    result => prefab = result
+                );
+            }
 
             if (prefab == null)
             {

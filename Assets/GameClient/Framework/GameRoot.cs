@@ -96,7 +96,22 @@ namespace Game.Framework
         {
             Debug.Log("[GameRoot] ===== 游戏启动 =====");
 
-            // ── Step 1: 资源管理器（YooAsset）────────────────
+            // ── Step 1: 全局对象池 ────────────────────
+            InitPool();
+            Debug.Log("[GameRoot] [1/9] Pool ... OK");
+            yield return null;
+
+            // ── Step 2: UI 管理器 ─────────────────────
+            _uiManager = new UIManager();
+            _uiManager.Initialize(this);
+            Debug.Log("[GameRoot] [2/9] UI ... OK");
+            yield return null;
+
+            // ── Step 3: 唤起热更新界面以接收事件 ────────
+            _uiManager.Open<Game.UI.Modules.HotUpdate.HotUpdateModule>();
+            yield return null;
+
+            // ── Step 4: 资源管理器（YooAsset）────────────────
             _resourceManager = new ResourceManager();
             yield return StartCoroutine(
                 _resourceManager.InitializeAsync(_resourceConfig, this)
@@ -106,45 +121,21 @@ namespace Game.Framework
                 Debug.LogError("[GameRoot] 资源管理器初始化失败，游戏终止");
                 yield break;
             }
-            Debug.Log("[GameRoot] [1/9] Assets ... OK");
+            Debug.Log("[GameRoot] [4/9] Assets ... OK");
             yield return null;
 
-            // ── Step 2: 基础配置加载 ──────────────────
+            // ── Step 5: 基础配置加载 ──────────────────
             var configMgrTask = ConfigManager.Instance.InitializeAsync();
-            while (!configMgrTask.IsCompleted) yield return null;
-            Debug.Log("[GameRoot] [2/9] Config ... OK");
+             while (!configMgrTask.IsCompleted) yield return null;
+            Debug.Log("[GameRoot] [5/9] Config ... OK");
             yield return null;
 
-            // ── Step 3: 全局对象池 ────────────────────
-            InitPool();
-            Debug.Log("[GameRoot] [3/9] Pool ... OK");
-            yield return null;
-
-            // ── Step 4: Lua 虚拟机 ────────────────────
-            // TODO: 启动 XLua 环境，加载 main.lua
-            // _luaManager = new LuaManager();
-            // _luaManager.Init();
-            Debug.Log("[GameRoot] [4/7] Lua ... (TODO: XLua)");
-            yield return null;
-
-            // ── Step 5: 网络管理器 ────────────────────
+            // ── Step 6: Lua 网络 音频等 ───────────────
+            Debug.Log("[GameRoot] [6/9] Lua ... (TODO: XLua)");
+            
             _networkManager = new NetworkManager();
             _networkManager.Initialize(_serverHost, _tcpPort, _udpPort);
-            Debug.Log("[GameRoot] [5/7] Network ... OK");
-            yield return null;
-
-            // ── Step 6: 音频管理器 ────────────────────
-            // TODO: 初始化 AudioManager，预加载 BGM/SFX
-            // _audioManager = new AudioManager();
-            // _audioManager.Init();
-            Debug.Log("[GameRoot] [6/7] Audio ... (TODO: AudioManager)");
-            yield return null;
-
-            // ── Step 7: UI 管理器 ─────────────────────
-            _uiManager = new UIManager();
-            _uiManager.Initialize(this);
-            Debug.Log("[GameRoot] [7/9] UI ... OK");
-            yield return null;
+            Debug.Log("[GameRoot] [7/9] Network ... OK");
 
             // ── Step 8: 场景管理器 ────────────────────
             _sceneManager = new SceneManager();

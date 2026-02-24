@@ -163,6 +163,12 @@ public class ConfigManager : Singleton<ConfigManager>
 }
 ```
 
+> [!NOTE]
+> **关于 `file` 参数的传递者**：
+> 这个 `file` 字符串是由 Luban 自动生成的 `Tables.cs` 构造函数传递的。
+> 打开 `Tables.cs` 你会发现类似 `TbItem = new demo.TbItem(loader("demo_tbitem"));` 的代码。
+> 这意味着 Luban 内部定义了每个表对应的文件名标识，你只需要根据这个标识拼接路径加载即可。
+
 ### 5.2 理解 Item 与 TbItem 的区别 (核心概念)
 这是新手最容易混淆的地方：
 
@@ -219,7 +225,28 @@ if (dict.ContainsKey(1002)) { /* ... */ }
 - **原因**：Luban 本身不提供单例基类。
 - **解决**：手动实现一个 `Singleton<T>` 泛型类供 `ConfigManager` 使用。
 
-## 7.参考
+## 8. 进阶：由 JSON 切换到二进制 (Bin/Proto)
+
+当项目规模扩大，JSON 解析速度变慢且包体过大时，可以切换到二进制加载模式。
+
+### 8.1 为什么使用二进制/Proto？
+*   **极速加载**：二进制直接按偏移量读取，速度比 JSON 解析快 10 倍以上。
+*   **包体精简**：无冗余的 Key 和标点，体积通常是 JSON 的 30%-50%。
+*   **Schema 统一**：可以使用 `.proto` 文件替代 Excel 表头进行结构定义，保证网络协议与配置高度一致。
+
+### 8.2 切换步骤
+1.  **修改 `gen.bat`**：
+    *   将 `-c cs-simple-json` 改为 `-c cs-bin`。
+    *   将 `-d json` 改为 `-d bin` (输出 `.bin` 二进制数据)。
+2.  **修改 `ConfigManager.cs`**：
+    *   `Tables` 的构造函数现在需要 `Func<string, ByteBuf>` 类型的委托。
+    *   `ByteBuf` 是 Luban 运行时自带的二进制缓冲封装。
+3.  **配套反序列化**：
+    *   生成的代码会自动将 `LoadJson` 切换为 `LoadBin`。
+
+---
+
+## 9.参考
 
 [Luban+Unity使用，看这一篇文章就够了_unity luban-CSDN博客](https://blog.csdn.net/Blueberry124/article/details/149123903)
 

@@ -1,0 +1,252 @@
+{
+    "FileVersion": "2025.9.30",
+    "EnableAddressable": true,
+    "SupportExtensionless": true,
+    "LocationToLower": false,
+    "IncludeAssetGUID": true,
+    "ReplaceAssetPathWithAddress": false,
+    "OutputNameStyle": 2,
+    "BuildBundleType": 2,
+    "BuildPipeline": "BuiltinBuildPipeline",
+    "PackageName": "Test1",
+    "PackageVersion": "2026-02-24-594",
+    "PackageNote": "2026/2/24 9:54:52",
+    "AssetList": [
+        {
+            "Address": "Cube",
+            "AssetPath": "Assets/ABAssets/Cube.prefab",
+            "AssetGUID": "85717eb5de8c732418d1330f0711e933",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 0,
+            "DependBundleIDs": [
+                10,
+                11
+            ]
+        },
+        {
+            "Address": "demo_tbitem",
+            "AssetPath": "Assets/Configs/demo_tbitem.json",
+            "AssetGUID": "3fa21003b0d3d264da7ac26bdb98582c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 1,
+            "DependBundleIDs": []
+        },
+        {
+            "Address": "demo_tbskill",
+            "AssetPath": "Assets/Configs/demo_tbskill.json",
+            "AssetGUID": "1bfdea24c2ab8ca46a772e2909ee7c1c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 1,
+            "DependBundleIDs": []
+        },
+        {
+            "Address": "LoginPanel",
+            "AssetPath": "Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab",
+            "AssetGUID": "615468921ae2c0a4089a5b32cc9bae0c",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 2,
+            "DependBundleIDs": []
+        },
+        {
+            "Address": "MessageBoxPanel",
+            "AssetPath": "Assets/Resources/Prefab/UI/PanelView/Common/MessageBoxPanel.prefab",
+            "AssetGUID": "ddf75b3081a16f649a30a4e6b4d2dafd",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 4,
+            "DependBundleIDs": [
+                6,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "Address": "HotUpdatePanel",
+            "AssetPath": "Assets/Resources/Prefab/UI/PanelView/HotUpdatePanel.prefab",
+            "AssetGUID": "489192844c00a0a4bbea3827025bf090",
+            "AssetTags": [
+                "Test1"
+            ],
+            "BundleID": 3,
+            "DependBundleIDs": [
+                5,
+                6,
+                8,
+                9
+            ]
+        }
+    ],
+    "BundleList": [
+        {
+            "BundleName": "assets_abassets.bundle",
+            "UnityCRC": 3579746255,
+            "FileHash": "2ebbed31265f6c8f01635a18363b0748",
+            "FileCRC": 2563493816,
+            "FileSize": 3270,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": [
+                10,
+                11
+            ]
+        },
+        {
+            "BundleName": "assets_configs.bundle",
+            "UnityCRC": 3602774968,
+            "FileHash": "df4513cfe3b1a7b417387ab0d59a8415",
+            "FileCRC": 408524744,
+            "FileSize": 1418,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        },
+        {
+            "BundleName": "assets_gameclient_ui_test_prefab.bundle",
+            "UnityCRC": 1829204841,
+            "FileHash": "3bb19c098844998741c2085f4ad91f84",
+            "FileCRC": 91212393,
+            "FileSize": 10508,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        },
+        {
+            "BundleName": "assets_resources_prefab_ui_panelview.bundle",
+            "UnityCRC": 76370034,
+            "FileHash": "b8108cacb0bf1bcbcd27bcb355668123",
+            "FileCRC": 2644281327,
+            "FileSize": 8565,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": [
+                5,
+                6,
+                8,
+                9
+            ]
+        },
+        {
+            "BundleName": "assets_resources_prefab_ui_panelview_common.bundle",
+            "UnityCRC": 821208981,
+            "FileHash": "3dabc6eca6b72ecc3274e50de8e8f561",
+            "FileCRC": 1032280513,
+            "FileSize": 9829,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": [
+                6,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "BundleName": "share_assets_resources_sprites_ui.bundle",
+            "UnityCRC": 789461899,
+            "FileHash": "9b748ce0192edbf07920059d5a174527",
+            "FileCRC": 2274502201,
+            "FileSize": 5689005,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        },
+        {
+            "BundleName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle",
+            "UnityCRC": 689937049,
+            "FileHash": "e5ed464dbbda0b1e714875fe7cdb3252",
+            "FileCRC": 227416973,
+            "FileSize": 1111993,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        },
+        {
+            "BundleName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle",
+            "UnityCRC": 4270462501,
+            "FileHash": "3af8e649732e41b6a712e9f0ffc44ce3",
+            "FileCRC": 1920510715,
+            "FileSize": 234926,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        },
+        {
+            "BundleName": "share_assets_textmesh_pro_fonts.bundle",
+            "UnityCRC": 404752415,
+            "FileHash": "2a14303ad7479e31ebcca27c514ecc50",
+            "FileCRC": 1617320607,
+            "FileSize": 8839538,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": [
+                9
+            ]
+        },
+        {
+            "BundleName": "share_assets_textmesh_pro_shaders.bundle",
+            "UnityCRC": 1500038003,
+            "FileHash": "ad0de417081cf4aed006d894f0675cb1",
+            "FileCRC": 1019429993,
+            "FileSize": 23546,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        },
+        {
+            "BundleName": "share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle",
+            "UnityCRC": 4150449643,
+            "FileHash": "64bbc503fedc5400c07cd9ad259ba11d",
+            "FileCRC": 2292265684,
+            "FileSize": 3025,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": [
+                11
+            ]
+        },
+        {
+            "BundleName": "share_packages_com_unity_render-pipelines_universal_shaders.bundle",
+            "UnityCRC": 4192363024,
+            "FileHash": "990b567afaa4b0121d3c44cad59b7e7d",
+            "FileCRC": 4039182185,
+            "FileSize": 49466,
+            "Encrypted": false,
+            "Tags": [
+                "Test1"
+            ],
+            "DependBundleIDs": []
+        }
+    ]
+}

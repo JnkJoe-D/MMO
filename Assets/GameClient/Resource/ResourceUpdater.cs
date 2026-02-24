@@ -33,6 +33,7 @@ namespace Game.Resource
         public IEnumerator Run()
         {
             EventCenter.Publish(new HotUpdateCheckStartEvent());
+            EventCenter.Publish(new HotUpdateStatusEvent { StatusText = "正在检查版本更新...", Progress = 0.1f });
 
             // ── Step 1: 请求最新版本号 ────────────────────────
             var versionOp = _package.RequestPackageVersionAsync();
@@ -52,7 +53,11 @@ namespace Game.Resource
 
             // ── Step 2: 更新资源清单 ──────────────────────────
             var manifestOp = _package.UpdatePackageManifestAsync(packageVersion);
-            yield return manifestOp;
+            while (!manifestOp.IsDone)
+            {
+                EventCenter.Publish(new HotUpdateStatusEvent { StatusText = "正在更新资源清单...", Progress = 0.2f + manifestOp.Progress * 0.8f });
+                yield return null;
+            }
 
             if (manifestOp.Status != EOperationStatus.Succeed)
             {
@@ -70,20 +75,27 @@ namespace Game.Resource
             if (downloader.TotalDownloadCount == 0)
             {
                 Debug.Log("[ResourceUpdater] 无需更新，资源已是最新");
+                EventCenter.Publish(new HotUpdateStatusEvent { StatusText = "资源已是最新，准备就绪...", Progress = 1f });
                 EventCenter.Publish(new HotUpdateCompletedEvent { HasUpdate = false });
                 yield break;
             }
 
-            // 通知 UI 发现需要更新的文件（可弹出"发现新版本，是否更新"确认框）
-            EventCenter.Publish(new HotUpdateFoundEvent
+            // 通知 UI 发现需要更新的文件，并挂起等待用户确认
+            bool userConfirmed = false;
+            
+            EventCenter.Publish(new HotUpdateRequireConfirmEvent
             {
-                FileCount  = downloader.TotalDownloadCount,
-                TotalBytes = downloader.TotalDownloadBytes
+                FileCount          = downloader.TotalDownloadCount,
+                TotalDownloadBytes = downloader.TotalDownloadBytes,
+                ConfirmAction      = () => { userConfirmed = true; }
             });
 
+            // 挂起协程，直到 UI 层调用 ConfirmAction
+            yield return new WaitUntil(() => userConfirmed);
+
             // ── Step 4: 开始下载 ──────────────────────────────
-            downloader.DownloadUpdateCallback = OnDownloadProgress;
             downloader.DownloadErrorCallback  = OnDownloadError;
+            downloader.DownloadUpdateCallback = OnDownloadProgress;
             downloader.BeginDownload();
             yield return downloader;
 

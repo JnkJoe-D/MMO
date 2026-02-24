@@ -86,7 +86,7 @@ namespace Game.UI
                     {
                         if (module.IsVisible)
                         {
-                            module.ViewBase?.gameObject.SetActive(false);
+                            module.View?.gameObject.SetActive(false);
                         }
                     }
                 }
@@ -102,9 +102,9 @@ namespace Game.UI
             {
                 foreach (var module in kvp.Value)
                 {
-                    if (module.IsVisible && module.ViewBase != null)
+                    if (module.IsVisible && module.View != null)
                     {
-                        module.ViewBase.gameObject.SetActive(true);
+                        module.View.gameObject.SetActive(true);
                     }
                 }
             }
@@ -119,7 +119,7 @@ namespace Game.UI
 
             foreach (var module in list)
             {
-                module.ViewBase?.gameObject.SetActive(visible);
+                module.View?.gameObject.SetActive(visible);
             }
         }
 
@@ -155,7 +155,7 @@ namespace Game.UI
             int baseOrder = (int)layer;
             for (int i = 0; i < list.Count; i++)
             {
-                var view = list[i].ViewBase;
+                var view = list[i].View;
                 if (view != null)
                 {
                     view.SortingOrder = baseOrder + i * OrderStep;

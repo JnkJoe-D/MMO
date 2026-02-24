@@ -13,7 +13,7 @@ namespace Game.Resource
         private void Start()
         {
             EventCenter.Subscribe<HotUpdateCheckStartEvent>(OnCheckStart);
-            EventCenter.Subscribe<HotUpdateFoundEvent>(OnFoundUpdate);
+            EventCenter.Subscribe<HotUpdateRequireConfirmEvent>(OnFoundUpdate);
             EventCenter.Subscribe<HotUpdateProgressEvent>(OnProgress);
             EventCenter.Subscribe<HotUpdateCompletedEvent>(OnCompleted);
             EventCenter.Subscribe<HotUpdateFailedEvent>(OnFailed);
@@ -23,7 +23,7 @@ namespace Game.Resource
         private void OnDestroy()
         {
             EventCenter.Unsubscribe<HotUpdateCheckStartEvent>(OnCheckStart);
-            EventCenter.Unsubscribe<HotUpdateFoundEvent>(OnFoundUpdate);
+            EventCenter.Unsubscribe<HotUpdateRequireConfirmEvent>(OnFoundUpdate);
             EventCenter.Unsubscribe<HotUpdateProgressEvent>(OnProgress);
             EventCenter.Unsubscribe<HotUpdateCompletedEvent>(OnCompleted);
             EventCenter.Unsubscribe<HotUpdateFailedEvent>(OnFailed);
@@ -35,9 +35,9 @@ namespace Game.Resource
             Debug.Log("<color=cyan>[HotUpdate] 开始检查资源更新...</color>");
         }
 
-        private void OnFoundUpdate(HotUpdateFoundEvent e)
+        private void OnFoundUpdate(HotUpdateRequireConfirmEvent e)
         {
-            Debug.Log($"<color=yellow>[HotUpdate] 发现新资源！文件数: {e.FileCount}, 总大小: {e.TotalBytes / 1024f / 1024f:F2} MB</color>");
+            Debug.Log($"<color=yellow>[HotUpdate] 发现新资源！文件数: {e.FileCount}, 总大小: {e.TotalDownloadBytes / 1024f / 1024f:F2} MB</color>");
         }
 
         private void OnProgress(HotUpdateProgressEvent e)

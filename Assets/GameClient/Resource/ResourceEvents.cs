@@ -19,14 +19,25 @@ namespace Game.Resource
     public struct HotUpdateCheckStartEvent : IGameEvent { }
 
     /// <summary>
-    /// 发现需要下载的更新文件
+    /// 热更流程阶段状态事件（如检查版本、下载清单等阶段）
     /// </summary>
-    public struct HotUpdateFoundEvent : IGameEvent
+    public struct HotUpdateStatusEvent : IGameEvent
+    {
+        public string StatusText;
+        public float Progress;
+    }
+
+    /// <summary>
+    /// 发现需要下载的更新文件（挂起流程，等待用户确认）
+    /// </summary>
+    public struct HotUpdateRequireConfirmEvent : IGameEvent
     {
         /// <summary>待下载文件数量</summary>
         public int FileCount;
         /// <summary>待下载总字节数</summary>
-        public long TotalBytes;
+        public long TotalDownloadBytes;
+        /// <summary>用户确认更新的回调</summary>
+        public System.Action ConfirmAction;
     }
 
     /// <summary>
