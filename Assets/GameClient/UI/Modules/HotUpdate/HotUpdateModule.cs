@@ -227,15 +227,51 @@ namespace Game.UI.Modules.HotUpdate
 
         private void OnUpdateFailed(HotUpdateFailedEvent e)
         {
+            StopDotAnim();
+            
+            string statusMsg = "更新失败";
+            switch (e.Reason)
+            {
+                case Game.Resource.HotUpdateFailReason.InitializeFailed:
+                    statusMsg = "初始化资源系统失败";
+                    break;
+                case Game.Resource.HotUpdateFailReason.VersionRequestFailed:
+                    statusMsg = "无法连接到资源服务器";
+                    break;
+                case Game.Resource.HotUpdateFailReason.ManifestUpdateFailed:
+                    statusMsg = "检查资源更新失败";
+                    break;
+                case Game.Resource.HotUpdateFailReason.DownloadFailed:
+                    statusMsg = "下载资源文件失败";
+                    break;
+                default:
+                    statusMsg = "更新过程中发生未知错误";
+                    break;
+            }
+
+            Model.StatusText = statusMsg;
+            Model.SpeedText = "";
+            RefreshView();
+
             UIManager.Instance.Open<Common.MessageBoxModule>(new Common.MessageBoxModel
             {
                 Title = "更新失败",
-                Content = $"遇到错误：{e.Message}\n请检查网络后重试。",
+                Content = $"({statusMsg}) 遇到错误：{e.Message}\n请检查网络后重试。",
                 ConfirmText = "重试",
+                CancelText = "退出游戏",
                 OnConfirm = () => 
                 {
-                    // 触发某些重试逻辑，本示例简化
-                    Debug.Log("重试下载...");
+                    Model.StatusText = "正在重新开始检查更新";
+                    RefreshView();
+                    EventCenter.Publish(new Game.Resource.HotUpdateRetryEvent());
+                },
+                OnCancel = () => 
+                {
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+#else
+                    UnityEngine.Application.Quit();
+#endif
                 }
             });
         }

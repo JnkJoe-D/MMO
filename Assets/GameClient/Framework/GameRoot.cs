@@ -144,6 +144,7 @@ namespace Game.Framework
             _sceneManager = new SceneManager();
             _sceneManager.Initialize(this);
             Debug.Log("[GameRoot] [8/9] Scene ... OK");
+            
             yield return null;
 
             // ── 完成 ──────────────────────────────────
@@ -176,7 +177,6 @@ namespace Game.Framework
         // ────────────────────────────────────────
         // 关闭流程
         // ────────────────────────────────────────
-
         private void Shutdown()
         {
             Debug.Log("[GameRoot] ===== 游戏关闭 =====");
@@ -184,13 +184,12 @@ namespace Game.Framework
             IsInitialized = false;
 
             // 各子系统 Shutdown（顺序与初始化相反）
-            // _uiManager?.Shutdown();
-            _networkManager?.Shutdown();
-            // _luaManager?.Dispose();
-
-            _uiManager?.Shutdown();
             _sceneManager?.Shutdown();
+            
+            // _luaManager?.Dispose();
+            _uiManager?.Shutdown();
             _resourceManager?.Shutdown();
+            _networkManager?.Shutdown();
             EventCenter.ClearAll();
             GlobalPoolManager.DisposeAll();
 

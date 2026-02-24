@@ -1,7 +1,7 @@
 {
     "FileVersion": "1.0.0",
     "PackageName": "Test1",
-    "PackageVersion": "2026-02-24-594",
+    "PackageVersion": "2026-02-25-308",
     "Wrappers": [
         {
             "BundleGUID": "2ebbed31265f6c8f01635a18363b0748",
@@ -12,28 +12,48 @@
             "FileName": "assets_configs_df4513cfe3b1a7b417387ab0d59a8415.bundle"
         },
         {
-            "BundleGUID": "3bb19c098844998741c2085f4ad91f84",
-            "FileName": "assets_gameclient_ui_test_prefab_3bb19c098844998741c2085f4ad91f84.bundle"
+            "BundleGUID": "35078d3b7044288c4fd193780eabe1f3",
+            "FileName": "assets_resources_prefab_ui_panelview_35078d3b7044288c4fd193780eabe1f3.bundle"
         },
         {
-            "BundleGUID": "b8108cacb0bf1bcbcd27bcb355668123",
-            "FileName": "assets_resources_prefab_ui_panelview_b8108cacb0bf1bcbcd27bcb355668123.bundle"
+            "BundleGUID": "27c4cbf1dcd95b149177d4d4b980d2e4",
+            "FileName": "assets_resources_prefab_ui_panelview_common_27c4cbf1dcd95b149177d4d4b980d2e4.bundle"
         },
         {
-            "BundleGUID": "3dabc6eca6b72ecc3274e50de8e8f561",
-            "FileName": "assets_resources_prefab_ui_panelview_common_3dabc6eca6b72ecc3274e50de8e8f561.bundle"
+            "BundleGUID": "bf976d62809fd7db11eb55f2f5abdede",
+            "FileName": "assets_resources_prefab_ui_panelview_loading_bf976d62809fd7db11eb55f2f5abdede.bundle"
         },
         {
-            "BundleGUID": "9b748ce0192edbf07920059d5a174527",
-            "FileName": "share_assets_resources_sprites_ui_9b748ce0192edbf07920059d5a174527.bundle"
+            "BundleGUID": "6554d9c7416d171984d0e77f95dd09d3",
+            "FileName": "assets_resources_prefab_ui_panelview_login_6554d9c7416d171984d0e77f95dd09d3.bundle"
         },
         {
-            "BundleGUID": "e5ed464dbbda0b1e714875fe7cdb3252",
-            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart_e5ed464dbbda0b1e714875fe7cdb3252.bundle"
+            "BundleGUID": "a74698f92656e8421eb05eb4122babe9",
+            "FileName": "assets_resources_prefab_ui_panelview_register_a74698f92656e8421eb05eb4122babe9.bundle"
         },
         {
-            "BundleGUID": "3af8e649732e41b6a712e9f0ffc44ce3",
-            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame_3af8e649732e41b6a712e9f0ffc44ce3.bundle"
+            "BundleGUID": "cec0996245309412ae115a810589c27b",
+            "FileName": "assets_scenes_cec0996245309412ae115a810589c27b.bundle"
+        },
+        {
+            "BundleGUID": "7858284dfa7387b28535e2fcb8ce32c9",
+            "FileName": "share_assets_resources_sprites_ui_7858284dfa7387b28535e2fcb8ce32c9.bundle"
+        },
+        {
+            "BundleGUID": "5fc1664b876d8adde341235abda2b7e2",
+            "FileName": "share_assets_resources_textures_rendertexture_5fc1664b876d8adde341235abda2b7e2.bundle"
+        },
+        {
+            "BundleGUID": "f2380a7d6e2077481413724e9c1ac45b",
+            "FileName": "share_assets_resources_videos_f2380a7d6e2077481413724e9c1ac45b.bundle"
+        },
+        {
+            "BundleGUID": "9c6a5e2b414bea0b445d525c7303024c",
+            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart_9c6a5e2b414bea0b445d525c7303024c.bundle"
+        },
+        {
+            "BundleGUID": "7530ee46825f470fbecc3a383ce65973",
+            "FileName": "share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame_7530ee46825f470fbecc3a383ce65973.bundle"
         },
         {
             "BundleGUID": "2a14303ad7479e31ebcca27c514ecc50",

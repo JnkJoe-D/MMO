@@ -107,8 +107,20 @@ namespace Game.Resource
             if (config.playMode == EPlayMode.HostPlayMode && config.autoUpdate)
             {
                 // 联机模式交由 Updater 处理完整热更（对比版本、下载、加载清单）
-                var updater = new ResourceUpdater(_package, config);
-                yield return runner.StartCoroutine(updater.Run());
+                while (true)
+                {
+                    var updater = new ResourceUpdater(_package, config);
+                    yield return runner.StartCoroutine(updater.Run());
+                    
+                    if (updater.IsSuccessful) break;
+
+                    // 挂起等待热更重试事件
+                    bool requireRetry = false;
+                    Action<HotUpdateRetryEvent> onRetry = e => requireRetry = true;
+                    EventCenter.Subscribe(onRetry);
+                    yield return new WaitUntil(() => requireRetry);
+                    EventCenter.Unsubscribe(onRetry);
+                }
             }
             else
             {

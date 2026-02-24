@@ -1,20 +1,22 @@
 ManifestFileVersion: 0
-CRC: 76370034
+CRC: 4280620181
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0c2e681c947cc158b8ac275c33ae8462
+    Hash: 2fcddac695737f51b8efb44c7dd7076f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6fd61e26ac6205fabcfdeabdd5408b49
+    Hash: e7e6756b0fd983d38d02edc22c077939
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 0c2e681c947cc158b8ac275c33ae8462
+    Hash: 2fcddac695737f51b8efb44c7dd7076f
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 21
+  Script: {instanceID: 0}
+- Class: 84
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
@@ -25,11 +27,15 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: c7b8a11a07b966f47ad1bdc41ba233d1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8b231b6532d8367488b55daa8b24f3ab, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: c7b8a11a07b966f47ad1bdc41ba233d1, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 213
@@ -39,6 +45,10 @@ ClassTypes:
 - Class: 223
   Script: {instanceID: 0}
 - Class: 224
+  Script: {instanceID: 0}
+- Class: 328
+  Script: {instanceID: 0}
+- Class: 329
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.TextMeshPro
@@ -50,8 +60,11 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
+- Assets/Resources/Prefab/UI/PanelView/LoginBackgroundPanel.prefab
 - Assets/Resources/Prefab/UI/PanelView/HotUpdatePanel.prefab
 Dependencies:
 - D:/Unity/Server_Game/Bundles/StandaloneWindows64/Test1/OutputCache/share_assets_resources_sprites_ui.bundle
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/Test1/OutputCache/share_assets_resources_textures_rendertexture.bundle
+- D:/Unity/Server_Game/Bundles/StandaloneWindows64/Test1/OutputCache/share_assets_resources_videos.bundle
 - D:/Unity/Server_Game/Bundles/StandaloneWindows64/Test1/OutputCache/share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle
 - D:/Unity/Server_Game/Bundles/StandaloneWindows64/Test1/OutputCache/share_assets_textmesh_pro_fonts.bundle

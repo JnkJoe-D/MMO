@@ -20,6 +20,8 @@ namespace Game.Resource
         private readonly ResourcePackage _package;
         private readonly ResourceConfig  _config;
 
+        public bool IsSuccessful { get; private set; }
+
         public ResourceUpdater(ResourcePackage package, ResourceConfig config)
         {
             _package = package;
@@ -71,10 +73,10 @@ namespace Game.Resource
                 failedTryAgain: _config.downloadRetryCount
             );
 
-            // 无需下载直接完成
             if (downloader.TotalDownloadCount == 0)
             {
                 Debug.Log("[ResourceUpdater] 无需更新，资源已是最新");
+                IsSuccessful = true;
                 EventCenter.Publish(new HotUpdateStatusEvent { StatusText = "资源已是最新，准备就绪...", Progress = 1f });
                 EventCenter.Publish(new HotUpdateCompletedEvent { HasUpdate = false });
                 yield break;
@@ -106,6 +108,7 @@ namespace Game.Resource
             }
 
             Debug.Log("[ResourceUpdater] 热更完成！");
+            IsSuccessful = true;
             EventCenter.Publish(new HotUpdateCompletedEvent { HasUpdate = true });
         }
 

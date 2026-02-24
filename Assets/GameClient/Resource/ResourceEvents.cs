@@ -19,6 +19,11 @@ namespace Game.Resource
     public struct HotUpdateCheckStartEvent : IGameEvent { }
 
     /// <summary>
+    /// 热更重试事件
+    /// </summary>
+    public struct HotUpdateRetryEvent : IGameEvent { }
+
+    /// <summary>
     /// 热更流程阶段状态事件（如检查版本、下载清单等阶段）
     /// </summary>
     public struct HotUpdateStatusEvent : IGameEvent

@@ -16,7 +16,8 @@ namespace Game.UI
         Guide      = 4000, // 引导层（新手引导蒙版）
         Toast      = 5000, // 提示层（飘字、Tips）
         Loading    = 6000, // 加载层（Loading 转场遮罩）
-        Top        = 7000, // 最顶层（GM 工具、Debug 信息）
+        System     = 7000, // 系统层（系统弹窗）
+        Top        = 8000, // 最顶层（GM 工具、Debug 信息）
     }
 
     /// <summary>

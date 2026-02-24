@@ -8,7 +8,7 @@ namespace Game.UI.Modules.Common
     /// 通用提示弹窗模块
     /// 作为全局最高层级的弹窗，用于需要玩家强确认的场景
     /// </summary>
-    [UIPanel(ViewPrefab = "Assets/Resources/Prefab/UI/PanelView/Common/MessageBoxPanel.prefab", Layer = UILayer.Dialog)]
+    [UIPanel(ViewPrefab = "Assets/Resources/Prefab/UI/PanelView/Common/MessageBoxPanel.prefab", Layer = UILayer.System)]
     public class MessageBoxModule : UIModule<MessageBoxView, MessageBoxModel>
     {
         protected override void OnCreate()

@@ -2,104 +2,106 @@
 description: 基于 MVC 框架创建 GameClient UI 模块及微件的标准指南
 ---
 
-# 🎮 游戏 UI 模块开发指南 (UI Workflow)
+# 🎮 游戏 UI 开发指南 (UI Workflow)
 
-本指南规范了在 `GameClient` 中基于一套标准的 UGUI + MVC 表现层框架，开发 **普通界面 (Panel)**、**通用弹窗 (Widget)** 和 **内嵌元件 (Element/Item)** 的标准作业流程。
+本指南规范了在 `GameClient` 中基于标准的 UGUI + MVC 表现层框架，开发 **独立架构面板 (Panel)** 与 **内置复用微件 (Widget/Item)** 的标准作业流程。
 
 ---
 
 ## 🏗️ 1. 基本架构认知
 
-所有 UI 均按职责划分为三部分 (MVC)：
-- **[Model]**: `UIModel` 衍生类，纯数据容器，**不持有任何 Unity 相关引用**。用于面板的数据驱动防丢失以及状态记录。
-- **[View]**: `UIView` / `UIWidget` / `UIItem` 衍生类。职责是绑定预制体 (`Prefab`) 上的所有组件并初始化默认视图与表现，**不包含任何业务逻辑**。
-- **[Module] (Controller)**: `UIModuleBase` 衍生类，持有 View 和 Model。负责：
-  - 发送/接收网络 `Event` 与 `TCP/UDP` 包
-  - 注册 View 里的按钮事件并更新 Model 数据
-  - 执行 `UIManager.Instance.Open / Close` 等流转调用
+框架中所有的 UI 组件和界面严格受分为两大类，绝不混淆：
 
-> 💡 **核心原则**: Module 可以随意抛弃，只要 Model 在，UI 数据状态就永远都在。
+- **第一类：独立面板 (MVC Panel)**  
+  受 `UIManager` 全权管理（拥有独占或叠层渲染能力）。不论它是全屏的主城界面、弹出的登录小框，还是全局系统的 `MessageBox` 通知，**只要它被 UIManager 调用 Open / Close 管理，它就必须是一套完整的 MVC 三件套**（`UIModule`, `UIModel`, `UIView`）。
+
+- **第二类：嵌套微件 (UIWidget)**  
+  完全**不受** `UIManager` 管理。它们用于构成面板内部的复杂列表元素，例如背包里成百上千的**独立道具格子** (ItemView)、排行榜的一行玩家数据、或者是属性面板栏的某一块动态区域。它们只有呈现数据的能力，所有网络逻辑和交互控制都要抛回给它的宿主 (Panel Module)。
 
 ---
 
-## 🛠️ 2. 全屏/窗口面板 (Panel Module) 流程
-适用场景：主界面、登录背景、注册窗口、背包界面等。
+## 🛠️ 2. 创建独立面板 (Panel) - MVC 工作流
+*适用场景：主界面、登录背景、注册窗口、全局通知弹窗(MessageBox) 等。*
 
 // turbo-all
 
 1. **创建脚本目录**
-   在 `Assets/GameClient/UI/Modules/` 下新建功能文件夹，如 `LevelSelect`。
+   在 `Assets/GameClient/UI/Modules/` 下新建功能文件夹（如 `LevelSelect`）。
 
 2. **编写 Model**
-   创建 `LevelSelectModel.cs`，继承自 `UIModel`。声明公共属性用于存储所需数据。
+   创建 `LevelSelectModel.cs`，继承自 `UIModel`。声明公共属性用于存储纯数值状态。
    ```csharp
    using Game.UI;
    namespace Game.UI.Modules.LevelSelect {
        public class LevelSelectModel : UIModel {
            public int CurrentSelectedLevelId { get; set; } = 1;
-           // ... 其他数据
        }
    }
    ```
 
-3. **创建预制体与自动绑定 View**
-   - 在 Unity 中制作界面 `LevelSelectPanel.prefab`。根节点**必须**挂载 `Canvas`、`GraphicRaycaster` 等标准 UI 组件。
-   - 使用自定义工具 `Tools > UI > Auto Bind Window`。选中 Prefab 并生成 `LevelSelectView.cs`，保存至脚本目录。
+3. **创建预制体与自动生成 View**
+   - 在 Unity 中制作 `LevelSelectPanel.prefab`。根节点必须挂载 `Canvas`、`GraphicRaycaster` 以及默认附加上的 `UIView`。
+   - 打开自定义工具 `Tools > UI > Auto Bind Window`，选中该 Prefab 并自动生成带节点引用绑定代码的 `LevelSelectView.cs`。
 
-4. **编写 Module**
-   创建 `LevelSelectModule.cs`，并添加 `[UIPanel]` 特性声明它所在的层级 (Layer) 和关联预制体。
+4. **编写核心控制枢纽 Module**
+   创建 `LevelSelectModule.cs`。通过 `[UIPanel]` 特性声明层级 (Layer) 和所用 prefab 的读取路径（它决定了该面板在多层覆盖时的视觉遮挡表现：如 Window 层被 Dialog 层遮挡）。
    ```csharp
    using Game.UI;
    using UnityEngine;
 
    namespace Game.UI.Modules.LevelSelect {
-       [UIPanel(ViewPrefab = "Assets/.../LevelSelectPanel.prefab", Layer = UILayer.Window)]
+       // 特性指明了层级，如普通窗口为 UILayer.Window，警告弹窗为 UILayer.Dialog
+       [UIPanel(ViewPrefab = "Assets/Resources/.../LevelSelectPanel.prefab", Layer = UILayer.Window)]
        public class LevelSelectModule : UIModule<LevelSelectView, LevelSelectModel> {
            protected override void OnCreate() {
                base.OnCreate();
-               // 1. 订阅网络和本地事件
-               // 2. 将 View.xxxBtn 与自身业务逻辑作绑定
-               // 3. 将 Model 数据同步给 View
+               // 这里进行 View 按钮委托绑定、网络发包注册，并将 Model 数据推给 View 显示
            }
-
            protected override void OnRemove() {
                base.OnRemove();
-               // ! 务必解除按钮点击和事件订阅
+               // 切记注销事件！
            }
        }
    }
    ```
-   **调用方式**：`UIManager.Instance.Open<LevelSelectModule>();`
+   **调用方式**：通过 `UIManager.Instance.Open<LevelSelectModule>();` 打开，关闭调用 `Close`。
 
 ---
 
-## 📦 3. 全局微件弹窗 (Widget Module) 流程
-适用场景：系统通知框 MessageBox、跑马灯、断线重连浮窗。
+## 🧩 3. 创建嵌套微件 (Widget / Item) 工作流
+*适用场景：滚动列表格子、背包道具、血条 UI、可循环复用的图文块组合。*
 
-与 Panel 完全一致，但区别在于特性与用途：
+1. **不需要独立的目录和 Model/Module**
+   一般将这部分代码存放在业务 `Panel` 自身的目录下，或者作为公共的 Common 组件。
 
-- **特性声明**：确保其 `Layer = UILayer.Dialog` 或更高（如 `Top`）。
-- **传递参数**：Widget 在被 `Open` 时通常需要立刻呈现不同数据，此时**直接构建数据对象传入 `Open` 参数**，利用基类机制在打开瞬间初始化 Model。
+2. **继承 UIWidget 基类并声明组件**
+   不走 MVC，只直接继承 `UIWidget` 基类并挂载在对应的 Prefab 根部。使用手动拖拽连线或内部的寻址来获得引用。
+   ```csharp
+   using Game.UI;
+   using UnityEngine;
+   using UnityEngine.UI;
+   using TMPro;
 
-**调用示例**：
-```csharp
-UIManager.Instance.Open<MessageBoxModule>(new MessageBoxModel {
-    Title = "错误",
-    Content = "网络已断开"
-});
-```
-Widget 打开极快，适用于随用随弹的全局共享节点。
+   namespace Game.UI.Modules.Inventory {
+       public class InventoryItemWidget : UIWidget {
+           [SerializeField] private Image _iconBg;
+           [SerializeField] private TMP_Text _countText;
+           
+           // 交互抛出，不要在这里发包
+           public System.Action<int> OnItemClick;
 
----
+           // 从宿主 Panel 接收纯粹的展示数据
+           public void SetData(int itemId, int count, Sprite iconSprite) {
+               _countText.text = count.ToString();
+               _iconBg.sprite = iconSprite;
+           }
 
-## 🧩 4. 无 Canvas 嵌入式元件 (Element / Item) 流程
-（*注：当前框架暂未大规模集成，属前瞻性规范*）
+           public void Start() {
+               GetComponent<Button>().onClick.AddListener(() => OnItemClick?.Invoke(123)); // 示例抛出
+           }
+       }
+   }
+   ```
 
-适用场景：背包里的一个个道具格子 (ItemView)、排行榜里的一条一条玩家数据 (RankItemView)。
-
-它们**不参与** `UIManager` 的导航栈和层级调度，因此不需要层级 `Canvas`。它们是被高层 **Panel** 动态实例化在 `ScrollRect` 或 `LayoutGroup` 里的部件。
-
-### 开发规范：
-1. **轻量化基类**：创建或继承类似于 `UIItemBase<TData>` 的轻量脚本（直接挂在 Item 预制件上）。
-2. **无需 Module**：Item 没有复杂的系统业务交互能力。直接在 `UIItem` 里对外暴露一个 `SetData(Model)` 或 `Refresh()` 方法。
-3. **由 Panel 控制**：宿主 `Panel Module` 负责向后台请求包含 100 个道具的数组数据，然后在一个 Loop 循环里基于 `Item Prefab` 出生 100 个节点，并调用它们的 `SetData()`。点击某个格子时的判定，可以通过事件抛回给宿主的 `Module`。
+3. **由宿主(Panel Module)进行管理调度**
+   `UIManager` 对此类微件一无所知。创建和销毁、填数据的工作全权由掌控外部 `Panel` 列表框的那个宿主 `Module` 或 `View` 来控制。宿主可以借助 Unity 官方的对象池、或者简单地 Instantiate 数组去生成它们。

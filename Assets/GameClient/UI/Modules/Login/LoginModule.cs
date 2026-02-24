@@ -71,6 +71,8 @@ namespace Game.UI.Modules.Login
                 DeviceId = SystemInfo.deviceUniqueIdentifier
             };
 
+            // 发送网络请求前，打开全屏转圈模块
+            UIManager.Instance.Open<NetWaitModule>(new NetWaitModel() { TipMessage = "正在登录..." });
             NetworkManager.Instance.SendTcp(MsgId.Login, req);
             
             // 为了防止狂点，可以在这里把按钮置灰或显示“登录中”
@@ -79,6 +81,9 @@ namespace Game.UI.Modules.Login
 
         private void OnLoginResponse(S2C_Login response)
         {
+            // 收到任意结果，第一时间关闭转圈模块
+            UIManager.Instance.Close<NetWaitModule>();
+
             Debug.Log($"[LoginModule] 收到登录响应 Code: {response.Code}, Message: {response.Message}");
 
             if (response.Code == (int)ErrorCode.Success)
@@ -87,7 +92,20 @@ namespace Game.UI.Modules.Login
                 // 保存 Token 供断线重连使用
                 NetworkManager.Instance.SetToken(response.Token);
 
+                // 在当前业务逻辑层主动控制开启过渡加载 UI
+                UIManager.Instance.Open<Loading.LoadingModule>();
+                
+                // 为了演示效果，此处模拟请求进入大厅或正式副本场景
+                // 假设目标场景名为 "MainLobby"
+                Scene.SceneManager.Instance.ChangeScene(new Scene.SceneTransitionParams
+                {
+                    SceneName = "MainLobby", // 替换为您实际打好的地图名字
+                    RequiredAssets = new System.Collections.Generic.List<string>(), // 后续如果有依赖角色模型放这里
+                    ShowLoading = true
+                });
+
                 UIManager.Instance.Close(this);
+                UIManager.Instance.Close<LoginBackgroundModule>();
                 // 后续对接进入大厅： EventCenter.Publish(new TriggerLobbyStageEvent());
             }
             else

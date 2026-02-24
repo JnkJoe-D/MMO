@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 821208981
+CRC: 927329133
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 73c131bddf892700415910b04164b001
+    Hash: 1b8405973791120d79ba0c84429862cb
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 65a05fe94672ce244e96e057189f40db
+    Hash: ac8d24e1cd0eac750cf7b71a31929408
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 73c131bddf892700415910b04164b001
+    Hash: 1b8405973791120d79ba0c84429862cb
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -31,9 +31,11 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 4c70c8eb290a3144e95d5af814852e70, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 4c70c8eb290a3144e95d5af814852e70, type: 3}
+  Script: {fileID: 11500000, guid: c11c3dbe65e751b4b94c98d3784f2571, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 213
@@ -64,6 +66,7 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
+- Assets/Resources/Prefab/UI/PanelView/Common/NetWaitPanel.prefab
 - Assets/Resources/Prefab/UI/PanelView/Common/MessageBoxPanel.prefab
 Dependencies:
 - D:/Unity/Server_Game/Bundles/StandaloneWindows64/Test1/OutputCache/share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle

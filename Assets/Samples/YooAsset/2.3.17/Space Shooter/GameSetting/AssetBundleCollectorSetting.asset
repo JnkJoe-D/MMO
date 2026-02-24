@@ -38,14 +38,6 @@ MonoBehaviour:
         FilterRuleName: CollectPrefab
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/GameClient/UI/Test/Prefab/LoginPanel.prefab
-        CollectorGUID: 615468921ae2c0a4089a5b32cc9bae0c
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectPrefab
-        AssetTags: 
-        UserData: 
       - CollectPath: Assets/Configs
         CollectorGUID: 34cb2ce9ed66f664cb3f937696637655
         CollectorType: 0
@@ -56,6 +48,14 @@ MonoBehaviour:
         UserData: 
       - CollectPath: Assets/Resources/Prefab
         CollectorGUID: 7d77e75ba0dc1b54fae353ceec749ce3
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Scenes/MainLobby.unity
+        CollectorGUID: 430663c6d2735694799d9fa430d6e31a
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
