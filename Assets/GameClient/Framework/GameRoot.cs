@@ -43,7 +43,7 @@ namespace Game.Framework
         [SerializeField] private ResourceConfig _resourceConfig;
 
         [Header("网络配置")]
-        [SerializeField] private string _serverHost = "8.134.90.3";
+        [SerializeField] private string _serverHost = "127.0.0.1";
         [SerializeField] private int    _tcpPort    = 33333;
         [SerializeField] private int    _udpPort    = 33334;
 
@@ -101,14 +101,18 @@ namespace Game.Framework
             Debug.Log("[GameRoot] [1/9] Pool ... OK");
             yield return null;
 
-            // ── Step 2: UI 管理器 ─────────────────────
+            // ── Step 2: 核心底层服务启机 ─────────────────────
+            _networkManager = new NetworkManager();
+            _networkManager.Initialize(_serverHost, _tcpPort, _udpPort);
+            Debug.Log("[GameRoot] [2/9] Network (Prepared) ... OK");
+
             _uiManager = new UIManager();
             _uiManager.Initialize(this);
-            Debug.Log("[GameRoot] [2/9] UI ... OK");
+            Debug.Log("[GameRoot] [3/9] UI ... OK");
             yield return null;
 
             // ── Step 3: 唤起热更新界面以接收事件 ────────
-            _uiManager.Open<Game.UI.Modules.HotUpdate.HotUpdateModule>();
+            _uiManager.Open<Game.UI.Modules.HotUpdate.HotUpdateModule>();  //Resource加载
             yield return null;
 
             // ── Step 4: 资源管理器（YooAsset）────────────────
@@ -130,12 +134,11 @@ namespace Game.Framework
             Debug.Log("[GameRoot] [5/9] Config ... OK");
             yield return null;
 
-            // ── Step 6: Lua 网络 音频等 ───────────────
+            // ── Step 6: Lua 音频等 ───────────────
             Debug.Log("[GameRoot] [6/9] Lua ... (TODO: XLua)");
             
-            _networkManager = new NetworkManager();
-            _networkManager.Initialize(_serverHost, _tcpPort, _udpPort);
-            Debug.Log("[GameRoot] [7/9] Network ... OK");
+            // ── Step 7: 保留位置 ───────────────
+            Debug.Log("[GameRoot] [7/9] System Placeholder ... OK");
 
             // ── Step 8: 场景管理器 ────────────────────
             _sceneManager = new SceneManager();
@@ -149,6 +152,16 @@ namespace Game.Framework
 
             // 发布初始化完成事件，各系统可以订阅此事件做后置操作
             EventCenter.Publish(new GameInitializedEvent());
+
+            // ── Step 10: 发起网络握手与切入登录流 ──────────────────────────────────
+            Debug.Log("[GameRoot] [10/10] 流水线执行完毕，通知界面切换至连网状态...");
+            EventCenter.Publish(new GameLoginStageStartEvent());
+            
+            // 为了让玩家看清前面的文字动画稍微驻留 0.5s，也可以不加，但这里加个缓冲让画面不切太抖
+            yield return new WaitForSeconds(0.5f);
+            
+            Debug.Log("[GameRoot] 发起基于 TCP 的主服务连接...");
+            _networkManager.ConnectTcp();
         }
 
         // ────────────────────────────────────────
@@ -210,4 +223,10 @@ namespace Game.Framework
     /// 所有子系统初始化完毕后由 GameRoot 发布
     /// </summary>
     public struct GameInitializedEvent : IGameEvent { }
+    
+    /// <summary>
+    /// 游戏即将进入登录流程大阶段
+    /// 这代表前置资源完全就绪，允许热更面板或其他 UI 转场以显示“连接服务器中...”
+    /// </summary>
+    public struct GameLoginStageStartEvent : IGameEvent { }
 }

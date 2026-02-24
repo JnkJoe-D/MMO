@@ -20,7 +20,8 @@ public class UIAutoBindEditorWindow : EditorWindow
         Slider,
         Toggle,
         ScrollRect,
-        Scrollbar
+        Scrollbar,
+        VideoPlayer
     }
 
     // 绑定数据
@@ -421,6 +422,9 @@ public class UIAutoBindEditorWindow : EditorWindow
                 case ComponentType.Scrollbar:
                     component = obj.GetComponent<UnityEngine.UI.Scrollbar>();
                     break;
+                case ComponentType.VideoPlayer:
+                    component = obj.GetComponent<UnityEngine.Video.VideoPlayer>();
+                    break;
             }
 
             if (component != null)
@@ -479,7 +483,7 @@ public class UIAutoBindEditorWindow : EditorWindow
         {
             string typeName = GetComponentTypeName(data.componentType);
             string fieldName = GetValidFieldName(data.targetObject.name);
-            codeBuilder.AppendLine($"private {typeName} {fieldName};");
+            codeBuilder.AppendLine($"public {typeName} {fieldName} {{get;private set;}}");
         }
 
         codeBuilder.AppendLine();
@@ -520,6 +524,7 @@ public class UIAutoBindEditorWindow : EditorWindow
             case ComponentType.Toggle: return "Toggle";
             case ComponentType.ScrollRect: return "ScrollRect";
             case ComponentType.Scrollbar: return "Scrollbar";
+            case ComponentType.VideoPlayer: return "UnityEngine.Video.VideoPlayer";
             default: return "Component";
         }
     }

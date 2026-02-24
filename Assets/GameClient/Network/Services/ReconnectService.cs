@@ -8,7 +8,7 @@ namespace Game.Network
     /// 自动重连服务
     ///
     /// 策略：指数退避（1s → 2s → 4s → 8s → 16s → 30s 封顶）
-    /// 最大尝试次数：10 次
+    /// 最大尝试次数：3 次
     /// 重连成功后自动发送 Reconnect 请求恢复会话
     /// </summary>
     public class ReconnectService
@@ -16,7 +16,7 @@ namespace Game.Network
         // ── 配置 ────────────────────────────────
         private const float InitialDelay    = 3f;
         private const float MaxDelay        = 30f;
-        private const int   MaxAttempts     = 10;
+        private const int   MaxAttempts     = 3;
 
         // ── 状态 ────────────────────────────────
         private bool  _isReconnecting;

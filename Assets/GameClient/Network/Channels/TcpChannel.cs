@@ -94,9 +94,10 @@ namespace Game.Network
             }
             catch (Exception e)
             {
-                Debug.LogError($"[TcpChannel] 连接失败: {e.Message}");
+                Debug.LogWarning($"[TcpChannel] 连接请求被拒绝: {e.Message}");
                 Cleanup();
-                // 移除 throw，让上层决定如何处理
+                // 必须抛出异常，让上层 NetworkManager 知道连接失败以进入自动重连
+                throw;
             }
         }
 

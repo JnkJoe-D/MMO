@@ -39,6 +39,7 @@ namespace Game.UI
             {
                 if (Canvas != null)
                 {
+                    Canvas.overrideSorting = true;
                     Canvas.sortingOrder = value;
                 }
             }

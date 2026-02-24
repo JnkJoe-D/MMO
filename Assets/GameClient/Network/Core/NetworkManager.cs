@@ -90,7 +90,9 @@ namespace Game.Network
             }
             catch (Exception e)
             {
-                Debug.LogError($"[NetworkManager] TCP 连接失败: {e.Message}");
+                Debug.LogWarning($"[NetworkManager] TCP 连接尝试失败: {e.Message}");
+                // 复用断线逻辑，抛出异常并直接进入重连循环
+                OnTcpDisconnected(e.Message);
             }
         }
 

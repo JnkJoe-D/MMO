@@ -319,12 +319,13 @@ namespace Game.UI
                 yield break;
             }
 
-            // 5. 层级管理
-            _layerManager.AddToLayer(attr.Layer, module);
-
-            // 6. 注入 View 并触发生命周期
+            // 5. 注入 View 并触发生命周期
             module.Internal_Create(view);
             _openModules[moduleType] = module;
+
+            // 6. 层级管理 (只有在 View 赋值后才能算出 SortingOrder)
+            _layerManager.AddToLayer(attr.Layer, module);
+
             module.Internal_Show(data);
 
             // 7. 全屏优化
