@@ -44,19 +44,19 @@ namespace Game.Test
 
         private void Update()
         {
-            if (Input.GetKeyDown(connectKey))
+            if (UnityEngine.Input.GetKeyDown(connectKey))
             {
                 Debug.Log("[NetworkTest] 尝试连接 TCP...");
                 NetworkManager.Instance?.ConnectTcp();
             }
 
-            if (Input.GetKeyDown(disconnectKey))
+            if (UnityEngine.Input.GetKeyDown(disconnectKey))
             {
                 Debug.Log("[NetworkTest] 尝试主动断开 TCP...");
                 NetworkManager.Instance?.DisconnectTcp();
             }
 
-            if (Input.GetKeyDown(loginTestKey))
+            if (UnityEngine.Input.GetKeyDown(loginTestKey))
             {
                 // 注意：由于当前只有手写的核心消息，login.proto 还没编译，
                 // 这里只能演示发包结构，暂时无法发送真正的 C2S_Login 对象
@@ -64,13 +64,13 @@ namespace Game.Test
                 Debug.Log("[NetworkTest] 登录协议尚未编译，目前仅支持心跳测试");
             }
 
-            if (Input.GetKeyDown(uiTestKey))
+            if (UnityEngine.Input.GetKeyDown(uiTestKey))
             {
                 Debug.Log("[NetworkTest] 尝试打开测试 UI...");
             }
 
             // --- Luban 配置测试 ---
-            if (Input.GetKeyDown(KeyCode.K))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.K))
             {
                 var tables = ConfigManager.Instance.Tables;
                 if (tables != null)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.UI.Modules.Login
 {
-    [UIPanel(ViewPrefab = "Assets/Resources/Prefab/UI/PanelView/LoginBackgroundPanel.prefab", Layer = UILayer.Background, IsFullScreen = true)]
+    [UIPanel(ViewPrefab = "Assets/Resources/Prefab/UI/PanelView/LOgin/LoginBackgroundPanel.prefab", Layer = UILayer.Background, IsFullScreen = true)]
     public class LoginBackgroundModule : UIModule<LoginBackgroundView, LoginBackgroundModel>
     {
         protected override void OnCreate()

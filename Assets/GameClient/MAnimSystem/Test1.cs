@@ -48,13 +48,13 @@ public class Test1 : MonoBehaviour
     {
         // 1. 基础播放与事件演示
         // 按 Q 播放待机动画 (0.2s 过渡)
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Q))
         {
             animComponent.Play(idleClip, 0.2f);
         }
 
         // 按 E 播放攻击动画，并演示事件监听
-        if (Input.GetKeyDown(KeyCode.E))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.E))
         {
             // 播放攻击，0.1s 快切
             var state = animComponent.Play(attackClip, 0.1f);
@@ -72,7 +72,7 @@ public class Test1 : MonoBehaviour
 
         // 2. 1D 线性混合 (Linear Mixer) 演示
         // 按 R 构建并播放移动混合树
-        if (Input.GetKeyDown(KeyCode.R))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.R))
         {
             // 1. 确保 Graph 已初始化
             animComponent.InitializeGraph(); 
@@ -100,7 +100,7 @@ public class Test1 : MonoBehaviour
         
         // 3. 2D 混合 (Blend Tree 2D) 演示
         // 按 T 构建并播放自由混合树
-        if (Input.GetKeyDown(KeyCode.T))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.T))
         {
             animComponent.InitializeGraph();
             _freeformMixer = new BlendTreeState2D();
@@ -126,28 +126,28 @@ public class Test1 : MonoBehaviour
 
         // 4. 频繁切换测试 - 验证中断列表法
         // 按 F 开始频繁切换测试
-        if (Input.GetKeyDown(KeyCode.F) && !_isRapidSwitchTesting)
+        if (UnityEngine.Input.GetKeyDown(KeyCode.F) && !_isRapidSwitchTesting)
         {
             StartCoroutine(RapidSwitchTest());
         }
 
         // 5. 缓存验证测试
         // 按 G 验证状态缓存
-        if (Input.GetKeyDown(KeyCode.G))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.G))
         {
             TestStateCache();
         }
 
         // 6. 时间归一化 API 测试
         // 按 H 测试归一化时间
-        if (Input.GetKeyDown(KeyCode.H))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.H))
         {
             TestNormalizedTime();
         }
 
         // 7. 暂停/恢复测试
         // 按 P 暂停/恢复当前动画
-        if (Input.GetKeyDown(KeyCode.P))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.P))
         {
             TestPauseResume();
         }
@@ -156,35 +156,35 @@ public class Test1 : MonoBehaviour
 
         // 9. 上半身层测试（带 AvatarMask）
         // 按 U 在上半身层播放动画
-        if (Input.GetKeyDown(KeyCode.U))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.U))
         {
             TestUpperBodyLayer();
         }
 
         // 10. 叠加层测试（Additive）
         // 按 I 播放叠加动画
-        if (Input.GetKeyDown(KeyCode.I))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.I))
         {
             TestAdditiveLayer();
         }
 
         // 11. 层淡入淡出测试
         // 按 O 测试层淡入淡出
-        if (Input.GetKeyDown(KeyCode.O))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.O))
         {
             TestLayerFade();
         }
 
         // 12. 动态创建层测试
         // 按 L 测试动态创建层
-        if (Input.GetKeyDown(KeyCode.L))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.L))
         {
             TestDynamicLayerCreation();
         }
 
         // 13. 多层同时播放测试
         // 按 M 测试多层同时播放
-        if (Input.GetKeyDown(KeyCode.M))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.M))
         {
             TestMultipleLayers();
         }

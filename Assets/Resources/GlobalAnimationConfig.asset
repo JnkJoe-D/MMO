@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58de8edc0028d2d4e9a5605ab7ac377f, type: 3}
+  m_Name: GlobalAnimationConfig
+  m_EditorClassIdentifier: 
+  Entries:
+  - RoleID: 1001
+    WeaponType: 0
+    Idle: {fileID: 7400000, guid: be15fe01c6cfde84ca5d8a2ab7564098, type: 2}
+    Run: {fileID: 7400000, guid: 838e1a4d9ec832c4cb03fc6995b0e299, type: 2}
+    JumpStart: {fileID: 0}
+    FallLoop: {fileID: 0}
+    Land: {fileID: 0}

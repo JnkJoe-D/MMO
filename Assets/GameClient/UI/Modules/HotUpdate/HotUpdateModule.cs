@@ -8,7 +8,7 @@ using Game.UI.Modules.Login;
 
 namespace Game.UI.Modules.HotUpdate
 {
-    [UIPanel(ViewPrefab = "Assets/Resources/Prefab/UI/PanelView/HotUpdatePanel.prefab", Layer = UILayer.Loading, IsFullScreen = true)]
+    [UIPanel(ViewPrefab = "Assets/Resources/Prefab/UI/PanelView/HotUpdate/HotUpdatePanel.prefab", Layer = UILayer.Loading, IsFullScreen = true)]
     public class HotUpdateModule : UIModule<HotUpdateView, HotUpdateModel>
     {
         protected override void OnCreate()

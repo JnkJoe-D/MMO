@@ -1,23 +1,75 @@
 {
     "FileVersion": "1.0.0",
     "PackageName": "Test1",
-    "PackageVersion": "2026-02-23-1005",
+    "PackageVersion": "2026-02-26-949",
     "Wrappers": [
         {
-            "BundleGUID": "ee08c387fa149ee446fedc92000570c7",
-            "FileName": "assets_abassets_ee08c387fa149ee446fedc92000570c7.bundle"
+            "BundleGUID": "0e6095760d563c92df87ddde908b639f",
+            "FileName": "test1_assets_abassets_0e6095760d563c92df87ddde908b639f.bundle"
         },
         {
-            "BundleGUID": "336d3f3950b56749e5d6f9b162c97b8c",
-            "FileName": "assets_gameclient_ui_test_prefab_336d3f3950b56749e5d6f9b162c97b8c.bundle"
+            "BundleGUID": "589b1d8c3570c3f85b51d62923b59cdd",
+            "FileName": "test1_assets_configs_589b1d8c3570c3f85b51d62923b59cdd.bundle"
         },
         {
-            "BundleGUID": "64bbc503fedc5400c07cd9ad259ba11d",
-            "FileName": "share_packages_com_unity_render-pipelines_universal_runtime_materials_64bbc503fedc5400c07cd9ad259ba11d.bundle"
+            "BundleGUID": "33dd0d3fbb44bd8948cf6d8b60773e30",
+            "FileName": "test1_assets_resources_prefab_ui_panelview_common_33dd0d3fbb44bd8948cf6d8b60773e30.bundle"
         },
         {
-            "BundleGUID": "990b567afaa4b0121d3c44cad59b7e7d",
-            "FileName": "share_packages_com_unity_render-pipelines_universal_shaders_990b567afaa4b0121d3c44cad59b7e7d.bundle"
+            "BundleGUID": "cedc48359679d598226ba4dd23e47eb9",
+            "FileName": "test1_assets_resources_prefab_ui_panelview_hotupdate_cedc48359679d598226ba4dd23e47eb9.bundle"
+        },
+        {
+            "BundleGUID": "1b75aade50585cac9e7c81923ae2a2cc",
+            "FileName": "test1_assets_resources_prefab_ui_panelview_loading_1b75aade50585cac9e7c81923ae2a2cc.bundle"
+        },
+        {
+            "BundleGUID": "e3a77208b636f74bfc541d5640eec3ad",
+            "FileName": "test1_assets_resources_prefab_ui_panelview_login_e3a77208b636f74bfc541d5640eec3ad.bundle"
+        },
+        {
+            "BundleGUID": "d0942d84618af64ba26be6647551d14b",
+            "FileName": "test1_assets_resources_prefab_ui_panelview_register_d0942d84618af64ba26be6647551d14b.bundle"
+        },
+        {
+            "BundleGUID": "fe1d272f82f74f463ed44b042dc0ad10",
+            "FileName": "test1_assets_scenes_fe1d272f82f74f463ed44b042dc0ad10.bundle"
+        },
+        {
+            "BundleGUID": "ee237765401bd656a6797e590e63983b",
+            "FileName": "test1_share_assets_resources_nuoaier_ee237765401bd656a6797e590e63983b.bundle"
+        },
+        {
+            "BundleGUID": "8bdf6a6d6184862664379faede26a3df",
+            "FileName": "test1_share_assets_resources_nuoaier_texture_8bdf6a6d6184862664379faede26a3df.bundle"
+        },
+        {
+            "BundleGUID": "dd3c336d97d0c8a3f8d727d357d3994c",
+            "FileName": "test1_share_assets_resources_sprites_ui_dd3c336d97d0c8a3f8d727d357d3994c.bundle"
+        },
+        {
+            "BundleGUID": "d11e67d872cbdddbdc7ecebf0d94185c",
+            "FileName": "test1_share_assets_resources_textures_rendertexture_d11e67d872cbdddbdc7ecebf0d94185c.bundle"
+        },
+        {
+            "BundleGUID": "f369e33cabda093d00781b55fdfc3970",
+            "FileName": "test1_share_assets_resources_videos_f369e33cabda093d00781b55fdfc3970.bundle"
+        },
+        {
+            "BundleGUID": "d2a2b2bee9f1fac07cbfe63873c8e908",
+            "FileName": "test1_share_assets_textmesh_pro_fonts_d2a2b2bee9f1fac07cbfe63873c8e908.bundle"
+        },
+        {
+            "BundleGUID": "d855536341df4d6e58cf9a00c642d6db",
+            "FileName": "test1_share_assets_textmesh_pro_shaders_d855536341df4d6e58cf9a00c642d6db.bundle"
+        },
+        {
+            "BundleGUID": "beec2822d574a3739277395e636540c4",
+            "FileName": "test1_share_packages_com_unity_render-pipelines_universal_runtime_materials_beec2822d574a3739277395e636540c4.bundle"
+        },
+        {
+            "BundleGUID": "feefb41e8246508ef6aafd4a34ee9236",
+            "FileName": "test1_share_packages_com_unity_render-pipelines_universal_shaders_feefb41e8246508ef6aafd4a34ee9236.bundle"
         }
     ]
 }

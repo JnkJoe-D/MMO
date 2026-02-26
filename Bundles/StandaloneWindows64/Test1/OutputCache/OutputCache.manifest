@@ -1,75 +1,74 @@
 ManifestFileVersion: 0
-CRC: 2177528821
+CRC: 2779058113
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: assets_abassets.bundle
+      Name: test1_assets_abassets.bundle
       Dependencies:
-        Dependency_0: share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
+        Dependency_0: test1_share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
     Info_1:
-      Name: assets_configs.bundle
+      Name: test1_assets_configs.bundle
       Dependencies: {}
     Info_2:
-      Name: assets_resources_prefab_ui_panelview_common.bundle
+      Name: test1_assets_resources_prefab_ui_panelview_common.bundle
       Dependencies:
-        Dependency_0: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle
-        Dependency_1: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle
-        Dependency_2: share_assets_textmesh_pro_fonts.bundle
+        Dependency_0: test1_share_assets_resources_sprites_ui.bundle
+        Dependency_1: test1_share_assets_textmesh_pro_fonts.bundle
     Info_3:
-      Name: assets_resources_prefab_ui_panelview.bundle
+      Name: test1_assets_resources_prefab_ui_panelview_hotupdate.bundle
       Dependencies:
-        Dependency_0: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle
-        Dependency_1: share_assets_textmesh_pro_fonts.bundle
-        Dependency_2: share_assets_resources_sprites_ui.bundle
-        Dependency_3: share_assets_resources_textures_rendertexture.bundle
-        Dependency_4: share_assets_resources_videos.bundle
+        Dependency_0: test1_share_assets_resources_sprites_ui.bundle
+        Dependency_1: test1_share_assets_textmesh_pro_fonts.bundle
     Info_4:
-      Name: assets_resources_prefab_ui_panelview_loading.bundle
+      Name: test1_assets_resources_prefab_ui_panelview_loading.bundle
       Dependencies:
-        Dependency_0: share_assets_textmesh_pro_fonts.bundle
-        Dependency_1: share_assets_resources_sprites_ui.bundle
+        Dependency_0: test1_share_assets_resources_sprites_ui.bundle
+        Dependency_1: test1_share_assets_textmesh_pro_fonts.bundle
     Info_5:
-      Name: assets_resources_prefab_ui_panelview_login.bundle
+      Name: test1_assets_resources_prefab_ui_panelview_login.bundle
       Dependencies:
-        Dependency_0: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle
-        Dependency_1: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle
-        Dependency_2: share_assets_textmesh_pro_fonts.bundle
+        Dependency_0: test1_share_assets_resources_sprites_ui.bundle
+        Dependency_1: test1_share_assets_textmesh_pro_fonts.bundle
+        Dependency_2: test1_share_assets_resources_textures_rendertexture.bundle
+        Dependency_3: test1_share_assets_resources_videos.bundle
     Info_6:
-      Name: assets_resources_prefab_ui_panelview_register.bundle
+      Name: test1_assets_resources_prefab_ui_panelview_register.bundle
       Dependencies:
-        Dependency_0: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle
-        Dependency_1: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle
-        Dependency_2: share_assets_textmesh_pro_fonts.bundle
+        Dependency_0: test1_share_assets_resources_sprites_ui.bundle
+        Dependency_1: test1_share_assets_textmesh_pro_fonts.bundle
     Info_7:
-      Name: assets_scenes.bundle
+      Name: test1_assets_scenes.bundle
       Dependencies:
-        Dependency_0: share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
+        Dependency_0: test1_share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
+        Dependency_1: test1_share_assets_resources_nuoaier.bundle
     Info_8:
-      Name: share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
+      Name: test1_share_packages_com_unity_render-pipelines_universal_runtime_materials.bundle
       Dependencies:
-        Dependency_0: share_packages_com_unity_render-pipelines_universal_shaders.bundle
+        Dependency_0: test1_share_packages_com_unity_render-pipelines_universal_shaders.bundle
     Info_9:
-      Name: share_packages_com_unity_render-pipelines_universal_shaders.bundle
+      Name: test1_share_packages_com_unity_render-pipelines_universal_shaders.bundle
       Dependencies: {}
     Info_10:
-      Name: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uisprite_atlas_frame.bundle
+      Name: test1_share_assets_resources_sprites_ui.bundle
       Dependencies: {}
     Info_11:
-      Name: share_assets_samples_yooasset_2_3_17_space_shooter_gameres_uipanelart.bundle
-      Dependencies: {}
-    Info_12:
-      Name: share_assets_textmesh_pro_fonts.bundle
+      Name: test1_share_assets_textmesh_pro_fonts.bundle
       Dependencies:
-        Dependency_0: share_assets_textmesh_pro_shaders.bundle
+        Dependency_0: test1_share_assets_textmesh_pro_shaders.bundle
+    Info_12:
+      Name: test1_share_assets_textmesh_pro_shaders.bundle
+      Dependencies: {}
     Info_13:
-      Name: share_assets_textmesh_pro_shaders.bundle
+      Name: test1_share_assets_resources_textures_rendertexture.bundle
       Dependencies: {}
     Info_14:
-      Name: share_assets_resources_sprites_ui.bundle
+      Name: test1_share_assets_resources_videos.bundle
       Dependencies: {}
     Info_15:
-      Name: share_assets_resources_textures_rendertexture.bundle
-      Dependencies: {}
+      Name: test1_share_assets_resources_nuoaier.bundle
+      Dependencies:
+        Dependency_0: test1_share_packages_com_unity_render-pipelines_universal_shaders.bundle
+        Dependency_1: test1_share_assets_resources_nuoaier_texture.bundle
     Info_16:
-      Name: share_assets_resources_videos.bundle
+      Name: test1_share_assets_resources_nuoaier_texture.bundle
       Dependencies: {}

@@ -6,6 +6,7 @@ using Game.Network;
 using Game.Scene;
 using Game.UI;
 using Game.Config;
+using Game.FSM;
 
 
 namespace Game.Framework
@@ -36,6 +37,9 @@ namespace Game.Framework
         private NetworkManager  _networkManager;
         private SceneManager    _sceneManager;
         private UIManager       _uiManager;
+        private FSMManager      _fsmManager;
+        private Game.Input.InputManager _inputManager;
+        private Game.Camera.GameCameraManager _cameraManager;
         // private LuaManager _luaManager;
         // private AudioManager _audioManager;
 
@@ -74,6 +78,7 @@ namespace Game.Framework
 
             // 驱动网络管理器（主线程消息分发、心跳、重连）
             _networkManager?.Update();
+            _cameraManager?.Update(Time.deltaTime);
 
             // TODO: 驱动其他子系统
             // _luaManager?.Update();
@@ -102,13 +107,21 @@ namespace Game.Framework
             yield return null;
 
             // ── Step 2: 核心底层服务启机 ─────────────────────
+            _fsmManager = gameObject.GetComponent<FSMManager>();
+            if (_fsmManager == null)
+            {
+                _fsmManager = gameObject.AddComponent<FSMManager>();
+            }
+            _fsmManager.Initialize();
+            Debug.Log("[GameRoot] [2/11] FSM ... OK");
+
             _networkManager = new NetworkManager();
             _networkManager.Initialize(_serverHost, _tcpPort, _udpPort);
-            Debug.Log("[GameRoot] [2/9] Network (Prepared) ... OK");
+            Debug.Log("[GameRoot] [3/11] Network (Prepared) ... OK");
 
             _uiManager = new UIManager();
             _uiManager.Initialize(this);
-            Debug.Log("[GameRoot] [3/9] UI ... OK");
+            Debug.Log("[GameRoot] [4/11] UI ... OK");
             yield return null;
 
             // ── Step 3: 唤起热更新界面以接收事件 ────────
@@ -143,19 +156,28 @@ namespace Game.Framework
             // ── Step 8: 场景管理器 ────────────────────
             _sceneManager = new SceneManager();
             _sceneManager.Initialize(this);
-            Debug.Log("[GameRoot] [8/9] Scene ... OK");
+            Debug.Log("[GameRoot] [8/10] Scene ... OK");
             
-            yield return null;
+            
+            // ── Step 9: 输入管理器 ────────────────────
+            _inputManager = new Game.Input.InputManager();
+            _inputManager.Initialize();
+            Debug.Log("[GameRoot] [9/11] Input ... OK");
 
-            // ── 完成 ──────────────────────────────────
-            IsInitialized = true;
-            Debug.Log("[GameRoot] ===== 初始化完成 =====");
+            // ── Step 10: 相机管理器 ───────────────────
+            _cameraManager = new Game.Camera.GameCameraManager(); // Retained assignment to field
+            _cameraManager.Initialize();
+
+            // ── Step 11: 全局动画库 ───────────────────
+            var animConfigManager = new Game.Logic.Player.Config.AnimationConfigManager();
+            animConfigManager.Initialize();
+            Debug.Log("[GameRoot] [11/11] Animation Configs ... OK");
 
             // 发布初始化完成事件，各系统可以订阅此事件做后置操作
             EventCenter.Publish(new GameInitializedEvent());
 
-            // ── Step 10: 发起网络握手与切入登录流 ──────────────────────────────────
-            Debug.Log("[GameRoot] [10/10] 流水线执行完毕，通知界面切换至连网状态...");
+            // ── Step 12: 发起网络握手与切入登录流 ──────────────────────────────────
+            Debug.Log("[GameRoot] [12/12] 流水线执行完毕，通知界面切换至连网状态...");
             EventCenter.Publish(new GameLoginStageStartEvent());
             
             // 为了让玩家看清前面的文字动画稍微驻留 0.5s，也可以不加，但这里加个缓冲让画面不切太抖
@@ -184,7 +206,11 @@ namespace Game.Framework
             IsInitialized = false;
 
             // 各子系统 Shutdown（顺序与初始化相反）
+            Game.Logic.Player.Config.AnimationConfigManager.Instance?.Shutdown();
+            _inputManager?.Shutdown();
+            _cameraManager?.Shutdown();
             _sceneManager?.Shutdown();
+            _fsmManager?.Shutdown();
             
             // _luaManager?.Dispose();
             _uiManager?.Shutdown();

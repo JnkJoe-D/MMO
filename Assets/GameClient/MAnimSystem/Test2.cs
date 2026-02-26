@@ -22,7 +22,7 @@ public class Test2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1))
         {
             AnimState state = animComponent.Play(clip1, blendInDuration1);
             state.AddScheduledEvent(1.6999998092651368f, (_) =>
@@ -31,15 +31,15 @@ public class Test2 : MonoBehaviour
                 animComponent.Play(clip2, blendInDuration2);
             });
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha2))
         {
             animComponent.Play(clip2, blendInDuration2);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha3))
         {
             animComponent.Play(clip3, blendInDuration3);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha4))
         {
             animComponent.Play(clip4, blendInDuration4);
         }
