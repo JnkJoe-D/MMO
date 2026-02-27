@@ -16,7 +16,12 @@ MonoBehaviour:
   - RoleID: 1001
     WeaponType: 0
     Idle: {fileID: 7400000, guid: be15fe01c6cfde84ca5d8a2ab7564098, type: 2}
-    Run: {fileID: 7400000, guid: 838e1a4d9ec832c4cb03fc6995b0e299, type: 2}
+    Jog: {fileID: 7400000, guid: 838e1a4d9ec832c4cb03fc6995b0e299, type: 2}
+    JodStop: {fileID: 7400000, guid: c4a4c18fec040e24e8b2d2a40f5d8545, type: 2}
+    Dash: {fileID: 7400000, guid: bd2b25addaf01d1419e9b4ae56e0cb0f, type: 2}
+    DashStop: {fileID: 7400000, guid: cf10fc4842a90cb4a9e9d23007c9dc90, type: 2}
     JumpStart: {fileID: 0}
     FallLoop: {fileID: 0}
     Land: {fileID: 0}
+    JogStopLockTime: 0
+    DashStopLockTime: 0

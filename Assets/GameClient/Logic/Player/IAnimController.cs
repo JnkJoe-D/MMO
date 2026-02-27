@@ -14,6 +14,8 @@ namespace Game.Logic.Player
         /// </summary>
         /// <param name="clip">动画剪辑的引用</param>
         /// <param name="fadeDuration">融合渐变时间（秒）</param>
-        void PlayAnim(AnimationClip clip, float fadeDuration = 0.2f);
+        /// <param name="onFadeComplete">当底层真正的底层动画系统（如 MAnimSystem）汇报此次混越完成时触发</param>
+        /// <param name="onAnimEnd">当底层真正的动画系统汇报动作播完了触发</param>
+        void PlayAnim(AnimationClip clip, float fadeDuration = 0.2f, System.Action onFadeComplete = null, System.Action onAnimEnd = null);
     }
 }

@@ -52,22 +52,28 @@ namespace Game.FSM
         }
 
         /// <summary>
-        /// 切换状态
+        /// 切换状态 (附带准入准出协商)
         /// </summary>
-        public void ChangeState<TState>() where TState : IFSMState<T>
+        public bool ChangeState<TState>() where TState : IFSMState<T>
         {
-            if (_isPaused) return; // 冻结期间不允许内部连线切状态
+            if (_isPaused) return false; // 冻结期间不允许内部连线切状态
             
             var type = typeof(TState);
             if (!_stateCache.TryGetValue(type, out var nextState))
             {
                 Debug.LogError($"[FSM] 状态切换失败：未注册状态 {type.Name}");
-                return;
+                return false;
             }
+
+            // --- 状态准入/准出双向协商 ---
+            if (_currentState != null && !_currentState.CanExit()) return false;
+            if (!nextState.CanEnter()) return false;
 
             _currentState?.OnExit();
             _currentState = nextState;
             _currentState?.OnEnter();
+
+            return true;
         }
 
         /// <summary>

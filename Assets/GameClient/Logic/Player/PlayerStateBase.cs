@@ -16,6 +16,9 @@ namespace Game.Logic.Player
             Machine = fsm;
         }
 
+        public virtual bool CanEnter() { return true; }
+        public virtual bool CanExit() { return true; }
+
         public virtual void OnEnter() { }
 
         public virtual void OnUpdate(float deltaTime) { }

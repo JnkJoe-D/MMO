@@ -70,6 +70,19 @@ namespace Game.Input
             return _currentMoveInput.sqrMagnitude > 0.01f;
         }
 
+        public bool GetActionState(InputActionType type)
+        {
+#if ENABLE_LEGACY_INPUT_MANAGER
+            // 旧版 Input 的兜底：后续接入 New Input System 时，
+            // 只需要在这里按照 type 获取对应的 InputAction 返回 `action.IsPressed()` 即可。
+            if (type == InputActionType.Dash)
+            {
+                return UnityEngine.Input.GetKey(KeyCode.LeftShift);
+            }
+#endif
+            return false;
+        }
+
         // --- 临时为了不装配 InputSystem 也能测试而写的 Fallback 逻辑 ---
         private void Update()
         {
@@ -80,7 +93,7 @@ namespace Game.Input
             _currentMoveInput = new Vector2(h, v).normalized;
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.Space)) OnJumpStarted?.Invoke();
-            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift)) OnDashStarted?.Invoke();
+            if (UnityEngine.Input.GetKey(KeyCode.LeftShift)) OnDashStarted?.Invoke();
             if (UnityEngine.Input.GetMouseButtonDown(0)) OnBasicAttackStarted?.Invoke();
             if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1)) OnSkill1Started?.Invoke();
             if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha2)) OnSkill2Started?.Invoke();

@@ -1,29 +1,54 @@
+using Game.FSM;
 using UnityEngine;
 
 namespace Game.Logic.Player
 {
     /// <summary>
-    /// 包含所有的地面运动（Idle、Run），融合为一个状态
-    /// 它的关注点仅仅是基于摇杆算速度并播放合适的基础移动动画
+    /// 地表宏观状态类（HFSM 分层状态机的父节点容器）
+    /// 不再处理具体的跑停布尔值判断，而是将事件无条件地下发给其激活的微状态 (SubState)
     /// </summary>
     public class PlayerGroundState : PlayerStateBase
     {
-        // 移除了之前硬编码绑在这儿的 IdleClip 和 MoveClip，改为请求配置
-        public float MoveSpeed = 5.0f;
+        public float JogSpeed = 5.0f;
+        public float DashSpeed = 20.0f;
         
-        private bool _isMoving = false;
+        // --- HFSM 子状态实例 ---
+        public SubStates.GroundIdleSubState IdleState { get; private set; }
+        public SubStates.GroundJogSubState JogState { get; private set; }
+        public SubStates.GroundDashSubState DashState { get; private set; }
+        public SubStates.GroundStopSubState StopState { get; private set; }
+        
+        public SubStates.GroundSubState CurrentSubState { get; private set; }
+
+        // --- 全局地表物理硬直锁 ---
+        private float _moveLockTimer = 0f;
+        public bool IsMoveLocked => _moveLockTimer > 0;
+
+        // --- 暴露给 SubState 专用的只读基类成员上下文 ---
+        public PlayerEntity HostEntity => Entity;
+        public FSMSystem<PlayerEntity> HostMachine => Machine;
+
+        public PlayerGroundState()
+        {
+            // 在构造期装配子微状态
+            IdleState = new SubStates.GroundIdleSubState();
+            JogState = new SubStates.GroundJogSubState();
+            DashState = new SubStates.GroundDashSubState();
+            StopState = new SubStates.GroundStopSubState();
+            
+            IdleState.Initialize(this);
+            JogState.Initialize(this);
+            DashState.Initialize(this);
+            StopState.Initialize(this);
+        }
 
         public override void OnEnter()
         {
-            _isMoving = false;
+            _moveLockTimer = 0f;
             
-            // 进场默认播一次待机
-            if (Entity.CurrentAnimSet != null && Entity.CurrentAnimSet.Idle != null)
-            {
-                Entity.AnimController?.PlayAnim(Entity.CurrentAnimSet.Idle);
-            }
+            // 进场默认切入 Idle
+            ChangeSubState(IdleState);
             
-            // 订阅跳跃
             var provider = Entity.InputProvider;
             if (provider != null)
             {
@@ -33,56 +58,14 @@ namespace Game.Logic.Player
 
         public override void OnUpdate(float deltaTime)
         {
-            var provider = Entity.InputProvider;
-            if (provider == null) return;
-
-            // TODO: 未来整合地表射线检测 `if (!IsGrounded) ChangeState<PlayerAirborneState>();` 自由落体
-
-            bool hasInput = provider.HasMovementInput();
-            
-            // 动画状态切换 (使用从实体配置中拿到的动作)
-            if (hasInput && !_isMoving)
+            // 刷新本地全局硬直
+            if (_moveLockTimer > 0)
             {
-                _isMoving = true;
-                if (Entity.CurrentAnimSet != null && Entity.CurrentAnimSet.Run != null)
-                    Entity.AnimController?.PlayAnim(Entity.CurrentAnimSet.Run);
-            }
-            else if (!hasInput && _isMoving)
-            {
-                _isMoving = false;
-                if (Entity.CurrentAnimSet != null && Entity.CurrentAnimSet.Idle != null)
-                    Entity.AnimController?.PlayAnim(Entity.CurrentAnimSet.Idle);
+                _moveLockTimer -= deltaTime;
             }
 
-            // 执行移动推送
-            if (hasInput)
-            {
-                Vector2 inputDir = provider.GetMovementDirection();
-                
-                // 将 2D 摇杆输入映射到该玩家实体的视觉主前/右向上
-                Vector3 worldDir;
-                if (Entity.CameraController != null)
-                {
-                    Vector3 camForward = Entity.CameraController.GetForward();
-                    Vector3 camRight = Entity.CameraController.GetRight();
-                    worldDir = (camForward * inputDir.y + camRight * inputDir.x).normalized;
-                }
-                else
-                {
-                    // Fallback 兜底（在没有专门相机探头时直接映射到全局地平线北/东方）
-                    worldDir = new Vector3(inputDir.x, 0, inputDir.y).normalized;
-                }
-                
-                Entity.MovementController?.Move(worldDir * MoveSpeed * deltaTime);
-                Entity.MovementController?.FaceTo(worldDir);
-            }
-        }
-
-        private void HandleJump()
-        {
-            // 给物理起跳指令，然后自己甩手切给空中状态
-            // Entity.MovementController?.Jump(JumpForce);
-            Machine.ChangeState<PlayerAirborneState>();
+            // 更新当前的子业务微状态
+            CurrentSubState?.OnUpdate(deltaTime);
         }
 
         public override void OnExit()
@@ -91,6 +74,58 @@ namespace Game.Logic.Player
             {
                 Entity.InputProvider.OnJumpStarted -= HandleJump;
             }
+            
+            CurrentSubState?.OnExit();
+            CurrentSubState = null;
+        }
+
+        // --- HFSM 核心提供给子状态的能力 ---
+
+        public bool ChangeSubState(SubStates.GroundSubState newState)
+        {
+            if (CurrentSubState == newState) return false;
+
+            // --- HFSM 微状态的准入/准出协商 ---
+            if (CurrentSubState != null && !CurrentSubState.CanExit()) return false;
+            if (newState != null && !newState.CanEnter()) return false;
+
+            CurrentSubState?.OnExit();
+            CurrentSubState = newState;
+            CurrentSubState?.OnEnter();
+
+            return true;
+        }
+
+        public void SetMoveLock(float duration)
+        {
+            _moveLockTimer = duration;
+        }
+
+        public void ClearMoveLock()
+        {
+            _moveLockTimer = 0f;
+        }
+
+        /// <summary>
+        /// 提供给子类：将 2D 的手柄拉动或者 WASD 转换为考虑主相机的绝对世界朝向
+        /// </summary>
+        public Vector3 CalculateWorldDirection(Vector2 inputDir)
+        {
+            if (Entity.CameraController != null)
+            {
+                Vector3 camForward = Entity.CameraController.GetForward();
+                Vector3 camRight = Entity.CameraController.GetRight();
+                return (camForward * inputDir.y + camRight * inputDir.x).normalized;
+            }
+            else
+            {
+                return new Vector3(inputDir.x, 0, inputDir.y).normalized;
+            }
+        }
+
+        private void HandleJump()
+        {
+            Machine.ChangeState<PlayerAirborneState>();
         }
     }
 }

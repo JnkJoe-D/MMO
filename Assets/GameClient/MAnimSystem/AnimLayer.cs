@@ -341,6 +341,9 @@ namespace Game.MAnimSystem
                 ConnectState(state);
             }
 
+            // 2.5 先从淡出列表中移除即将成为目标的状态，避免目标被自己淡出
+            RemoveFromFadingStates(state);
+
             // 2. 将当前目标状态加入淡出列表（如果尚未存在）
             if (_targetState != null)
             {
@@ -417,6 +420,22 @@ namespace Game.MAnimSystem
                 FadeSpeed = fadeSpeed,
                 IsInterrupted = true
             });
+        }
+        
+        /// <summary>
+        /// 从淡出列表中移除指定状态（用于新目标排他）。
+        /// </summary>
+        /// <param name="state">要移除的状态</param>
+        private void RemoveFromFadingStates(AnimState state)
+        {
+            if (state == null) return;
+            for (int i = _fadingStates.Count - 1; i >= 0; i--)
+            {
+                if (_fadingStates[i].State == state)
+                {
+                    _fadingStates.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
@@ -530,17 +549,18 @@ namespace Game.MAnimSystem
                 _targetFadeProgress += _fadeSpeed * deltaTime;
                 _targetFadeProgress = Mathf.Clamp01(_targetFadeProgress);
 
+                float targetWeight;
                 if(BlendMode == AnimBlendMode.SmoothStep)
                 {
                     // 使用 SmoothStep 曲线调整权重
-                    _targetState.Weight = Mathf.SmoothStep(0f, 1f, _targetFadeProgress);
+                    targetWeight = Mathf.SmoothStep(0f, 1f, _targetFadeProgress);
                 }
                 else
                 {
                     // 线性过渡
-                    _targetState.Weight = _targetFadeProgress;
+                    targetWeight = _targetFadeProgress;
                 }
-                _targetState.Weight = _targetFadeProgress;
+                _targetState.Weight = targetWeight;
 
                 if (_targetFadeProgress >= 1f)
                 {
@@ -556,6 +576,13 @@ namespace Game.MAnimSystem
                 
                 // 安全检查：确保状态有效
                 if (fs.State == null)
+                {
+                    _fadingStates.RemoveAt(i);
+                    continue;
+                }
+                
+                // 目标状态排他：目标不能继续留在淡出列表里
+                if (fs.State == _targetState)
                 {
                     _fadingStates.RemoveAt(i);
                     continue;
@@ -602,38 +629,82 @@ namespace Game.MAnimSystem
         }
 
         /// <summary>
-        /// 权重归一化，确保所有状态权重之和为 1.0。
+        /// 权重归一化（强约束版）。
+        /// 目标：尽量保证每帧 Mixer 输入总权重为 1，避免出现“总权重下陷”导致参考姿态闪现。
+        /// 
+        /// 设计原则：
+        /// 1) 有目标状态时：目标权重优先，淡出状态按剩余空间（1-target）等比缩放。
+        /// 2) 无目标状态时：淡出状态整体归一到 1（兜底，不让层完全失重）。
+        /// 3) 淡出总权重过小（接近 0）时：直接将目标顶满并清理淡出残留，防止数值抖动。
         /// </summary>
-        /// <param name="totalFadeOutWeight">所有淡出状态的总权重</param>
+        /// <param name="totalFadeOutWeight">当前帧所有淡出状态的权重和（淡出循环计算得到）</param>
         private void NormalizeWeights(float totalFadeOutWeight)
         {
-            // 获取当前目标状态的实际应用权重 (已经经过 SmoothStep 处理)
-            float currentTargetWeight = _targetState != null ? _targetState.Weight : 0f;
-            
-            float totalWeight = currentTargetWeight + totalFadeOutWeight;
-
-            // 处理权重总和异常的情况
-            if (totalWeight < 0.001f)
+            // 分支 A：无目标状态
+            // 说明：理论上过渡过程应始终有 target，但在边界帧可能出现 target 为空且 fading 尚有残留。
+            // 若不兜底，这一层会临时“失重”（总权重接近 0），从而暴露参考姿态。
+            if (_targetState == null)
             {
-                // 总权重接近 0，强制将目标状态设为 1
-                if (_targetState != null)
+                if (_fadingStates.Count == 0) return;
+
+                // A1：有 fading 但总权重几乎为 0
+                // 说明：这是浮点/时序边界帧。此时均分 1.0 到所有 fading，保证总权重回到 1。
+                if (totalFadeOutWeight <= 0.001f)
                 {
-                    _targetState.Weight = 1f;
-                    // _targetFadeProgress = 1f; // 不修改进度，只修权重
+                    float evenWeight = 1f / _fadingStates.Count;
+                    for (int i = 0; i < _fadingStates.Count; i++)
+                    {
+                        _fadingStates[i].State.Weight = evenWeight;
+                    }
+                    return;
+                }
+
+                // A2：有 fading 且总权重大于阈值
+                // 说明：直接做标准归一化（每个 fading 权重乘同一缩放系数），使总和=1。
+                float fillScale = 1f / totalFadeOutWeight;
+                for (int i = 0; i < _fadingStates.Count; i++)
+                {
+                    _fadingStates[i].State.Weight *= fillScale;
                 }
                 return;
             }
+            
+            // 分支 B：有目标状态（常态）
+            // 说明：目标权重由淡入逻辑给出，这里只负责让 fading 填满“剩余空间”。
+            // 即强约束：sum(target + fading) == 1。
+            float currentTargetWeight = Mathf.Clamp01(_targetState.Weight);
 
-            if (Mathf.Abs(totalWeight - 1f) > 0.001f && totalFadeOutWeight > 0.001f)
+            // B1：没有 fading（说明过渡结束或被清理）
+            // 说明：为了消除“目标尚未顶满但 fading 已无”的空窗，直接将目标拉满到 1。
+            if (_fadingStates.Count == 0)
             {
-                // 权重总和不为 1，需要归一化
-                // 目标权重是"主导"的，我们缩放 FadeOut 权重来适配它
-                float scale = (1f - currentTargetWeight) / totalFadeOutWeight;// 使用实际权重计算剩余空间
+                _targetState.Weight = 1f;
+                return;
+            }
+
+            // B2：有 fading，但其总权重几乎为 0
+            // 说明：此时 fading 对输出贡献可忽略，保留它们只会带来数值抖动与逻辑残留。
+            // 处理：目标顶满，fading 清零并进入清理队列。
+            if (totalFadeOutWeight <= 0.001f)
+            {
+                _targetState.Weight = 1f;
                 for (int i = 0; i < _fadingStates.Count; i++)
                 {
-                    var fs = _fadingStates[i];
-                    fs.State.Weight *= scale;
+                    _fadingStates[i].State.Weight = 0f;
+                    MarkForCleanup(_fadingStates[i].State);
                 }
+                _fadingStates.Clear();
+                return;
+            }
+
+            // B3：常规过渡帧
+            // 说明：remain 是目标以外可分配空间；按 fading 当前占比等比缩放。
+            // 这样既保留 fading 间相对比例，又严格满足总和守恒。
+            float remain = Mathf.Clamp01(1f - currentTargetWeight);
+            float scale = remain / totalFadeOutWeight;
+            for (int i = 0; i < _fadingStates.Count; i++)
+            {
+                _fadingStates[i].State.Weight *= scale;
             }
         }
 

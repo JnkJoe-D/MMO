@@ -19,10 +19,21 @@ namespace Game.Logic.Player.Config
 
         [Header("基础移动表现与 Locomotion 覆盖")]
         public AnimationClip Idle;
-        public AnimationClip Run;
+        public AnimationClip Jog;
+        public AnimationClip JodStop;
+        public AnimationClip Dash;
+        public AnimationClip DashStop;
         public AnimationClip JumpStart;
         public AnimationClip FallLoop;
         public AnimationClip Land;
+
+        [Header("控制手感与硬直配置 (秒)")]
+        [Tooltip("触发跑停动作时，禁止角色推摇杆挪动的硬直时间")]
+        [Range(0,1f)]
+        public float JogStopLockTime = 0.25f;
+        [Tooltip("触发冲刺急停动作时，禁止角色推摇杆挪动的长硬直时间")]
+        [Range(0, 1f)]
+        public float DashStopLockTime = 0.5f;
     }
 
     /// <summary>

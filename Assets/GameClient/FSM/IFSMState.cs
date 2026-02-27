@@ -9,6 +9,12 @@ namespace Game.FSM
         /// <summary>被注册进状态机时的初始化</summary>
         void OnInit(FSMSystem<T> fsm);
         
+        /// <summary>能否退出当前状态</summary>
+        bool CanExit();
+        
+        /// <summary>能否进入该状态</summary>
+        bool CanEnter();
+
         /// <summary>进入状态</summary>
         void OnEnter();
         
