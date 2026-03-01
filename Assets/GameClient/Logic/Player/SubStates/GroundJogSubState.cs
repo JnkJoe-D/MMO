@@ -4,13 +4,14 @@ namespace Game.Logic.Player.SubStates
 {
     public class GroundJogSubState : GroundSubState
     {
+        private float _stateTime;
+        private bool _hasPlayedAnim;
+        private const float INPUT_BUFFER_TIME = 0.08f; // 短输入防抖阈值
+
         public override void OnEnter()
         {
-            if (_ctx.HostEntity.CurrentAnimSet != null && _ctx.HostEntity.CurrentAnimSet.Jog != null)
-            {
-                // 可以传一个固定的渐变时长，也可由配表提供，在此暂定使用 0.3f 让步态切换柔和
-                _ctx.HostEntity.AnimController?.PlayAnim(_ctx.HostEntity.CurrentAnimSet.Jog, 0.3f);
-            }
+            _stateTime = 0f;
+            _hasPlayedAnim = false;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -21,7 +22,8 @@ namespace Game.Logic.Player.SubStates
             // 1. 玩家停止推摇杆：触发由于慢跑产生的物理惯性刹车
             if (!provider.HasMovementInput())
             {
-                _ctx.StopState.SetBrakeParams(isFromDash: false, isDashStable: false);
+                _ctx.Blackboard.IsFromDash = false;
+                _ctx.Blackboard.IsDashStable = false;
                 ChangeState(_ctx.StopState);
                 return;
             }
@@ -31,6 +33,41 @@ namespace Game.Logic.Player.SubStates
             {
                 ChangeState(_ctx.DashState);
                 return;
+            }
+
+            _stateTime += deltaTime;
+            
+            // 短输入防抖：如果按压时间超过了防抖阈值，才真正开始播放起步大动作
+            if (!_hasPlayedAnim && _stateTime >= INPUT_BUFFER_TIME)
+            {
+                _hasPlayedAnim = true;
+                var startClip = _ctx.HostEntity.CurrentAnimSet?.JogStart.clip;
+                if (startClip != null)
+                {
+                    _ctx.HostEntity.AnimController?.PlayAnim(
+                        startClip, 
+                        _ctx.HostEntity.CurrentAnimSet.Jog.fadeDuration,
+                        forceResetTime: true
+                    );
+                    
+                    _ctx.HostEntity.AnimController?.AddEventToCurrentAnim(
+                        Mathf.Max(0, startClip.length - _ctx.HostEntity.CurrentAnimSet.Jog.fadeDuration), 
+                        () => 
+                        {
+                            _ctx.HostEntity.AnimController?.PlayAnim(
+                                _ctx.HostEntity.CurrentAnimSet.Jog.clip, 
+                                _ctx.HostEntity.CurrentAnimSet.Jog.fadeDuration
+                            );
+                        }
+                    );
+                }
+                else if (_ctx.HostEntity.CurrentAnimSet?.Jog.clip != null)
+                {
+                    _ctx.HostEntity.AnimController?.PlayAnim(
+                        _ctx.HostEntity.CurrentAnimSet.Jog.clip, 
+                        _ctx.HostEntity.CurrentAnimSet.Jog.fadeDuration
+                    );
+                }
             }
 
             // 3. 执行推移

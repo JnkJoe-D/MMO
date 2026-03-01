@@ -18,13 +18,14 @@ namespace Game.MAnimSystem
     /// - SetSpeed: 速度控制（用于帧同步场景）。
     /// - Evaluate: 编辑器预览专用，手动采样动画帧。
     /// </summary>
-    [RequireComponent(typeof(Animator))]
+    // [RequireComponent(typeof(Animator))]
     public class AnimComponent : MonoBehaviour
     {
+        [SerializeField]private Animator _animator;
         /// <summary>
         /// 关联的 Animator 组件。
         /// </summary>
-        public Animator Animator { get; private set; }
+        public Animator Animator => _animator;
 
         /// <summary>
         /// 管理的 PlayableGraph 实例。
@@ -72,7 +73,7 @@ namespace Game.MAnimSystem
         public void Initialize()
         {
             if (_isInitialized) return;
-            Animator = GetComponent<Animator>();
+            _animator ??= GetComponentInChildren<Animator>();
             _isInitialized = true;
         }
         private void Awake()
@@ -253,9 +254,9 @@ namespace Game.MAnimSystem
         /// <param name="clip">动画片段</param>
         /// <param name="fadeDuration">过渡时长 (秒)</param>
         /// <returns>创建并播放的 AnimState</returns>
-        public AnimState Play(AnimationClip clip, float fadeDuration)
+        public AnimState Play(AnimationClip clip, float fadeDuration = 0.25f, bool forceResetTime = false)
         {
-            return GetLayer(0).Play(clip, fadeDuration);
+            return GetLayer(0).Play(clip, fadeDuration, forceResetTime);
         }
 
         /// <summary>
@@ -265,9 +266,9 @@ namespace Game.MAnimSystem
         /// <param name="layerIndex">层索引</param>
         /// <param name="fadeDuration">过渡时长 (秒)</param>
         /// <returns>创建并播放的 AnimState</returns>
-        public AnimState Play(AnimationClip clip, int layerIndex, float fadeDuration = 0.25f)
+        public AnimState Play(AnimationClip clip, int layerIndex, float fadeDuration = 0.25f, bool forceResetTime = false)
         {
-            return GetLayer(layerIndex).Play(clip, fadeDuration);
+            return GetLayer(layerIndex).Play(clip, fadeDuration, forceResetTime);
         }
 
         /// <summary>
@@ -287,9 +288,9 @@ namespace Game.MAnimSystem
         /// <param name="state">状态节点</param>
         /// <param name="fadeDuration">过渡时长 (秒)</param>
         /// <returns>播放的状态</returns>
-        public AnimState Play(AnimState state, float fadeDuration)
+        public AnimState Play(AnimState state, float fadeDuration, bool forceResetTime = false)
         {
-            GetLayer(0).Play(state, fadeDuration);
+            GetLayer(0).Play(state, fadeDuration, forceResetTime);
             return state;
         }
 
@@ -300,9 +301,9 @@ namespace Game.MAnimSystem
         /// <param name="layerIndex">层索引</param>
         /// <param name="fadeDuration">过渡时长 (秒)</param>
         /// <returns>播放的状态</returns>
-        public AnimState Play(AnimState state, int layerIndex, float fadeDuration = 0.25f)
+        public AnimState Play(AnimState state, int layerIndex, float fadeDuration = 0.25f, bool forceResetTime = false)
         {
-            GetLayer(layerIndex).Play(state, fadeDuration);
+            GetLayer(layerIndex).Play(state, fadeDuration, forceResetTime);
             return state;
         }
 
@@ -315,7 +316,6 @@ namespace Game.MAnimSystem
         {
             Play(state, fadeDuration);
         }
-
         // --- 采样功能 (用于编辑器预览) ---
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace Game.MAnimSystem
         /// 获取当前播放的状态（基础层）。
         /// </summary>
         /// <returns>当前状态</returns>
-        public AnimState GetCurrentState()
+        public StateBase GetCurrentState()
         {
             return GetLayer(0).GetCurrentState();
         }

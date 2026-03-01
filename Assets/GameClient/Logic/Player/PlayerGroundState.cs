@@ -3,6 +3,16 @@ using UnityEngine;
 
 namespace Game.Logic.Player
 {
+    public enum DodgeType { Front, Back }
+
+    public class PlayerLocomotionBlackboard
+    {
+        public bool IsFromDash;
+        public bool IsDashStable;
+        public DodgeType CurrentDodgeType;
+        public float LastDodgeTime = -999f;
+    }
+
     /// <summary>
     /// 地表宏观状态类（HFSM 分层状态机的父节点容器）
     /// 不再处理具体的跑停布尔值判断，而是将事件无条件地下发给其激活的微状态 (SubState)
@@ -12,11 +22,15 @@ namespace Game.Logic.Player
         public float JogSpeed = 5.0f;
         public float DashSpeed = 20.0f;
         
+        // --- 共享数据黑板 ---
+        public PlayerLocomotionBlackboard Blackboard { get; private set; } = new PlayerLocomotionBlackboard();
+
         // --- HFSM 子状态实例 ---
         public SubStates.GroundIdleSubState IdleState { get; private set; }
         public SubStates.GroundJogSubState JogState { get; private set; }
         public SubStates.GroundDashSubState DashState { get; private set; }
         public SubStates.GroundStopSubState StopState { get; private set; }
+        public SubStates.GroundDodgeSubState DodgeState { get; private set; }
         
         public SubStates.GroundSubState CurrentSubState { get; private set; }
 
@@ -35,11 +49,13 @@ namespace Game.Logic.Player
             JogState = new SubStates.GroundJogSubState();
             DashState = new SubStates.GroundDashSubState();
             StopState = new SubStates.GroundStopSubState();
+            DodgeState = new SubStates.GroundDodgeSubState();
             
             IdleState.Initialize(this);
             JogState.Initialize(this);
             DashState.Initialize(this);
             StopState.Initialize(this);
+            DodgeState.Initialize(this);
         }
 
         public override void OnEnter()
@@ -53,6 +69,7 @@ namespace Game.Logic.Player
             if (provider != null)
             {
                 provider.OnJumpStarted += HandleJump;
+                provider.OnDashStarted += HandleDodge;
             }
         }
 
@@ -73,6 +90,7 @@ namespace Game.Logic.Player
             if (Entity.InputProvider != null)
             {
                 Entity.InputProvider.OnJumpStarted -= HandleJump;
+                Entity.InputProvider.OnDashStarted -= HandleDodge;
             }
             
             CurrentSubState?.OnExit();
@@ -126,6 +144,25 @@ namespace Game.Logic.Player
         private void HandleJump()
         {
             Machine.ChangeState<PlayerAirborneState>();
+        }
+
+        private void HandleDodge()
+        {
+            if (IsMoveLocked) return;
+            
+            // 防连闪与状态打断保护 (0.4秒软冷却或正处于闪避态不重入)
+            if (Time.time - Blackboard.LastDodgeTime < 0.4f || CurrentSubState == DodgeState) 
+                return;
+                
+            var provider = Entity.InputProvider;
+            if (provider == null) return;
+            
+            if (provider.HasMovementInput())
+                Blackboard.CurrentDodgeType = DodgeType.Front;
+            else
+                Blackboard.CurrentDodgeType = DodgeType.Back;
+            
+            ChangeSubState(DodgeState);
         }
     }
 }

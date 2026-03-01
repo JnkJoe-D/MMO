@@ -16,9 +16,9 @@ namespace Game.Logic.Player
             _dummyFallTimer = 0.8f; // 假装我在空中能待 0.8 秒
 
             // 优先播掉落循环，以后如果有 JumpStart / JumpUp 可以在这分段
-            if (Entity.CurrentAnimSet != null && Entity.CurrentAnimSet.FallLoop != null)
+            if (Entity.CurrentAnimSet != null && Entity.CurrentAnimSet.FallLoop.clip != null)
             {
-                Entity.AnimController?.PlayAnim(Entity.CurrentAnimSet.FallLoop);
+                Entity.AnimController?.PlayAnim(Entity.CurrentAnimSet.FallLoop.clip);
             }
         }
 
@@ -51,9 +51,9 @@ namespace Game.Logic.Player
             if (_dummyFallTimer <= 0)
             {
                 // 落地表现：如果包里有特制的轻落地、重落地砸地动作可以在这播（虽然马上会被 GroundState 的 Idle 覆盖出去，但能配合跨步融合）
-                if (Entity.CurrentAnimSet != null && Entity.CurrentAnimSet.Land != null)
+                if (Entity.CurrentAnimSet != null && Entity.CurrentAnimSet.Land.clip != null)
                 {
-                    Entity.AnimController?.PlayAnim(Entity.CurrentAnimSet.Land);
+                    Entity.AnimController?.PlayAnim(Entity.CurrentAnimSet.Land.clip);
                 }
                 
                 // 砸到地板了

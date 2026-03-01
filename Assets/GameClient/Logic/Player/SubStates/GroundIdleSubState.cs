@@ -6,9 +6,10 @@ namespace Game.Logic.Player.SubStates
     {
         public override void OnEnter()
         {
-            if (_ctx.HostEntity.CurrentAnimSet != null && _ctx.HostEntity.CurrentAnimSet.Idle != null)
+            if (_ctx.HostEntity.CurrentAnimSet != null && _ctx.HostEntity.CurrentAnimSet.Idle.clip != null)
             {
-                _ctx.HostEntity.AnimController?.PlayAnim(_ctx.HostEntity.CurrentAnimSet.Idle);
+                _ctx.HostEntity.AnimController?.PlayAnim
+                (_ctx.HostEntity.CurrentAnimSet.Idle.clip, _ctx.HostEntity.CurrentAnimSet.Idle.fadeDuration);
             }
             
             // 确保玩家松手进入 Idle 瞬间是没有硬直的

@@ -4,42 +4,36 @@ namespace Game.Logic.Player.SubStates
 {
     public class GroundStopSubState : GroundSubState
     {
-        // 从外部 FSM 流跳转时注入的刹车防抖上下文
-        private bool _isFromDash;
-        private bool _isDashStable;
-
-        public void SetBrakeParams(bool isFromDash, bool isDashStable)
-        {
-            _isFromDash = isFromDash;
-            _isDashStable = isDashStable;
-        }
-
         public override void OnEnter()
         {
             AnimationClip playClip = null;
+            float fadeDuration = 0;
             float lockTime = 0f;
 
             var animSet = _ctx.HostEntity.CurrentAnimSet;
             if (animSet != null)
             {
-                if (_isFromDash)
+                if (_ctx.Blackboard.IsFromDash)
                 {
-                    if (_isDashStable && animSet.DashStop != null)
+                    if (_ctx.Blackboard.IsDashStable && animSet.DashStop.clip != null)
                     {
-                        playClip = animSet.DashStop;
+                        playClip = animSet.DashStop.clip;
+                        fadeDuration = animSet.DashStop.fadeDuration;
                         lockTime = animSet.DashStopLockTime;
                     }
-                    else if (animSet.JodStop != null)
+                    else if (animSet.JogStop != null)
                     {
-                        playClip = animSet.JodStop;
+                        playClip = animSet.JogStop.clip;
+                        fadeDuration = animSet.JogStop.fadeDuration;
                         lockTime = animSet.JogStopLockTime;
                     }
                 }
                 else
                 {
-                    if (animSet.JodStop != null)
+                    if (animSet.JogStop != null)
                     {
-                        playClip = animSet.JodStop;
+                        playClip = animSet.JogStop.clip;
+                        fadeDuration = animSet.JogStop.fadeDuration;
                         lockTime = animSet.JogStopLockTime;
                     }
                 }
@@ -49,7 +43,7 @@ namespace Game.Logic.Player.SubStates
             {
                 // 设置推摇杆霸体保护（物理硬直）
                 _ctx.SetMoveLock(lockTime);
-                _ctx.HostEntity.AnimController?.PlayAnim(playClip, 0.2f, null, OnStopAnimFinished);
+                _ctx.HostEntity.AnimController?.PlayAnim(playClip, 0.2f, null, OnStopAnimFinished, forceResetTime: true);
             }
             else
             {

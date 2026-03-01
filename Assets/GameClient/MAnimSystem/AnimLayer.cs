@@ -181,9 +181,9 @@ namespace Game.MAnimSystem
         // --- 状态缓存 ---
 
         /// <summary>
-        /// AnimationClip 到 ClipState 的缓存映射。
+        /// AnimationClip 到 ClipState 的状态池。
         /// </summary>
-        private Dictionary<AnimationClip, ClipState> _clipStateCache = new Dictionary<AnimationClip, ClipState>();
+        private Dictionary<AnimationClip, Stack<AnimState>> _statePool = new Dictionary<AnimationClip, Stack<AnimState>>();
 
         // --- 状态清理 ---
 
@@ -322,13 +322,13 @@ namespace Game.MAnimSystem
         /// </summary>
         /// <param name="state">目标状态</param>
         /// <param name="fadeDuration">过渡时长 (秒)</param>
-        public void Play(AnimState state, float fadeDuration)
+        public void Play(AnimState state, float fadeDuration, bool forceResetTime = false)
         {
             if (state == null) return;
-            if (state == _targetState)
+            if (state == _targetState && forceResetTime)
             {
-                // 强制重置时间，实现循环/重播
-                state.Time = 0;
+                // 彻底斩断该状态的内部 Playable 联系并重建，实现同实例自身的硬重置
+                state.RebuildPlayable();
                 state.Playable.SetDone(false); // 重置播放状态
 
                 // 如果需要由 1.0 -> 1.0 的过程，这里不需要做任何淡入淡出，保持权重即可
@@ -341,7 +341,20 @@ namespace Game.MAnimSystem
                 ConnectState(state);
             }
 
-            // 2.5 先从淡出列表中移除即将成为目标的状态，避免目标被自己淡出
+            // 打捞方案：检查新状态是否原本就在淡出队列中（比如频繁切回头）
+            float salvagedWeight = 0f;
+            bool wasFading = false;
+            for (int i = _fadingStates.Count - 1; i >= 0; i--)
+            {
+                if (_fadingStates[i].State == state)
+                {
+                    salvagedWeight = _fadingStates[i].State.Weight;
+                    wasFading = true;
+                    _fadingStates.RemoveAt(i);
+                }
+            }
+            
+            // 安全机制：如果有残留同状态也一并扫清
             RemoveFromFadingStates(state);
 
             // 2. 将当前目标状态加入淡出列表（如果尚未存在）
@@ -363,17 +376,26 @@ namespace Game.MAnimSystem
             }
 
             // 4. 设置新目标状态
+            _targetState?.Clear(); //清空事件回调防止误触发
             _targetState = state;
             _fadeSpeed = 1.0f / Mathf.Max(fadeDuration, 0.001f);
-            _targetFadeProgress = 0f;
+            
+            // 将进度设置到打捞的权重线上，避免瞬间降为 0 导致 T-Pose 或突变抽搐
+            _targetFadeProgress = salvagedWeight;
 
-            // 5. 重置目标状态（从头开始播放）
-            _targetState.Time = 0;
+            // 5. 核心防抖修复：如果是在短时间内被打崩又切回来，坚决重建时间轴！
+            // 不然高频按键会不断看到第一帧的起步姿态！顺滑过渡过去即可。
+            if (!wasFading || forceResetTime)
+            {
+                _targetState.RebuildPlayable();
+            }
+            
             if (_targetState.Playable.IsValid())
             {
                 _targetState.Playable.SetDone(false);
             }
-            _targetState.Weight = 0f;
+            // 继承打捞遗产，保证这 1 帧内的骨骼混合依然平稳输出
+            _targetState.Weight = salvagedWeight;
 
             // 6. 如果是瞬间切换
             if (fadeDuration <= 0)
@@ -445,26 +467,27 @@ namespace Game.MAnimSystem
         /// <param name="clip">动画片段</param>
         /// <param name="fadeDuration">过渡时长</param>
         /// <returns>ClipState 实例</returns>
-        public ClipState Play(AnimationClip clip, float fadeDuration = 0.25f)
+        public AnimState Play(AnimationClip clip, float fadeDuration = 0.25f, bool forceResetTime = false)
         {
             if (clip == null) return null;
 
-            // 优先使用缓存
-            if (!_clipStateCache.TryGetValue(clip, out var state))
+            AnimState state = null;
+            if (_statePool.TryGetValue(clip, out var pool) && pool.Count > 0)
             {
-                state = new ClipState(clip);
-                state.Initialize(this, Graph);
-
-                // 限制缓存大小
-                if (_clipStateCache.Count >= MAX_CACHE_SIZE)
-                {
-                    CleanupOldestCachedState();
-                }
-
-                _clipStateCache[clip] = state;
+                state = pool.Pop();
+                // 重点：出池后执行重构，刷新底层 Playable 杜绝回溯
+                state.RebuildPlayable();
             }
 
-            Play(state, fadeDuration);
+            if (state == null)
+            {
+                state = new AnimState(clip);
+                state.Initialize(this, Graph);
+                // 新建的第一拍也重构一下做基准保险
+                state.RebuildPlayable();
+            }
+
+            Play(state, fadeDuration, forceResetTime);
             return state;
         }
 
@@ -485,7 +508,7 @@ namespace Game.MAnimSystem
         /// <returns>当前动画片段，无则返回 null</returns>
         public AnimationClip GetCurrentClip()
         {
-            if (_targetState is ClipState clipState)
+            if (_targetState is AnimState clipState)
             {
                 return clipState.Clip;
             }
@@ -768,65 +791,32 @@ namespace Game.MAnimSystem
         // --- 状态缓存管理 ---
 
         /// <summary>
-        /// 清除所有状态缓存。
+        /// 清除所有状态池。
         /// </summary>
         public void ClearCache()
         {
-            foreach (var kvp in _clipStateCache)
+            foreach (var kvp in _statePool)
             {
-                if (IsStateConnected(kvp.Value))
+                foreach (var state in kvp.Value)
                 {
-                    DisconnectState(kvp.Value);
-                }
-                kvp.Value.Destroy();
-            }
-            _clipStateCache.Clear();
-        }
-
-        /// <summary>
-        /// 清理最久未使用的缓存状态。
-        /// 简单实现：移除第一个非当前播放的状态。
-        /// </summary>
-        private void CleanupOldestCachedState()
-        {
-            AnimState toRemove = null;
-            AnimationClip clipToRemove = null;
-
-            foreach (var kvp in _clipStateCache)
-            {
-                if (kvp.Value != _targetState && kvp.Value.Weight < 0.001f)
-                {
-                    toRemove = kvp.Value;
-                    clipToRemove = kvp.Key;
-                    break;
+                    if (IsStateConnected(state))
+                    {
+                        DisconnectState(state);
+                    }
+                    state.Destroy();
                 }
             }
-
-            if (toRemove != null)
-            {
-                if (IsStateConnected(toRemove))
-                {
-                    DisconnectState(toRemove);
-                }
-                toRemove.Destroy();
-                _clipStateCache.Remove(clipToRemove);
-            }
+            _statePool.Clear();
         }
 
         // --- 状态清理管理 ---
 
         /// <summary>
-        /// 标记状态为待清理。
+        /// 标记状态为待清理或待回收。
         /// </summary>
         private void MarkForCleanup(AnimState state)
         {
             if (state == null) return;
-
-            // 缓存的状态不清理
-            if (state is ClipState clipState && _clipStateCache.ContainsValue(clipState))
-            {
-                return;
-            }
 
             if (!_pendingCleanup.ContainsKey(state))
             {
@@ -835,7 +825,7 @@ namespace Game.MAnimSystem
         }
 
         /// <summary>
-        /// 处理待清理状态队列。
+        /// 处理待清理状态队列 (将其推入对象池)。
         /// </summary>
         private void ProcessCleanupQueue()
         {
@@ -855,7 +845,38 @@ namespace Game.MAnimSystem
             foreach (var state in toRemove)
             {
                 _pendingCleanup.Remove(state);
-                DestroyState(state);
+
+                // 回收到池中
+                if (state != null && state.Clip != null)
+                {
+                    ReturnToPool(state);
+                }
+                else
+                {
+                    DestroyState(state);
+                }
+            }
+        }
+
+        private void ReturnToPool(AnimState clipState)
+        {
+            clipState.Pause(); 
+            clipState.Clear(); // 清理残留的回调事件
+            
+            if (!_statePool.TryGetValue(clipState.Clip, out var pool))
+            {
+                pool = new Stack<AnimState>();
+                _statePool[clipState.Clip] = pool;
+            }
+            
+            // 限制单片段的池容量上限，避免无限膨胀。超出则彻底拔根。
+            if (pool.Count >= 5) 
+            {
+                DestroyState(clipState);
+            }
+            else
+            {
+                pool.Push(clipState);
             }
         }
 

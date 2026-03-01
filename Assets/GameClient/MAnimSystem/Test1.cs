@@ -33,8 +33,6 @@ public class Test1 : MonoBehaviour
     public AvatarMask upperBodyMask;
 
     // 运行时创建的混合器状态引用
-    private LinearMixerState _moveMixer;
-    private BlendTreeState2D _freeformMixer;
 
     // 测试状态
     private bool _isRapidSwitchTesting;
@@ -70,60 +68,7 @@ public class Test1 : MonoBehaviour
             };
         }
 
-        // 2. 1D 线性混合 (Linear Mixer) 演示
-        // 按 R 构建并播放移动混合树
-        if (UnityEngine.Input.GetKeyDown(KeyCode.R))
-        {
-            // 1. 确保 Graph 已初始化
-            animComponent.InitializeGraph(); 
-            
-            // 2. 创建 1D 混合器
-            _moveMixer = new LinearMixerState();
-            _moveMixer.Initialize(null, animComponent.Graph); 
-            
-            // 3. 填充子节点 (Clip + 阈值) - 注意：阈值会自动排序
-            _moveMixer.Add(runClip, 1.0f);   // 故意乱序添加
-            _moveMixer.Add(walkClip, 0.0f);  // 内部会自动排序
-            
-            // 4. 播放这个混合器
-            animComponent.Play(_moveMixer, 0.2f);
-            
-            Debug.Log("[1D混合] 已创建移动混合树，阈值自动排序");
-        }
-
-        // 模拟参数变化：如果在播放移动混合器，则自动 ping-pong 参数来演示效果
-        if (_moveMixer != null && _moveMixer.Weight > 0)
-        {
-            // 参数在 0~1 之间往复变化
-            _moveMixer.Parameter = Mathf.PingPong(Time.time, 1f);
-        }
         
-        // 3. 2D 混合 (Blend Tree 2D) 演示
-        // 按 T 构建并播放自由混合树
-        if (UnityEngine.Input.GetKeyDown(KeyCode.T))
-        {
-            animComponent.InitializeGraph();
-            _freeformMixer = new BlendTreeState2D();
-            _freeformMixer.Initialize(null, animComponent.Graph);
-            
-            // 添加散乱的动作点
-            _freeformMixer.Add(idle2D, Vector2.zero);         // (0,0) 待机
-            _freeformMixer.Add(walkFwd, new Vector2(0, 1));   // (0,1) 向前
-            _freeformMixer.Add(walkRight, new Vector2(1, 0)); // (1,0) 向右
-            
-            animComponent.Play(_freeformMixer, 0.2f);
-            
-            Debug.Log("[2D混合] 已创建2D混合树");
-        }
-        
-        // 模拟参数变化：圆形摇杆输入
-        if (_freeformMixer != null && _freeformMixer.Weight > 0)
-        {
-             float x = Mathf.Cos(Time.time);
-             float y = Mathf.Sin(Time.time);
-             _freeformMixer.Parameter = new Vector2(x, y);
-        }
-
         // 4. 频繁切换测试 - 验证中断列表法
         // 按 F 开始频繁切换测试
         if (UnityEngine.Input.GetKeyDown(KeyCode.F) && !_isRapidSwitchTesting)
@@ -445,13 +390,6 @@ public class Test1 : MonoBehaviour
 
         Debug.Log($"[多层同时播放] 总层数: {animComponent.LayerCount}");
         Debug.Log("[多层同时播放] ✅ 测试完成 - 角色应该同时播放三个动画");
-    }
-
-    void OnDestroy()
-    {
-        // 清理混合器
-        _moveMixer?.Destroy();
-        _freeformMixer?.Destroy();
     }
 }
 }

@@ -16,6 +16,13 @@ namespace Game.Logic.Player
         /// <param name="fadeDuration">融合渐变时间（秒）</param>
         /// <param name="onFadeComplete">当底层真正的底层动画系统（如 MAnimSystem）汇报此次混越完成时触发</param>
         /// <param name="onAnimEnd">当底层真正的动画系统汇报动作播完了触发</param>
-        void PlayAnim(AnimationClip clip, float fadeDuration = 0.2f, System.Action onFadeComplete = null, System.Action onAnimEnd = null);
+        void PlayAnim(AnimationClip clip, float fadeDuration = 0.2f, System.Action onFadeComplete = null, System.Action onAnimEnd = null, bool forceResetTime = false);
+        
+        /// <summary>
+        /// 为刚刚下达播放指令的当前动画，基于其时间轴加挂自定义事件（完全隔离底层 AnimState 对象）
+        /// </summary>
+        /// <param name="time">距离动画开头的绝对时间点（秒）</param>
+        /// <param name="callback">满足时间点时的回调逻辑</param>
+        void AddEventToCurrentAnim(float time, System.Action callback);
     }
 }

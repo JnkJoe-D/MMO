@@ -1,109 +1,70 @@
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
-using System.Collections.Generic;
 
 namespace Game.MAnimSystem
 {
     /// <summary>
-    /// 所有可播放节点（Clip, Mixer, BlendTree等）的抽象基类。
-    /// 封装了 Playable 的生命周期、权重控制和时间管理。
+    /// 单个动画片段 (AnimationClip) 的状态封装。
     /// </summary>
-    public abstract class AnimState
+    public class AnimState : StateBase
     {
         /// <summary>
-        /// 底层 Playable 的缓存引用。
-        /// 提供统一的 Playable 访问接口。
-        /// 注意：子类应维护自己的具体类型 Playable 字段作为主存储。
+        /// 引用的动画片段资源。
         /// </summary>
-        protected Playable _playableCache;
+        public AnimationClip Clip { get; private set; }
 
         /// <summary>
-        /// 获取底层 Playable 对象（基类视图）。
+        /// 具体的 AnimationClipPlayable 实例。
+        /// 这是主要的数据存储，_playableCache 是其缓存副本。
         /// </summary>
-        public Playable Playable => _playableCache;
+        private AnimationClipPlayable _clipPlayable;
 
         /// <summary>
-        /// 该状态所属的动画层。
+        /// 构造一个新的 State。
         /// </summary>
-        public AnimLayer ParentLayer { get; private set; }
+        /// <param name="clip">要播放的动画片段</param>
+        private float _cachedLength;
+        private bool _cachedIsLooping;
 
         /// <summary>
-        /// 该状态在父级 Mixer 中的输入端口索引。
+        /// 构造一个新的 ClipState。
         /// </summary>
-        public int PortIndex { get; private set; } = -1;
-
-        public delegate void StateEventHandler(AnimState state);
-        /// <summary>
-        /// 播放完成事件 (当 Time >= Length 时触发)。
-        /// 注意：循环动画通常不会触发此事件，除非手动调用。
-        /// </summary>
-        public StateEventHandler OnEnd;
-
-        /// <summary>
-        /// 过渡完成事件 (当权重达到 1.0 时触发)。
-        /// 表示该状态已完全进入。
-        /// </summary>
-        public StateEventHandler OnFadeComplete;
-        /// <summary>
-        /// 自定义事件调度表，允许在特定时间点触发回调。
-        /// </summary>
-        private Dictionary<float, StateEventHandler> _scheduledEvents = new Dictionary<float, StateEventHandler>();
-
-        /// <summary>
-        /// 获取或设置该状态的权重 (0.0 ~ 1.0)。
-        /// 修改此值会直接设置到底层的 Mixer 输入端口上。
-        /// </summary>
-        public float Weight
+        /// <param name="clip">要播放的动画片段</param>
+        public AnimState(AnimationClip clip)
         {
-            get => _playableCache.IsValid() && ParentLayer != null ? ParentLayer.GetInputWeight(PortIndex) : 0f;
-            set
+            Clip = clip;
+            if (Clip != null)
             {
-                if (_playableCache.IsValid() && ParentLayer != null)
-                {
-                    ParentLayer.SetInputWeight(PortIndex, value);
-                }
+                _cachedLength = Clip.length;
+                _cachedIsLooping = Clip.isLooping;
             }
         }
 
         /// <summary>
-        /// 获取或设置播放速度。
+        /// 创建 AnimationClipPlayable。
         /// </summary>
-        public float Speed
+        protected override Playable CreatePlayable(PlayableGraph graph)
         {
-            get => _playableCache.IsValid() ? (float)_playableCache.GetSpeed() : 0f;
-            set
-            {
-                if (_playableCache.IsValid()) _playableCache.SetSpeed(value);
-            }
+            if (Clip == null) return Playable.Null;
+            _clipPlayable = AnimationClipPlayable.Create(graph, Clip);
+            return _clipPlayable;
         }
 
         /// <summary>
-        /// 获取或设置当前播放时间 (秒)。
+        /// 获取动画片段的长度。
         /// </summary>
-        public virtual float Time
-        {
-            get => _playableCache.IsValid() ? (float)_playableCache.GetTime() : 0f;
-            set
-            {
-                if (_playableCache.IsValid()) _playableCache.SetTime(value);
-            }
-        }
-
-        /// <summary>
-        /// 动画的总长度 (秒)。
-        /// </summary>
-        public abstract float Length { get; }
+        public float Length => _cachedLength;
 
         /// <summary>
         /// 是否循环播放。
         /// </summary>
-        public virtual bool IsLooping { get; set; }
+        public bool IsLooping
+        {
+            get => _cachedIsLooping;
+            set => _cachedIsLooping = value;
+        }
 
-        /// <summary>
-        /// 获取或设置归一化播放时间 (0.0 ~ 1.0)。
-        /// 表示当前播放进度占动画总长度的比例。
-        /// </summary>
         public float NormalizedTime
         {
             get
@@ -120,142 +81,23 @@ namespace Game.MAnimSystem
                 }
             }
         }
-
+        
         /// <summary>
-        /// 是否暂停播放。
-        /// 设置为 true 时速度设为 0，设置为 false 时恢复为 1。
+        /// 辅助属性：检查动画是否已播放完毕 (非循环模式且时间超过长度)。
         /// </summary>
-        public bool IsPaused
+        public bool IsDone => !IsLooping && Time >= Length;
+
+        public override void OnUpdate(float deltaTime)
         {
-            get => Speed == 0f;
-            set => Speed = value ? 0f : 1f;
-        }
-
-        /// <summary>
-        /// 暂停播放。
-        /// </summary>
-        public void Pause()
-        {
-            Speed = 0f;
-        }
-
-        /// <summary>
-        /// 恢复播放（速度设为 1）。
-        /// </summary>
-        public void Resume()
-        {
-            Speed = 1f;
-        }
-
-        /// <summary>
-        /// 初始化状态，创建 Playable 并绑定到层级。
-        /// </summary>
-        /// <param name="layer">所属的动画层</param>
-        /// <param name="graph">所属的 PlayableGraph</param>
-        public void Initialize(AnimLayer layer, PlayableGraph graph)
-        {
-            ParentLayer = layer;
-            _playableCache = CreatePlayable(graph);
-            OnInitialized();
-        }
-
-        /// <summary>
-        /// 创建底层的 Playable 实例。由子类实现具体类型 (AnimationClipPlayable, AnimationMixerPlayable 等)。
-        /// </summary>
-        /// <param name="graph">PlayableGraph</param>
-        /// <returns>创建的 Playable</returns>
-        protected abstract Playable CreatePlayable(PlayableGraph graph);
-
-        /// <summary>
-        /// 初始化完成后的回调，用于子类进行进一步设置。
-        /// </summary>
-        protected virtual void OnInitialized() { }
-
-        /// <summary>
-        /// 将此状态连接到父层的指定端口。
-        /// </summary>
-        /// <param name="portIndex">端口索引</param>
-        public void ConnectToLayer(int portIndex)
-        {
-            PortIndex = portIndex;
-            // 注意：实际的 Graph 连接逻辑由 Layer 处理，确保 Mixer 调用正确的 Connect 方法
-        }
-
-        /// <summary>
-        /// 每帧更新逻辑。
-        /// 主要用于触发事件 (如 OnEnd) 或更新自定义逻辑。
-        /// </summary>
-        /// <param name="deltaTime">时间增量</param>
-        public virtual void OnUpdate(float deltaTime)
-        {
-            // 简单的播放结束检测
-            if (!IsLooping && Length > 0 && Time >= Length)
+            base.OnUpdate(deltaTime);
+            if (IsDone)
             {
-                // 防止重复触发，通常由外部管理器处理，这里作为自检
                 if (OnEnd != null)
                 {
                     OnEnd.Invoke(this);
-                    OnEnd = null; // 触发一次后清空，避免反复触发
+                    OnEnd = null;
                 }
             }
-            
-            // 检查并触发自定义事件
-            foreach (var kvp in _scheduledEvents)
-            {
-                if (Time >= kvp.Key && kvp.Key >= Time - deltaTime) // 确保事件只触发一次
-                {
-                    kvp.Value?.Invoke(this);
-                    _scheduledEvents.Remove(kvp.Key);
-                    break;
-                }
-            }
-        }
-        public void AddScheduledEvent(float triggerTime, StateEventHandler callback)
-        {
-            if (triggerTime < 0) return; // 不允许负时间
-            if (_scheduledEvents.ContainsKey(triggerTime))
-            {
-                _scheduledEvents[triggerTime] += callback;
-            }
-            else
-            {
-                _scheduledEvents[triggerTime] = callback;
-            }
-        }
-        public void RemoveScheduledEvent(float triggerTime, StateEventHandler callback)
-        {
-            if (_scheduledEvents.ContainsKey(triggerTime))
-            {
-                _scheduledEvents[triggerTime] -= callback;
-                if (_scheduledEvents[triggerTime] == null)
-                {
-                    _scheduledEvents.Remove(triggerTime);
-                }
-            }
-        }
-        public void RemoveScheduledEvents(float triggerTime)
-        {
-            if (_scheduledEvents.ContainsKey(triggerTime))
-            {
-                _scheduledEvents.Remove(triggerTime);
-            }
-        }
-        public virtual void Clear()
-        {
-            OnEnd = null;
-            OnFadeComplete = null;
-            _scheduledEvents.Clear();
-        }
-        /// <summary>
-        /// 销毁状态，清理底层的 Playable。
-        /// </summary>
-        public virtual void Destroy()
-        {
-            if (_playableCache.IsValid())
-            {
-                _playableCache.Destroy();
-            }
-            Clear();
         }
     }
 }

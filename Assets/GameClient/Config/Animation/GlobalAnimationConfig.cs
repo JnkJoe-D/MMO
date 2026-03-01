@@ -18,14 +18,18 @@ namespace Game.Logic.Player.Config
         public int WeaponType;
 
         [Header("基础移动表现与 Locomotion 覆盖")]
-        public AnimationClip Idle;
-        public AnimationClip Jog;
-        public AnimationClip JodStop;
-        public AnimationClip Dash;
-        public AnimationClip DashStop;
-        public AnimationClip JumpStart;
-        public AnimationClip FallLoop;
-        public AnimationClip Land;
+        public AnimUnitConfig Idle;
+        public AnimUnitConfig JogStart;
+        public AnimUnitConfig Jog;
+        public AnimUnitConfig JogStop;
+        public AnimUnitConfig DashStart;
+        public AnimUnitConfig Dash;
+        public AnimUnitConfig DashStop;
+        public AnimUnitConfig DodgeFront;
+        public AnimUnitConfig DodgeBack;
+        public AnimUnitConfig JumpStart;
+        public AnimUnitConfig FallLoop;
+        public AnimUnitConfig Land;
 
         [Header("控制手感与硬直配置 (秒)")]
         [Tooltip("触发跑停动作时，禁止角色推摇杆挪动的硬直时间")]
