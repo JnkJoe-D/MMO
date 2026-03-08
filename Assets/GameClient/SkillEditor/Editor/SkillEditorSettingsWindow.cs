@@ -63,6 +63,21 @@ namespace SkillEditor.Editor
             _state.previewSpeedMultiplier = EditorGUILayout.Slider(_state.previewSpeedMultiplier, 0.1f, 3f);
 
             EditorGUILayout.Space();
+            GUILayout.Label("导出/导入设置", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(_state.DefaultExportDirectory, EditorStyles.helpBox);
+            if (GUILayout.Button("选择默认目录", GUILayout.Width(100)))
+            {
+                string path = EditorUtility.OpenFolderPanel("选择默认导出目录", _state.DefaultExportDirectory, "");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    _state.DefaultExportDirectory = path;
+                    _onSettingsChanged?.Invoke();
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
             GUILayout.Label(Lan.SettingsDefaultPreviewTargetLabel, EditorStyles.boldLabel);
             EditorGUI.BeginChangeCheck();
             GameObject currentPrefab = null;

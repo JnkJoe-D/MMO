@@ -54,6 +54,12 @@ namespace Game.Input
 
         /// <summary>基础普攻指令触发 (如 鼠标左键)</summary>
         event Action OnBasicAttackStarted;
+        /// <summary>基础普攻指令释放触发 (用于区分长按和点按)</summary>
+        event Action OnBasicAttackCanceled;
+        /// <summary>基础普攻指令长按触发 (如 鼠标左键)</summary>
+        event Action OnBasicAttackHoldStart;
+        event Action OnBasicAttackHold;
+        event Action OnBasicAttackHoldCancel;
 
         /// <summary>特殊攻击触发 (如 E)</summary>
         event Action OnSpecialAttack;

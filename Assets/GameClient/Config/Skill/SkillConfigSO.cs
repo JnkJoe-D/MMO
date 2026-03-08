@@ -1,5 +1,6 @@
 using UnityEngine;
 using SkillEditor;
+using Game.Logic.Skill.Combo;
 
 namespace Game.Logic.Skill.Config
 {
@@ -39,11 +40,9 @@ namespace Game.Logic.Skill.Config
         public float CastRange = 2f;      // 施法距离 / 索敌距离
         public bool CanBeInterrupted;     // 是否可以被硬直打断
 
-        [Header("Combo Setting (普通攻击套用)")]
-        [Tooltip("连击的下一段技能，为空则代表连段结束")]
-        public SkillConfigSO NextComboSkill;
-        [Tooltip("接收下一招指令的输入窗口期（标准化时间 0~1 或 秒数）")]
-        public Vector2 ComboInputWindow = new Vector2(0.4f, 0.8f);
+        [Header("派生与连段出口")]
+        [Tooltip("根据玩家输入的指令优先级匹配跳转栈（可配置特殊技、强化攻击、重击等派生）")]
+        public System.Collections.Generic.List<ComboTransition> OutTransitions = new System.Collections.Generic.List<ComboTransition>();
 
         [Header("Cinematic & Camera (大招特化)")]
         [Tooltip("例如大招播放时，需要实例化的虚拟相机预制体（Timeline等）")]

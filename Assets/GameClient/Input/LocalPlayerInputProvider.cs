@@ -13,6 +13,10 @@ namespace Game.Input
         public event Action OnSwitchPre;
         public event Action OnDodgeStarted;
         public event Action OnBasicAttackStarted;
+        public event Action OnBasicAttackCanceled;
+        public event Action OnBasicAttackHoldStart;
+        public event Action OnBasicAttackHold;
+        public event Action OnBasicAttackHoldCancel;
         public event Action OnSpecialAttack;
         public event Action OnUltimate;
         public event Action OnGameplayInteract;
@@ -27,6 +31,10 @@ namespace Game.Input
             // 订阅瞬发事件
             _input.GamePlay.Dodge.started += _ => OnDodgeStarted?.Invoke();
             _input.GamePlay.LightAttack.started += _ => OnBasicAttackStarted?.Invoke();
+            _input.GamePlay.LightAttack.canceled += _ => OnBasicAttackCanceled?.Invoke();
+            _input.GamePlay.LightAttackHold.started += _ => OnBasicAttackHoldStart?.Invoke();
+            _input.GamePlay.LightAttackHold.performed += _ => OnBasicAttackHold?.Invoke();
+            _input.GamePlay.LightAttackHold.canceled += _ => OnBasicAttackHoldCancel?.Invoke();
             _input.GamePlay.SpecialSkill.started += _ => OnSpecialAttack?.Invoke();
             _input.GamePlay.Ultimate.started += _ => OnUltimate?.Invoke();
             _input.GamePlay.Interact.started += _ => OnGameplayInteract?.Invoke();

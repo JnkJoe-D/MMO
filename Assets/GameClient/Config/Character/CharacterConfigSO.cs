@@ -23,12 +23,15 @@ namespace Game.Logic.Character.Config
         public LayerMask GroundLayer;     
 
         [Header("基础速度倍率")]
+        [Range(0,5f)]
         public float JogMultipier = 1f;
+        [Range(0, 5f)]
         public float DashMultipier = 1f;
+        [Range(0, 5f)]
         public float DodgeMultipier = 1f;
-        [Header("攻击速度倍率")]
+        [Header("攻击速度倍率")][Range(0,5f)]
         public float AttackMultipier = 1f;
-        [Header("技能速度倍率")]
+        [Header("技能速度倍率")][Range(0,5f)]
         public float SkillMultipier = 1f;
 
         [Header("基础动画")]

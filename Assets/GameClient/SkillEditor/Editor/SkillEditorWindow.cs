@@ -43,7 +43,9 @@ namespace SkillEditor.Editor
         [MenuItem("SkillEditor/技能编辑器")]
         public static void ShowWindow()
         {
-            SkillEditorWindow window = GetWindow<SkillEditorWindow>("技能编辑器");
+            // 尝试停靠在 Scene 视图旁边
+            System.Type[] dockTypes = new System.Type[] { typeof(SceneView) };
+            SkillEditorWindow window = GetWindow<SkillEditorWindow>("技能编辑器", dockTypes);
             window.minSize = new Vector2(800, 600);
             window.Show();
         }
@@ -148,7 +150,7 @@ namespace SkillEditor.Editor
             // 恢复 Group 选中
             if (!string.IsNullOrEmpty(selectedGroupIds))
             {
-                foreach (var group in state.currentTimeline.groups)
+                foreach (var group in state.currentTimeline.Groups)
                 {
                     if (group.groupId == selectedGroupIds)
                     {

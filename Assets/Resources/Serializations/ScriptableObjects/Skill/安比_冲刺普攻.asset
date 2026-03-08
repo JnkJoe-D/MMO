@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429a74382b9739749b6c5893828d2a4b, type: 3}
   m_Name: "\u5B89\u6BD4_\u51B2\u523A\u666E\u653B"
   m_EditorClassIdentifier: 
-  SkillID: 10005
+  SkillID: 10010
   SkillName: 
   Category: 2
   TimelineAsset: {fileID: 4900000, guid: e2a30ee70e7e4d842b52688eadb1e2b4, type: 3}
@@ -20,6 +20,11 @@ MonoBehaviour:
   MPCost: 0
   CastRange: 2
   CanBeInterrupted: 0
-  NextComboSkill: {fileID: 0}
-  ComboInputWindow: {x: 0.4, y: 0.8}
+  OutTransitions:
+  - RequiredCommand: 1
+    NextSkill: {fileID: 11400000, guid: d92d1f694208d2d4683e62dc210fbf35, type: 2}
+    ExtraConditions: []
   CinematicCameraPrefab: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

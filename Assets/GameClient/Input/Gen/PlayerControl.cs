@@ -66,6 +66,15 @@ namespace Game.Input
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""LightAttackHold"",
+                    ""type"": ""Button"",
+                    ""id"": ""416f4205-d07d-416d-8315-ced4b1ae57c7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""eba9292c-e27c-476d-a6f7-89cb1d8ba8c4"",
@@ -309,6 +318,17 @@ namespace Game.Input
                     ""action"": ""Ultimate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""236ec124-e5f4-4617-98c9-a25033dbd425"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightAttackHold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -377,6 +397,7 @@ namespace Game.Input
             m_GamePlay_Dodge = m_GamePlay.FindAction("Dodge", throwIfNotFound: true);
             m_GamePlay_Look = m_GamePlay.FindAction("Look", throwIfNotFound: true);
             m_GamePlay_LightAttack = m_GamePlay.FindAction("LightAttack", throwIfNotFound: true);
+            m_GamePlay_LightAttackHold = m_GamePlay.FindAction("LightAttackHold", throwIfNotFound: true);
             m_GamePlay_Interact = m_GamePlay.FindAction("Interact", throwIfNotFound: true);
             m_GamePlay_SwitchNext = m_GamePlay.FindAction("SwitchNext", throwIfNotFound: true);
             m_GamePlay_SwitchPre = m_GamePlay.FindAction("SwitchPre", throwIfNotFound: true);
@@ -453,6 +474,7 @@ namespace Game.Input
         private readonly InputAction m_GamePlay_Dodge;
         private readonly InputAction m_GamePlay_Look;
         private readonly InputAction m_GamePlay_LightAttack;
+        private readonly InputAction m_GamePlay_LightAttackHold;
         private readonly InputAction m_GamePlay_Interact;
         private readonly InputAction m_GamePlay_SwitchNext;
         private readonly InputAction m_GamePlay_SwitchPre;
@@ -466,6 +488,7 @@ namespace Game.Input
             public InputAction @Dodge => m_Wrapper.m_GamePlay_Dodge;
             public InputAction @Look => m_Wrapper.m_GamePlay_Look;
             public InputAction @LightAttack => m_Wrapper.m_GamePlay_LightAttack;
+            public InputAction @LightAttackHold => m_Wrapper.m_GamePlay_LightAttackHold;
             public InputAction @Interact => m_Wrapper.m_GamePlay_Interact;
             public InputAction @SwitchNext => m_Wrapper.m_GamePlay_SwitchNext;
             public InputAction @SwitchPre => m_Wrapper.m_GamePlay_SwitchPre;
@@ -492,6 +515,9 @@ namespace Game.Input
                 @LightAttack.started += instance.OnLightAttack;
                 @LightAttack.performed += instance.OnLightAttack;
                 @LightAttack.canceled += instance.OnLightAttack;
+                @LightAttackHold.started += instance.OnLightAttackHold;
+                @LightAttackHold.performed += instance.OnLightAttackHold;
+                @LightAttackHold.canceled += instance.OnLightAttackHold;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
@@ -523,6 +549,9 @@ namespace Game.Input
                 @LightAttack.started -= instance.OnLightAttack;
                 @LightAttack.performed -= instance.OnLightAttack;
                 @LightAttack.canceled -= instance.OnLightAttack;
+                @LightAttackHold.started -= instance.OnLightAttackHold;
+                @LightAttackHold.performed -= instance.OnLightAttackHold;
+                @LightAttackHold.canceled -= instance.OnLightAttackHold;
                 @Interact.started -= instance.OnInteract;
                 @Interact.performed -= instance.OnInteract;
                 @Interact.canceled -= instance.OnInteract;
@@ -653,6 +682,7 @@ namespace Game.Input
             void OnDodge(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnLightAttack(InputAction.CallbackContext context);
+            void OnLightAttackHold(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
             void OnSwitchNext(InputAction.CallbackContext context);
             void OnSwitchPre(InputAction.CallbackContext context);

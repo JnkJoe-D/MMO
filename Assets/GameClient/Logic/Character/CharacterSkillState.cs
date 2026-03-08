@@ -5,13 +5,7 @@ using UnityEngine;
 
 namespace Game.Logic.Character
 {
-    public enum BufferedInputType
-    {
-        None,
-        BasicAttack,
-        SpecialAttack,
-        Ultimate
-    }
+
 
     /// <summary>
     /// 角色的顶层层级状态：技能释放状态，接管 SkillRunner 的运行并监听按键连接
@@ -31,7 +25,7 @@ namespace Game.Logic.Character
 
         private float PRE_INPUT_INTERVAL = 0.5f;
         private SkillConfigSO currentSkill;
-
+        private bool isBasicAttackHold;
         public override void OnEnter()
         {
             _isSkillFinished = false;
@@ -41,7 +35,11 @@ namespace Game.Logic.Character
             // 监听普攻连接和时间轴发出的逻辑事件
             if (Entity.InputProvider != null)
             {
-                Entity.InputProvider.OnBasicAttackStarted += OnAttackRequest;
+                Entity.InputProvider.OnBasicAttackStarted += OnBasicAttackRequest;
+                Entity.InputProvider.OnBasicAttackCanceled += OnBasicAttackRequestCancel;
+                Entity.InputProvider.OnBasicAttackHoldStart += OnBasicAttackRequestHoldStart;
+                Entity.InputProvider.OnBasicAttackHold += OnBasicAttackRequestHold;
+                Entity.InputProvider.OnBasicAttackHoldCancel += OnBasicAttackRequestHoldCancel;
                 Entity.InputProvider.OnSpecialAttack += OnSpecialAttackRequest;
                 Entity.InputProvider.OnUltimate += OnUltimateRequest;
             }
@@ -85,9 +83,11 @@ namespace Game.Logic.Character
                     Entity.transform.forward = worldDir.normalized;
                 }
             }
-
+            Debug.Log($"<color=#0FFFFF>[Combo] PlayCurrentSkill {Entity.NextSkillToCast}</color>");
+            Debug.Log($"<color=#0FFFFF>[Combo] PlayCurrentSkill {skillConfig.TimelineAsset.name}</color>");
             _runner.Play(timeline, _context);
             currentSkill = skillConfig;
+            Debug.Log($"<color=#E2243C>PlaySkill!!!</color>");
         }
 
         private void OnReceiveTimelineEvent(string eventName)
@@ -98,9 +98,16 @@ namespace Game.Logic.Character
                 Entity.IsComboInputOpen = true;
 
                 // 如果在这之前玩家已经提前输入过了，且距离此刻不超过预输入阀值，则允许成功缓冲发招
-                if (_bufferedInput != BufferedInputType.None && (Time.time - _bufferedInputTime <= PRE_INPUT_INTERVAL))
+                if (_bufferedInput != BufferedInputType.None)
                 {
-                    TryConsumeBufferedInput();
+                    if (Time.time - _bufferedInputTime <= PRE_INPUT_INTERVAL)
+                    {
+                        TryConsumeBufferedInput();
+                    }
+                    else
+                    {
+                        _bufferedInput = BufferedInputType.None;
+                    }
                 }
             }
         }
@@ -108,48 +115,87 @@ namespace Game.Logic.Character
         private void TryConsumeBufferedInput()
         {
             var input = _bufferedInput;
-            _bufferedInput = BufferedInputType.None;
-            
-            switch (input)
+            Debug.Log($"<color=#FF8C00>[Input] TryConsumeBufferedInput() called. _bufferedInput={input}, isHold={isBasicAttackHold}</color>");
+
+            // 【核心修正】如果预输入的是单击，并且玩家此刻正**按住**按键没有松手，且当前技能**配置了长按选项**
+            if (input == BufferedInputType.BasicAttack && isBasicAttackHold)
             {
-                case BufferedInputType.BasicAttack:
-                    AdvanceCombo();
-                    break;
-                case BufferedInputType.SpecialAttack:
-                    if (Entity.Config.specialSkill != null) SwitchToSkill(Entity.Config.specialSkill);
-                    break;
-                case BufferedInputType.Ultimate:
-                    if (Entity.Config.Ultimate != null) SwitchToSkill(Entity.Config.Ultimate);
-                    break;
+                bool hasHoldTransition = currentSkill != null && currentSkill.OutTransitions != null 
+                    && currentSkill.OutTransitions.Count > 0 
+                    && currentSkill.OutTransitions.Exists(t => t.RequiredCommand == BufferedInputType.BasicAttackHold);
+
+                if (hasHoldTransition)
+                {
+                    Debug.Log($"<color=#FF8C00>[Input] TryConsumeBufferedInput() - Deferred tap! Waiting for Hold or Release.</color>");
+                    return;
+                }
             }
+
+            _bufferedInput = BufferedInputType.None;
+            TryAdvanceComboFromTransitions(input);
         }
 
-        private void OnAttackRequest()
+        private void OnBasicAttackRequest()
         {
-            // 防抖：技能刚开始的 0.1 秒内忽略任何连续输入，防止因为按键过快/双击导致的粘连
             if (Time.time - _skillStartTime < 0.1f) return;
 
-            // 只要连击窗口开了，随时按随时切
+            Debug.Log($"<color=#32CD32>[Input] OnBasicAttackRequest() (Tap Pressed). IsComboInputOpen={Entity.IsComboInputOpen}</color>");
             if (Entity.IsComboInputOpen)
             {
-                AdvanceCombo();
+                TryAdvanceComboFromTransitions(BufferedInputType.BasicAttack);
             }
             else
             {
-                // 如果窗口还没开，作为容错机制进行输入缓冲，并记录缓冲时刻
                 _bufferedInput = BufferedInputType.BasicAttack;
                 _bufferedInputTime = Time.time;
             }
         }
 
-        private void OnSpecialAttackRequest()
+        private void OnBasicAttackRequestCancel()
+        {
+            Debug.Log($"<color=#32CD32>[Input] OnBasicAttackRequestCancel() (Tap Released). _bufferedInput={_bufferedInput}, IsComboInputOpen={Entity.IsComboInputOpen}</color>");
+            if (_bufferedInput == BufferedInputType.BasicAttack)
+            {
+                if (Entity.IsComboInputOpen)
+                {
+                    TryAdvanceComboFromTransitions(BufferedInputType.BasicAttack);
+                    _bufferedInput = BufferedInputType.None; // 触发后清空
+                }
+            }
+        }
+        private void OnBasicAttackRequestHoldStart()
         {
             if (Time.time - _skillStartTime < 0.1f) return;
-            if (Entity.Config.specialSkill == null) return;
+
+            isBasicAttackHold = true;
+        }
+        private void OnBasicAttackRequestHold()
+        {
+            if (Time.time - _skillStartTime < 0.1f) return;
 
             if (Entity.IsComboInputOpen)
             {
-                SwitchToSkill(Entity.Config.specialSkill);
+                TryAdvanceComboFromTransitions(BufferedInputType.BasicAttackHold);
+                Debug.Log("<color=#DC143C>TryAdvanceComboFromTransitions</color>");
+            }
+            else
+            {
+                _bufferedInput = BufferedInputType.BasicAttackHold;
+                _bufferedInputTime = Time.time;
+                Debug.Log($"<color=#DC143C>_bufferedInput:{_bufferedInput}</color>");
+            }
+        }
+        private void OnBasicAttackRequestHoldCancel()
+        {
+            isBasicAttackHold = false;
+        }
+        private void OnSpecialAttackRequest()
+        {
+            if (Time.time - _skillStartTime < 0.1f) return;
+
+            if (Entity.IsComboInputOpen)
+            {
+                TryAdvanceComboFromTransitions(BufferedInputType.SpecialAttack);
             }
             else
             {
@@ -161,11 +207,10 @@ namespace Game.Logic.Character
         private void OnUltimateRequest()
         {
             if (Time.time - _skillStartTime < 0.1f) return;
-            if (Entity.Config.Ultimate == null) return;
 
             if (Entity.IsComboInputOpen)
             {
-                SwitchToSkill(Entity.Config.Ultimate);
+                TryAdvanceComboFromTransitions(BufferedInputType.Ultimate);
             }
             else
             {
@@ -174,65 +219,62 @@ namespace Game.Logic.Character
             }
         }
 
-        private void SwitchToSkill(Game.Logic.Skill.Config.SkillConfigSO newSkill)
+        private void TryAdvanceComboFromTransitions(BufferedInputType inputCommand)
         {
-            Entity.CurrentComboIndex = 0; // 强切技能重置连段
-            Entity.NextSkillToCast = newSkill;
-            
-            _runner.Stop();
-            _bufferedInput = BufferedInputType.None;
-            Entity.IsComboInputOpen = false;
-            PlayCurrentSkill();
-        }
-
-        private void AdvanceCombo()
-        {
-            var attacks = Entity.Config.lightAttacks;
-            if (attacks != null && attacks.Length > 0)
+            Debug.Log($"<color=#00FFFF>[Combo] TryAdvanceComboFromTransitions({inputCommand}) called.</color>");
+            if (currentSkill == null || currentSkill.OutTransitions == null || currentSkill.OutTransitions.Count == 0) 
             {
-                Entity.CurrentComboIndex++;
-                
-                // 如果当前索引超出了配置的普攻套路，进行循环，回到第一招
-                if (Entity.CurrentComboIndex >= attacks.Length)
-                {
-                    Entity.CurrentComboIndex = 0;
-                }
-
-                Entity.NextSkillToCast = attacks[Entity.CurrentComboIndex];
-                
-                // 停止当前正在播放（且已经开放打断输入）的老技能
-                _runner.Stop();
-                // 因为复用了状态，不需要走 FSM 重进，直接播即可
                 _bufferedInput = BufferedInputType.None;
-                Entity.IsComboInputOpen = false;
-                PlayCurrentSkill();
+                return;
             }
+
+            // 按列表顺序查表 (优先级向下遍历)
+            foreach (var transition in currentSkill.OutTransitions)
+            {
+                if (transition.Evaluate(inputCommand, Entity))
+                {
+                    Debug.Log($"<color=#00FFFF>[Combo] Match Found! Transitioning to {inputCommand}</color>");
+                    Debug.Log($"<color=#00FFFF>[Combo] Match Found! Transitioning to {transition.RequiredCommand}</color>");
+                    Debug.Log($"<color=#00FFFF>[Combo] Match Found! Transitioning to {transition.NextSkill?.name ?? "NULL"}</color>");
+                    // 命中！成功找到符合按键和状态的下一个招式
+                    Entity.NextSkillToCast = transition.NextSkill;
+                    Debug.Log($"<color=#00FFFF>[Combo] Match Found! Transitioning to {Entity.NextSkillToCast}</color>");
+
+                    // 清空本地缓存与输入锁
+                    _bufferedInput = BufferedInputType.None;
+                    Entity.IsComboInputOpen = false;
+                    
+                    // 因为复用了状态机，不需要走 FSM 重进，直接播即可
+                    _runner.Stop();
+                    PlayCurrentSkill();
+                    return;
+                }
+            }
+
+            // 如果遍历完发现没有匹配的派生（比如没有配特殊技分支），则清空当前错误缓冲
+            _bufferedInput = BufferedInputType.None;
         }
 
         public override void OnUpdate(float deltaTime)
         {
+            // 如果当前已经进入后摇允许连招的阶段，同时玩家输入了方向键，则允许通过移动打断当前技能的后摇
+            if (Entity.IsComboInputOpen &&_bufferedInput==BufferedInputType.None&& Entity.InputProvider != null && Entity.InputProvider.HasMovementInput())
+            {
+                if (Entity.MovementController != null && Entity.MovementController.IsGrounded)
+                    Machine.ChangeState<CharacterGroundState>();
+                else
+                    Machine.ChangeState<CharacterAirborneState>();
+                return;
+            }
             if (_isSkillFinished)
             {
-                Entity.CurrentComboIndex = 0; // 重置连段
-                
                 if (Entity.MovementController != null && Entity.MovementController.IsGrounded)
                     Machine.ChangeState<CharacterGroundState>();
                 else
                     Machine.ChangeState<CharacterAirborneState>();
                 return;
             }
-
-            // 如果当前已经进入后摇允许连招的阶段，同时玩家输入了方向键，则允许通过移动打断当前技能的后摇
-            if (Entity.IsComboInputOpen && Entity.InputProvider != null && Entity.InputProvider.HasMovementInput())
-            {
-                Entity.CurrentComboIndex = 0; // 移动打断将重置连段
-                if (Entity.MovementController != null && Entity.MovementController.IsGrounded)
-                    Machine.ChangeState<CharacterGroundState>();
-                else
-                    Machine.ChangeState<CharacterAirborneState>();
-                return;
-            }
-            if(currentSkill!=null &&_context!=null)
+            if (currentSkill!=null &&_context!=null)  //速率同步
             {
                 if(currentSkill.Category==SkillCategory.LightAttack 
                 || currentSkill.Category == SkillCategory.HeavyAttack
@@ -262,7 +304,11 @@ namespace Game.Logic.Character
             // 清理监听
             if (Entity.InputProvider != null)
             {
-                Entity.InputProvider.OnBasicAttackStarted -= OnAttackRequest;
+                Entity.InputProvider.OnBasicAttackStarted -= OnBasicAttackRequest;
+                Entity.InputProvider.OnBasicAttackCanceled -= OnBasicAttackRequestCancel;
+                Entity.InputProvider.OnBasicAttackHoldStart -= OnBasicAttackRequestHoldStart;
+                Entity.InputProvider.OnBasicAttackHold -= OnBasicAttackRequestHold;
+                Entity.InputProvider.OnBasicAttackHoldCancel -= OnBasicAttackRequestHoldCancel;
                 Entity.InputProvider.OnSpecialAttack -= OnSpecialAttackRequest;
                 Entity.InputProvider.OnUltimate -= OnUltimateRequest;
             }

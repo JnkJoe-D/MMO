@@ -1,8 +1,6 @@
 using Game.Audio;
 using Game.FSM;
 using Game.Input;
-using Game.Input;
-using Game.Logic.Skill;
 using UnityEngine;
 
 namespace Game.Logic.Character
@@ -30,7 +28,6 @@ namespace Game.Logic.Character
         // --- 技能连招与事件通讯黑板 ---
         public event System.Action<string> OnSkillTimelineEvent;
         public Game.Logic.Skill.Config.SkillConfigSO NextSkillToCast { get; set; }
-        public int CurrentComboIndex { get; set; } = 0;
         public bool IsComboInputOpen { get; set; } = false;
 
         private void Awake()
@@ -151,13 +148,11 @@ namespace Game.Logic.Character
 
                 if (isDashAttack)
                 {
-                    CurrentComboIndex = 0;
                     NextSkillToCast = Config.dashAttack;
                     StateMachine.ChangeState<CharacterSkillState>();
                 }
                 else if (Config.lightAttacks != null && Config.lightAttacks.Length > 0)
                 {
-                    CurrentComboIndex = 0;
                     NextSkillToCast = Config.lightAttacks[0];
                     StateMachine.ChangeState<CharacterSkillState>();
                 }

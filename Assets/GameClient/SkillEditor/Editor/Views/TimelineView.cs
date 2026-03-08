@@ -178,14 +178,14 @@ namespace SkillEditor.Editor
             EditorGUI.DrawRect(new Rect(0, 0, rect.width, rect.height), new Color(0.1607843f, 0.1607843f, 0.1607843f));
 
             float maxEndTime = 0;
-            if (timeline.groups != null)
+            if (timeline.Groups != null)
             {
                 float scrollOffset = state.verticalScrollOffset;
                 float viewportHeight = rect.height;
 
-                for (int i = 0; i < timeline.groups.Count; i++)
+                for (int i = 0; i < timeline.Groups.Count; i++)
                 {
-                    var group = timeline.groups[i];
+                    var group = timeline.Groups[i];
 
                     bool isGroupVisible = (yOffset + SkillEditorStyles.GROUP_HEIGHT > scrollOffset && yOffset < scrollOffset + viewportHeight);
                     if (isGroupVisible)
@@ -431,11 +431,11 @@ namespace SkillEditor.Editor
 
             float currentVirtualY = 0;
 
-            if (timeline.groups != null)
+            if (timeline.Groups != null)
             {
-                for (int i = 0; i < timeline.groups.Count; i++)
+                for (int i = 0; i < timeline.Groups.Count; i++)
                 {
-                    var group = timeline.groups[i];
+                    var group = timeline.Groups[i];
                     currentVirtualY += SkillEditorStyles.GROUP_HEIGHT;
 
                     if (!group.isCollapsed && group.tracks != null)
@@ -530,11 +530,11 @@ namespace SkillEditor.Editor
                 float vMouseY = e.mousePosition.y - SkillEditorStyles.TIME_RULER_HEIGHT + vScroll;
                 float currentVirtualY = 0;
 
-                if (timeline.groups != null)
+                if (timeline.Groups != null)
                 {
-                    for (int i = 0; i < timeline.groups.Count; i++)
+                    for (int i = 0; i < timeline.Groups.Count; i++)
                     {
-                        var group = timeline.groups[i];
+                        var group = timeline.Groups[i];
                         currentVirtualY += SkillEditorStyles.GROUP_HEIGHT;
 
                         if (!group.isCollapsed && group.tracks != null)
@@ -667,9 +667,9 @@ namespace SkillEditor.Editor
                         yOffset += SkillEditorStyles.TRACK_HEIGHT;
                     };
 
-                    if (timeline.groups != null)
+                    if (timeline.Groups != null)
                     {
-                        foreach (var group in timeline.groups)
+                        foreach (var group in timeline.Groups)
                         {
                             yOffset += SkillEditorStyles.GROUP_HEIGHT;
                             if (!group.isCollapsed && group.tracks != null)

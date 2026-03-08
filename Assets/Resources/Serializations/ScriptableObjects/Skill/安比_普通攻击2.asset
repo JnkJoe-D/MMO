@@ -20,6 +20,11 @@ MonoBehaviour:
   MPCost: 0
   CastRange: 2
   CanBeInterrupted: 1
-  NextComboSkill: {fileID: 0}
-  ComboInputWindow: {x: 0.4, y: 0.8}
+  OutTransitions:
+  - RequiredCommand: 1
+    NextSkill: {fileID: 11400000, guid: a27aaf74d907f784180fe4aaae2bf27f, type: 2}
+    ExtraConditions: []
   CinematicCameraPrefab: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

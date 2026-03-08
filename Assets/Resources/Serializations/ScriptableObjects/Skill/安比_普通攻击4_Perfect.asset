@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 429a74382b9739749b6c5893828d2a4b, type: 3}
-  m_Name: "\u5B89\u6BD4_\u666E\u901A\u653B\u51FB1"
+  m_Name: "\u5B89\u6BD4_\u666E\u901A\u653B\u51FB4_Perfect"
   m_EditorClassIdentifier: 
-  SkillID: 10001
-  SkillName: "\u5B89\u6BD4_\u666E\u901A\u653B\u51FB1"
+  SkillID: 10005
+  SkillName: 
   Category: 0
-  TimelineAsset: {fileID: 4900000, guid: 1943ee43269200c4292aadec4c64d6df, type: 3}
-  Cooldown: 0.2
+  TimelineAsset: {fileID: 4900000, guid: 8d45242b865ab6d42aa35b8127808e57, type: 3}
+  Cooldown: 2
   MPCost: 0
   CastRange: 2
   CanBeInterrupted: 1
   OutTransitions:
   - RequiredCommand: 1
-    NextSkill: {fileID: 11400000, guid: 3234c5172f27bf04ab44ccd062212689, type: 2}
+    NextSkill: {fileID: 11400000, guid: d92d1f694208d2d4683e62dc210fbf35, type: 2}
     ExtraConditions: []
   CinematicCameraPrefab: {fileID: 0}
   references:

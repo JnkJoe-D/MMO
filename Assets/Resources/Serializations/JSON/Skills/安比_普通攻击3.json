@@ -1,6 +1,4 @@
 {
-    "skillId": 0,
-    "skillName": "新技能",
     "isLoop": false,
     "groups": [
         {
@@ -42,6 +40,9 @@
                 },
                 {
                     "rid": 1004
+                },
+                {
+                    "rid": 1005
                 }
             ]
         },
@@ -53,7 +54,7 @@
             "isLocked": false,
             "tracks": [
                 {
-                    "rid": 1005
+                    "rid": 1006
                 }
             ]
         }
@@ -79,10 +80,10 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1006
+                            "rid": 1007
                         },
                         {
-                            "rid": 1007
+                            "rid": 1008
                         }
                     ],
                     "isMasterTrack": true,
@@ -116,7 +117,7 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1008
+                            "rid": 1009
                         }
                     ]
                 }
@@ -139,13 +140,36 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1009
+                            "rid": 1010
                         }
                     ]
                 }
             },
             {
                 "rid": 1003,
+                "type": {
+                    "class": "AudioTrack",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "trackId": "7bd09323-9cd5-4ef0-800f-2239c9da20f3",
+                    "trackType": "AudioTrack",
+                    "trackName": "挥刀",
+                    "isMuted": false,
+                    "isLocked": false,
+                    "isHidden": false,
+                    "isCollapsed": false,
+                    "isEnabled": false,
+                    "clips": [
+                        {
+                            "rid": 1011
+                        }
+                    ]
+                }
+            },
+            {
+                "rid": 1004,
                 "type": {
                     "class": "AudioTrack",
                     "ns": "SkillEditor",
@@ -162,13 +186,13 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1010
+                            "rid": 1012
                         }
                     ]
                 }
             },
             {
-                "rid": 1004,
+                "rid": 1005,
                 "type": {
                     "class": "AudioTrack",
                     "ns": "SkillEditor",
@@ -185,13 +209,13 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1011
+                            "rid": 1013
                         }
                     ]
                 }
             },
             {
-                "rid": 1005,
+                "rid": 1006,
                 "type": {
                     "class": "EventTrack",
                     "ns": "SkillEditor",
@@ -208,13 +232,13 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1012
+                            "rid": 1014
                         }
                     ]
                 }
             },
             {
-                "rid": 1006,
+                "rid": 1007,
                 "type": {
                     "class": "SkillAnimationClip",
                     "ns": "SkillEditor",
@@ -229,7 +253,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.06666672229766846,
                     "animationClip": {
-                        "instanceID": 33846
+                        "instanceID": 34528
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -245,7 +269,7 @@
                 }
             },
             {
-                "rid": 1007,
+                "rid": 1008,
                 "type": {
                     "class": "SkillAnimationClip",
                     "ns": "SkillEditor",
@@ -260,7 +284,7 @@
                     "blendInDuration": 0.06666672229766846,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 33848
+                        "instanceID": 34530
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -276,7 +300,7 @@
                 }
             },
             {
-                "rid": 1008,
+                "rid": 1009,
                 "type": {
                     "class": "VFXClip",
                     "ns": "SkillEditor",
@@ -291,7 +315,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
-                        "instanceID": 34056
+                        "instanceID": 34738
                     },
                     "prefabGuid": "83e244af1d719994ab693b7cedf89951",
                     "prefabAssetName": "Slash_fx_01",
@@ -319,7 +343,7 @@
                 }
             },
             {
-                "rid": 1009,
+                "rid": 1010,
                 "type": {
                     "class": "SkillAudioClip",
                     "ns": "SkillEditor",
@@ -329,13 +353,13 @@
                     "clipId": "d200574d-544b-4815-9b37-63c729395c78",
                     "clipName": "音效轨道片段",
                     "isEnabled": true,
-                    "startTime": 0.3333333432674408,
+                    "startTime": 0.30000001192092898,
                     "duration": 0.7666666507720947,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 33728
+                            "instanceID": 34410
                         }
                     ],
                     "volume": 1.0,
@@ -355,7 +379,43 @@
                 }
             },
             {
-                "rid": 1010,
+                "rid": 1011,
+                "type": {
+                    "class": "SkillAudioClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
+                    "clipId": "3f74b649-388a-42ab-91fd-0d37ea95d627",
+                    "clipName": "音效轨道片段",
+                    "isEnabled": true,
+                    "startTime": 0.5,
+                    "duration": 0.7666666507720947,
+                    "blendInDuration": 0.0,
+                    "blendOutDuration": 0.0,
+                    "audioClips": [
+                        {
+                            "instanceID": 34410
+                        }
+                    ],
+                    "volume": 1.0,
+                    "pitch": 1.0,
+                    "loop": false,
+                    "isAffectSpeed": false,
+                    "spatialBlend": 0.0,
+                    "clipGuids": [
+                        "003aa5abacf93a94089bd8c2ef28fff1"
+                    ],
+                    "clipAssetNames": [
+                        "安比攻击3"
+                    ],
+                    "clipAssetPaths": [
+                        "Assets/Resources/Audio/AnBi/安比攻击3.wav"
+                    ]
+                }
+            },
+            {
+                "rid": 1012,
                 "type": {
                     "class": "SkillAudioClip",
                     "ns": "SkillEditor",
@@ -371,33 +431,39 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 34172
+                            "instanceID": 34756
                         },
                         {
-                            "instanceID": 34074
+                            "instanceID": 0
+                        },
+                        {
+                            "instanceID": 0
                         }
                     ],
-                    "volume": 1.0,
+                    "volume": 0.5,
                     "pitch": 1.0,
                     "loop": false,
                     "isAffectSpeed": false,
                     "spatialBlend": 0.0,
                     "clipGuids": [
-                        "67962eeb9da990d4880a13891fe5c269",
-                        "4e106c77aaf89954ea2dece7534cbf1a"
+                        "4e106c77aaf89954ea2dece7534cbf1a",
+                        "",
+                        ""
                     ],
                     "clipAssetNames": [
-                        "安比：呵啊！",
-                        "安比：呵额！"
+                        "安比：呵额！",
+                        "",
+                        ""
                     ],
                     "clipAssetPaths": [
-                        "Assets/Resources/Audio/AnBi/安比：呵啊！.wav",
-                        "Assets/Resources/Audio/AnBi/安比：呵额！.wav"
+                        "Assets/Resources/Audio/AnBi/安比：呵额！.wav",
+                        "",
+                        ""
                     ]
                 }
             },
             {
-                "rid": 1011,
+                "rid": 1013,
                 "type": {
                     "class": "SkillAudioClip",
                     "ns": "SkillEditor",
@@ -413,7 +479,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 33988
+                            "instanceID": 34670
                         }
                     ],
                     "volume": 1.0,
@@ -433,7 +499,7 @@
                 }
             },
             {
-                "rid": 1012,
+                "rid": 1014,
                 "type": {
                     "class": "EventClip",
                     "ns": "SkillEditor",
@@ -443,7 +509,7 @@
                     "clipId": "88627e71-9330-46a7-be12-cc2c00ba9ceb",
                     "clipName": "事件轨道片段",
                     "isEnabled": true,
-                    "startTime": 0.8666669726371765,
+                    "startTime": 0.6666666865348816,
                     "duration": 0.10000000149011612,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,

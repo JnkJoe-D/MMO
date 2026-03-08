@@ -180,11 +180,11 @@ namespace SkillEditor.Editor
             SkillTimeline timeline = state.currentTimeline;
             if (timeline == null) return;
 
-            if (timeline.groups != null)
+            if (timeline.Groups != null)
             {
-                for (int i = 0; i < timeline.groups.Count; i++)
+                for (int i = 0; i < timeline.Groups.Count; i++)
                 {
-                    DrawGroup(timeline.groups[i], ref virtualY, scrollOffset, viewportHeight, 0);
+                    DrawGroup(timeline.Groups[i], ref virtualY, scrollOffset, viewportHeight, 0);
                 }
             }
         }
@@ -365,8 +365,8 @@ namespace SkillEditor.Editor
             if (timeline == null) return;
 
             window.RecordUndo("添加分组");
-            Group newGroup = new Group($"分组 {timeline.groups.Count + 1}");
-            timeline.groups.Add(newGroup);
+            Group newGroup = new Group($"分组 {timeline.Groups.Count + 1}");
+            timeline.Groups.Add(newGroup);
             
             Debug.Log($"[技能编辑器] 创建分组: {newGroup.groupName}");
             events.OnRepaintRequest?.Invoke();
@@ -540,7 +540,7 @@ namespace SkillEditor.Editor
             }
             
             // 从分组列表中删除（轨道随之一起删除）
-            timeline.groups.Remove(group);
+            timeline.Groups.Remove(group);
 
             // 清除选中状态
             if (state.selectedGroup == group)
@@ -609,11 +609,11 @@ namespace SkillEditor.Editor
             bool isDraggingGroup = DragAndDrop.GetGenericData("DraggingGroup") != null;
             bool isDraggingTrack = DragAndDrop.GetGenericData("DraggingTrack") != null;
             
-            if (timeline.groups != null)
+            if (timeline.Groups != null)
             {
-                for (int i = 0; i < timeline.groups.Count; i++)
+                for (int i = 0; i < timeline.Groups.Count; i++)
                 {
-                    var group = timeline.groups[i];
+                    var group = timeline.Groups[i];
                     float groupTop = y;
                     float groupBottom = y + SkillEditorStyles.GROUP_HEIGHT;
                     
@@ -662,7 +662,7 @@ namespace SkillEditor.Editor
                 float listBottom = y;
                 if (virtualMouseY > listBottom - 10f)
                 {
-                    dropTargetIndex = timeline.groups.Count - 1;
+                    dropTargetIndex = timeline.Groups.Count - 1;
                     isDropAfter = true;
                     dropIndicatorY = listBottom;
                 }
@@ -690,7 +690,7 @@ namespace SkillEditor.Editor
                 oldGroup?.tracks.Remove(track);
                 
                 // 插入新位置
-                var targetGroup = timeline.groups.Find(g => g.groupId == finalGroupId);
+                var targetGroup = timeline.Groups.Find(g => g.groupId == finalGroupId);
                 if (targetGroup != null)
                 {
                     int insertAt;
@@ -717,10 +717,10 @@ namespace SkillEditor.Editor
             if (group != null && dropTargetIndex != -1)
             {
                 window.RecordUndo("移动分组");
-                timeline.groups.Remove(group);
+                timeline.Groups.Remove(group);
                 int insertAt2 = dropTargetIndex + (isDropAfter ? 1 : 0);
-                if (insertAt2 > timeline.groups.Count) insertAt2 = timeline.groups.Count;
-                timeline.groups.Insert(insertAt2, group);
+                if (insertAt2 > timeline.Groups.Count) insertAt2 = timeline.Groups.Count;
+                timeline.Groups.Insert(insertAt2, group);
             }
         }
         
@@ -855,7 +855,7 @@ namespace SkillEditor.Editor
             Group newGroup = state.copiedGroup.Clone();
             newGroup.groupId = Guid.NewGuid().ToString();
             newGroup.tracks = new List<TrackBase>();
-            timeline.groups.Add(newGroup);
+            timeline.Groups.Add(newGroup);
             
             // 克隆并关联轨道
             foreach (var copiedTrack in state.copiedTracksForGroup)
@@ -985,7 +985,7 @@ namespace SkillEditor.Editor
 
             window.RecordUndo("克隆分组");
             
-            int sourceIndex = timeline.groups.IndexOf(sourceGroup);
+            int sourceIndex = timeline.Groups.IndexOf(sourceGroup);
             if (sourceIndex < 0) return;
 
             // 使用 DeepClone 一步完成
@@ -1003,7 +1003,7 @@ namespace SkillEditor.Editor
             }
 
             // 插入到当前分组下方
-            timeline.groups.Insert(sourceIndex + 1, newGroup);
+            timeline.Groups.Insert(sourceIndex + 1, newGroup);
             
             state.RebuildTrackCache();
             SelectGroup(newGroup);

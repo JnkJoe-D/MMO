@@ -17,9 +17,10 @@ namespace SkillEditor
         // Timeline 参数
         private float duration = 0f;           // 持续时间（秒）
         public bool isLoop = false;             // 是否循环播放
-
+        [SerializeField][HideInInspector]
+        private List<Group> groups = new List<Group>();
         // 唯一的子节点容器
-        public List<Group> groups = new List<Group>();
+        public List<Group> Groups {get=>groups;}
         public float Duration => duration;
         #region 便捷访问器
 
@@ -31,8 +32,8 @@ namespace SkillEditor
         {
             get
             {
-                if (groups == null) yield break;
-                foreach (var group in groups)
+                if (Groups == null) yield break;
+                foreach (var group in Groups)
                 {
                     if (group.tracks == null) continue;
                     foreach (var track in group.tracks)
@@ -61,7 +62,7 @@ namespace SkillEditor
         public Group AddGroup(string name)
         {
             Group group = new Group(name);
-            groups.Add(group);
+            Groups.Add(group);
             return group;
         }
 
@@ -70,7 +71,7 @@ namespace SkillEditor
         /// </summary>
         public void RemoveGroup(Group group)
         {
-            groups.Remove(group);
+            Groups.Remove(group);
         }
 
         #endregion
@@ -82,8 +83,8 @@ namespace SkillEditor
         /// </summary>
         public Group FindGroupContainingTrack(TrackBase track)
         {
-            if (groups == null || track == null) return null;
-            foreach (var group in groups)
+            if (Groups == null || track == null) return null;
+            foreach (var group in Groups)
             {
                 if (group.tracks != null && group.tracks.Contains(track))
                 {

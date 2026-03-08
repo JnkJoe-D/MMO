@@ -724,11 +724,11 @@ namespace SkillEditor.Editor
             const float GROUP_HEIGHT = 30f;
             float yOffset = 0f;
 
-            if (timeline.groups != null)
+            if (timeline.Groups != null)
             {
-                for (int i = 0; i < timeline.groups.Count; i++)
+                for (int i = 0; i < timeline.Groups.Count; i++)
                 {
-                    var group = timeline.groups[i];
+                    var group = timeline.Groups[i];
                     yOffset += GROUP_HEIGHT;
                     if (!group.isCollapsed && group.tracks != null)
                     {

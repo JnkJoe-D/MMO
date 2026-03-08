@@ -60,8 +60,8 @@ namespace SkillEditor.Editor
 
             // 3. 视口控制 (右侧)
             // Timeline 选中/Inspector 按钮
-            // string timelineName = state.currentTimeline != null ? state.currentTimeline.skillName : "Timeline";
-            bool isSelected = GUILayout.Toggle(state.isTimelineSelected, "Timeline", EditorStyles.toolbarButton, GUILayout.Width(120));
+            string displayName = string.IsNullOrEmpty(state.currentFilePath) ? "未保存" : System.IO.Path.GetFileName(state.currentFilePath);
+            bool isSelected = GUILayout.Toggle(state.isTimelineSelected, displayName, EditorStyles.toolbarButton, GUILayout.Width(120));
             if (isSelected && !state.isTimelineSelected)
             {
                 window.SelectTimeline();
@@ -162,8 +162,7 @@ namespace SkillEditor.Editor
 
         private void OnImportJSON()
         {
-            string path = EditorUtility.OpenFilePanel(Lan.ImportPanelTitle, "Assets", "json");
-            if (!string.IsNullOrEmpty(path))
+            JsonFileSelectionWindow.Show(state.DefaultExportDirectory, (path) => 
             {
                 var newTimeline = SerializationUtility.ImportFromJsonPath(path);
                 if (newTimeline != null)
@@ -171,15 +170,20 @@ namespace SkillEditor.Editor
                     window.SetCurrentTimeline(newTimeline);
                     state.RebuildTrackCache();
                     state.currentFilePath = path; // 记录路径
+                    // 重置先前的播放状态
+                    state.isStopped = true;
+                    state.timeIndicator = 0f;
+                    window.Stop(); // Ensure window-level stop logic applies
+                    events.OnRepaintRequest?.Invoke();
                 }
-            }
+            });
         }
 
         private void OnExportJSON()
         {
             if (state.currentTimeline == null) return;
             
-            string path = EditorUtility.SaveFilePanel(Lan.ExportPanelTitle, "Assets", "未命名", "json");
+            string path = EditorUtility.SaveFilePanel(Lan.ExportPanelTitle, state.DefaultExportDirectory, "未命名", "json");
             
             if (!string.IsNullOrEmpty(path))
             {

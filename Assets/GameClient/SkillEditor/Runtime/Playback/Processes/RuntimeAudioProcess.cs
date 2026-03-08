@@ -20,10 +20,8 @@ namespace SkillEditor{
         {
             if (audioHandler != null && clip.audioClips != null && clip.audioClips.Count > 0)
             {
-                var validClips = clip.audioClips.FindAll(c => c != null);
-                if (validClips.Count == 0) return;
-
-                var selectedClip = validClips[Random.Range(0, validClips.Count)];
+                // 允许包含空片段（起到概率不播放的效果）
+                var selectedClip = clip.audioClips[Random.Range(0, clip.audioClips.Count)];
                 if (selectedClip == null) return;
                 var args = new AudioArgs
                 {

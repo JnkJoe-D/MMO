@@ -41,7 +41,7 @@ namespace Game.Logic.Character.SubStates
 
                 // 绝区零核心体验：在动作即将结束时（取消窗口）打开派生冲刺的允许标记
                 // 比如倒数 0.15 秒时允许派生 (考虑到混合可能，安全退让兜底0)
-                float cancelWindowTime = .7f;
+                float cancelWindowTime = Mathf.Min(animSet.DodgeLockTime, playClip.length);
                 _ctx.HostEntity.AnimController?.AddEventToCurrentAnim(
                     cancelWindowTime, 
                     () => { _canTransitionToDash = true; }

@@ -31,6 +31,9 @@ namespace Game.Logic.Character.Config
         public AnimUnitConfig Land;
 
         [Header("控制手感与硬直配置 (秒)")]
+        [Tooltip("闪避硬直时间")]
+        [Range(0, 1f)]
+        public float DodgeLockTime = 0.25f;
         [Tooltip("触发跑停动作时，禁止角色推摇杆挪动的硬直时间")]
         [Range(0,1f)]
         public float JogStopLockTime = 0.25f;

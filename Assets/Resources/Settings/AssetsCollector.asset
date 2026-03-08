@@ -70,32 +70,8 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: "Assets/\u5B89\u6BD4_\u666E\u901A\u653B\u51FB1.json"
-        CollectorGUID: 1943ee43269200c4292aadec4c64d6df
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-      - CollectPath: "Assets/\u5B89\u6BD4_\u666E\u901A\u653B\u51FB2.json"
-        CollectorGUID: 9fb0c0ae13a377a4793710438020effa
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-      - CollectPath: "Assets/\u5B89\u6BD4_\u666E\u901A\u653B\u51FB3.json"
-        CollectorGUID: 045dd2094b3b63b45b1b6e9dad5ce8c0
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-      - CollectPath: "Assets/\u5B89\u6BD4_\u666E\u901A\u653B\u51FB4.json"
-        CollectorGUID: 6ba2ee2ae7d7dd74ca0f9d1cb9271027
+      - CollectPath: Assets/Resources/Serializations/JSON/Skills
+        CollectorGUID: a7da9ba96ae18ba44ada5456bc68ae60
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory

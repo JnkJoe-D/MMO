@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc06e0520cbb132459d8e63f748b257e, type: 3}
-  m_Name: 1001
+  m_Name: "\u5B89\u6BD4"
   m_EditorClassIdentifier: 
   RoleID: 1001
   RoleName: 
@@ -24,7 +24,7 @@ MonoBehaviour:
   JogMultipier: 1
   DashMultipier: 1
   DodgeMultipier: 1
-  AttackMultipier: 1.2
+  AttackMultipier: 1
   SkillMultipier: 1
   AnimationSet:
     RoleID: 0
@@ -73,6 +73,7 @@ MonoBehaviour:
     Land:
       clip: {fileID: 0}
       fadeDuration: 0
+    DodgeLockTime: 0.15
     JogStopLockTime: 0.25
     DashStopLockTime: 0.5
   lightAttacks:

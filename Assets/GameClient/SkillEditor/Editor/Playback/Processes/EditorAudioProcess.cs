@@ -18,10 +18,8 @@ namespace SkillEditor.Editor
             audioSource = EditorAudioManager.Instance.Get();
             if (audioSource != null && clip.audioClips != null && clip.audioClips.Count > 0)
             {
-                var validClips = clip.audioClips.FindAll(c => c != null);
-                if (validClips.Count == 0) return;
-
-                _playingClip = validClips[Random.Range(0, validClips.Count)];
+                // 允许包含空片段（起到概率不播放的效果）
+                _playingClip = clip.audioClips[Random.Range(0, clip.audioClips.Count)];
                 if (_playingClip == null) return;
 
                 audioSource.clip = _playingClip;

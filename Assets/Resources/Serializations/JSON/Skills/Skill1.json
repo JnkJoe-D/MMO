@@ -1,10 +1,10 @@
 {
-    "skillId": 1001,
+    "skillId": 0,
     "skillName": "新技能",
-    "isLoop": true,
+    "isLoop": false,
     "groups": [
         {
-            "groupId": "6bb4e390-22d6-480e-9ba7-96827a5c9fb4",
+            "groupId": "4a9d2a98-e1e1-4db9-85dd-43d53d64ead0",
             "groupName": "分组 1",
             "isCollapsed": false,
             "isEnabled": true,
@@ -16,7 +16,7 @@
             ]
         },
         {
-            "groupId": "8d4f326b-8e8c-4901-ae7b-bfb42e38c6c7",
+            "groupId": "b0e959cd-73d5-4b48-b90a-4e0cc1967b2a",
             "groupName": "分组 2",
             "isCollapsed": false,
             "isEnabled": true,
@@ -28,7 +28,7 @@
             ]
         },
         {
-            "groupId": "c094a651-78fb-4fce-97dd-fcfa159aa14c",
+            "groupId": "96d79aea-f3ee-409e-9202-32de349aaab3",
             "groupName": "分组 3",
             "isCollapsed": false,
             "isEnabled": true,
@@ -51,7 +51,7 @@
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "trackId": "04715858-f287-4023-8572-7d79e426c608",
+                    "trackId": "ff6ca3b7-20d0-4672-80bf-286666405efe",
                     "trackType": "AnimationTrack",
                     "trackName": "动画轨道",
                     "isMuted": false,
@@ -64,7 +64,7 @@
                             "rid": 1003
                         }
                     ],
-                    "isMasterTrack": false,
+                    "isMasterTrack": true,
                     "offsetPos": {
                         "x": 0.0,
                         "y": 0.0,
@@ -85,7 +85,7 @@
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "trackId": "0440095f-5c51-4e39-956c-a7a178c3c105",
+                    "trackId": "0a281740-7759-4070-b8c7-4eac25b42756",
                     "trackType": "VFXTrack",
                     "trackName": "特效轨道",
                     "isMuted": false,
@@ -103,14 +103,14 @@
             {
                 "rid": 1002,
                 "type": {
-                    "class": "DamageTrack",
+                    "class": "AudioTrack",
                     "ns": "SkillEditor",
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "trackId": "3fcf1918-fd92-49c6-bccf-13dd9783ee34",
-                    "trackType": "DamageTrack",
-                    "trackName": "伤害判定轨道",
+                    "trackId": "1d59b4bb-e5e8-4a41-8dc6-580932132261",
+                    "trackType": "AudioTrack",
+                    "trackName": "音效轨道",
                     "isMuted": false,
                     "isLocked": false,
                     "isHidden": false,
@@ -131,23 +131,23 @@
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "clipId": "1aaf78d6-23f6-4485-b690-7ac26f3b4471",
+                    "clipId": "bb32f20f-5d7f-43d4-b207-f9e96ebafce6",
                     "clipName": "动画轨道片段",
                     "isEnabled": true,
                     "startTime": 0.0,
-                    "duration": 3.1666667461395265,
-                    "blendInDuration": 0.20000000298023225,
+                    "duration": 3.8000001907348635,
+                    "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 31660
+                        "instanceID": 31846
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
                     "overrideMask": {
                         "instanceID": 0
                     },
-                    "clipGuid": "5ae7dd75483496b46a09884c7811402b",
-                    "clipAssetName": "Combo01_1",
+                    "clipGuid": "3b177f8cda8c2214c98f0ea0565f0911",
+                    "clipAssetName": "Combo01_2",
                     "maskGuid": "",
                     "maskAssetName": ""
                 }
@@ -160,10 +160,10 @@
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "clipId": "265993f1-a78c-4874-8ebc-32310f004f97",
+                    "clipId": "52bbf7e9-aa98-489f-a415-1a841a7b5846",
                     "clipName": "特效轨道片段",
                     "isEnabled": true,
-                    "startTime": 0.6666666865348816,
+                    "startTime": 1.0,
                     "duration": 1.0,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
@@ -181,9 +181,9 @@
                         "z": 0.0
                     },
                     "rotationOffset": {
-                        "x": 2.239110589649651e-12,
-                        "y": 291.4178771972656,
-                        "z": 180.0
+                        "x": 0.0,
+                        "y": 61.523189544677737,
+                        "z": 0.0
                     },
                     "scale": {
                         "x": 1.0,
@@ -197,54 +197,27 @@
             {
                 "rid": 1005,
                 "type": {
-                    "class": "DamageClip",
+                    "class": "SkillAudioClip",
                     "ns": "SkillEditor",
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "clipId": "65208b73-34c0-4b77-9fbd-45b9bca94ac4",
-                    "clipName": "伤害判定轨道片段",
+                    "clipId": "55797d75-4a63-4c1c-abf8-06c333793c23",
+                    "clipName": "音效轨道片段",
                     "isEnabled": true,
-                    "startTime": 0.6666666865348816,
-                    "duration": 1.0,
+                    "startTime": 1.0,
+                    "duration": 1.1633334159851075,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
-                    "eventTag": "Hit_Default",
-                    "targetTags": [],
-                    "hitFrequency": 0,
-                    "checkInterval": 0.5,
-                    "maxHitTargets": 0,
-                    "targetSortMode": 1,
-                    "hitLayerMask": {
-                        "serializedVersion": "2",
-                        "m_Bits": 4294967295
+                    "audioClip": {
+                        "instanceID": 35126
                     },
-                    "serializedHitLayerMask": -1,
-                    "isSelfImpacted": false,
-                    "shape": {
-                        "shapeType": 3,
-                        "size": {
-                            "x": 1.0,
-                            "y": 1.0,
-                            "z": 1.0
-                        },
-                        "radius": 2.0,
-                        "height": 1.0,
-                        "angle": 120.0,
-                        "innerRadius": 1.0
-                    },
-                    "bindPoint": 0,
-                    "customBoneName": "",
-                    "positionOffset": {
-                        "x": 0.0,
-                        "y": 0.5,
-                        "z": 0.0
-                    },
-                    "rotationOffset": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    }
+                    "volume": 1.0,
+                    "pitch": 1.0,
+                    "loop": false,
+                    "spatialBlend": 0.0,
+                    "clipGuid": "0dfff3759086b8a4eadd1b6180927f48",
+                    "clipAssetName": "Heavy sword woosh 15"
                 }
             }
         ]

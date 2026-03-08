@@ -78,7 +78,14 @@ namespace SkillEditor.Editor
         private const string PREF_FRAME_RATE = "SkillEditor_FrameRate";
         private const string PREF_TIME_STEP_MODE = "SkillEditor_TimeStepMode";
         private const string PREF_DEFAULT_PREVIEW_TARGET = "SkillEditor_DefaultPreviewTarget";
+        private const string PREF_DEFAULT_EXPORT_DIR = "SkillEditor_DefaultExportDir";
         
+        public string DefaultExportDirectory
+        {
+            get => UnityEditor.EditorPrefs.GetString(PREF_DEFAULT_EXPORT_DIR, Application.dataPath);
+            set => UnityEditor.EditorPrefs.SetString(PREF_DEFAULT_EXPORT_DIR, value);
+        }
+
         public string DefaultPreviewCharacterPath
         {
             get => UnityEditor.EditorPrefs.GetString(PREF_DEFAULT_PREVIEW_TARGET, "Assets/SkillEditor/Editor/Resources/DefaultPreviewCharacter.prefab");
@@ -208,11 +215,11 @@ namespace SkillEditor.Editor
             
             float totalHeight = TIME_RULER_HEIGHT;
             
-            if (currentTimeline.groups != null)
+            if (currentTimeline.Groups != null)
             {
-                for (int i = 0; i < currentTimeline.groups.Count; i++)
+                for (int i = 0; i < currentTimeline.Groups.Count; i++)
                 {
-                    var group = currentTimeline.groups[i];
+                    var group = currentTimeline.Groups[i];
                     totalHeight += GROUP_HEIGHT;
                     
                     if (!group.isCollapsed && group.tracks != null)
