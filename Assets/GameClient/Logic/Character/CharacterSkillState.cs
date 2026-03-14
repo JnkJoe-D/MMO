@@ -29,7 +29,8 @@ namespace Game.Logic.Character
                 Entity.InputProvider.OnBasicAttackHoldCancel += OnBasicAttackRequestHoldCancel;
                 Entity.InputProvider.OnSpecialAttack += OnSpecialAttackRequest;
                 Entity.InputProvider.OnUltimate += OnUltimateRequest;
-                Entity.InputProvider.OnEvadeStarted += OnEvadeRequest;
+                Entity.InputProvider.OnEvadeFrontStarted += OnEvadeFrontRequest;
+                Entity.InputProvider.OnEvadeBackStarted += OnEvadeBackRequest;
             }
 
             PlayCurrentSkill();
@@ -44,6 +45,9 @@ namespace Game.Logic.Character
 
             Debug.Log($"<color=#0FFFFF>[Combo] PlayCurrentSkill {skillConfig.Name}</color>");
             _currentRunner = Entity.ActionPlayer.PlayAction(skillConfig);
+            // 技能态启动，清除之前的闪避冲刺信号
+            Entity.ForceDashNextFrame = false;
+
             if(_currentRunner != null)
             {
                 _currentRunner.OnComplete -= OnSkillEnd;
@@ -52,7 +56,7 @@ namespace Game.Logic.Character
             
             // 在此修改播放倍率，由于 ActionPlayer 已经挂载好Context
             Entity.ActionPlayer.SetPlaySpeed(
-                (skillConfig is SkillConfigSO s && (s.Category == SkillCategory.LightAttack || s.Category == SkillCategory.DashAttack || s.Category == SkillCategory.HeavyAttack)) 
+                (skillConfig is SkillConfigAsset s && (s.Category == SkillCategory.LightAttack || s.Category == SkillCategory.DashAttack || s.Category == SkillCategory.HeavyAttack)) 
                 ? Entity.Config.AttackMultipier : Entity.Config.SkillMultipier
             );
 
@@ -99,11 +103,19 @@ namespace Game.Logic.Character
             Entity.ComboController.OnInput(BufferedInputType.Ultimate);
         }
 
-        private void OnEvadeRequest()
+        private void OnEvadeFrontRequest()
         {
             if (Entity.CanEvade())
             {
-                Entity.ComboController.OnInput(BufferedInputType.Evade);
+                Entity.ComboController.OnInput(BufferedInputType.EvadeFront);
+            }
+        }
+
+        private void OnEvadeBackRequest()
+        {
+            if (Entity.CanEvade())
+            {
+                Entity.ComboController.OnInput(BufferedInputType.EvadeBack);
             }
         }
         
@@ -120,7 +132,14 @@ namespace Game.Logic.Character
                 _currentRunner.OnComplete -= OnSkillEnd;
                 _currentRunner = null;
             }
-            Entity.ActionPlayer.StopAction();
+            if (Machine.NextState is CharacterActionBackswingState)
+            {
+                // 不要停止播放，让后摇自然流逝并交给新状态接力
+            }
+            else
+            {
+                Entity.ActionPlayer.StopAction();
+            }
 
             if (Entity.InputProvider != null)
             {
@@ -131,7 +150,8 @@ namespace Game.Logic.Character
                 Entity.InputProvider.OnBasicAttackHoldCancel -= OnBasicAttackRequestHoldCancel;
                 Entity.InputProvider.OnSpecialAttack -= OnSpecialAttackRequest;
                 Entity.InputProvider.OnUltimate -= OnUltimateRequest;
-                Entity.InputProvider.OnEvadeStarted -= OnEvadeRequest;
+                Entity.InputProvider.OnEvadeFrontStarted -= OnEvadeFrontRequest;
+                Entity.InputProvider.OnEvadeBackStarted -= OnEvadeBackRequest;
             }
         }
 

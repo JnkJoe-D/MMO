@@ -59,6 +59,10 @@ namespace SkillEditor.Editor
         {
             CleanUpInstance();
         }
+        public override void OnDisable()
+        {
+            CleanUpInstance();
+        }
 
         public override void Reset()
         {

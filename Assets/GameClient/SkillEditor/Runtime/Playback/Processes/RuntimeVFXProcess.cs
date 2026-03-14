@@ -14,22 +14,23 @@ namespace SkillEditor
         private ParticleSpeedInfo[] particleInfos;
         private GameObject vfxInstance;
         private ISkillVFXHandler vfxHanlder;
+        private ISkillBoneGetter boneGetter;
         public override void OnEnable()
         {
-            base.OnEnable();
+            // 懒加载获取服务
+            vfxHanlder = context.GetService<ISkillVFXHandler>();
+            boneGetter = context.GetService<ISkillBoneGetter>();
         }
         public override void OnEnter()
         {
-            Debug.Log($"[RuntimeVFXProcess] OnEnter at time: {UnityEngine.Time.time}");
             if (clip.effectPrefab == null) return;
 
             // 1. 获取挂点
             Transform targetTransform = null;
-            // 懒加载获取 actor 服务
-            var actor = context.GetService<ISkillBoneGetter>();
-            if (actor != null)
+
+            if (boneGetter != null)
             {
-                targetTransform = actor.GetBone(clip.bindPoint, clip.customBoneName);
+                targetTransform = boneGetter.GetBone(clip.bindPoint, clip.customBoneName);
             }
             
             // 降级处理
@@ -49,7 +50,7 @@ namespace SkillEditor
 
             // 2. 实例化
             Transform parent = clip.followTarget ? targetTransform : null;
-            vfxHanlder = context.GetService<ISkillVFXHandler>();
+
             if (vfxHanlder != null)
             {
                 vfxInstance = vfxHanlder.Spawn(clip.effectPrefab, spawnPos, spawnRot, parent);
@@ -125,7 +126,6 @@ namespace SkillEditor
 
         public override void OnExit()
         {
-            Debug.Log($"[RuntimeVFXProcess] OnExit at time: {UnityEngine.Time.time}");
             if (vfxInstance == null) return;
 
             if (clip.destroyOnEnd) //跟随片段结束
@@ -149,7 +149,26 @@ namespace SkillEditor
         }
         public override void OnDisable() 
         {
-            
+            if (vfxInstance == null) return;
+
+            if (clip.destroyOnEnd) //跟随片段结束
+            {
+                //重置速度
+                SyncSpeed(1f);
+                if (clip.stopEmissionOnEnd)
+                {
+                    ReturnVFXDelay(clip.stopEmissionOnEnd);
+                }
+                else
+                {
+                    // 硬结束
+                    ReturnVFX();
+                }
+            }
+            else
+            {
+                ReturnVFXDelay(false);
+            }
         }
         public override void Reset()
          {

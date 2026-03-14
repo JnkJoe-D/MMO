@@ -9,7 +9,7 @@ namespace Game.Logic.Character.SubStates
 
         public override void OnEnter()
         {
-            ActionConfigSO playConfig = null;
+            ActionConfigAsset playConfig = null;
             float lockTime = 0f;
 
             var config = _ctx.HostEntity.Config;

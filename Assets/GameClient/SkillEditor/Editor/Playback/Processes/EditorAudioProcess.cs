@@ -114,6 +114,15 @@ namespace SkillEditor.Editor
                 audioSource = null;
             }
         }
+        public override void OnDisable()
+        {
+            // 归还 AudioSource 到池
+            if (audioSource != null)
+            {
+                EditorAudioManager.Instance.Return(audioSource);
+                audioSource = null;
+            }
+        }
 
         public override void Reset()
         {

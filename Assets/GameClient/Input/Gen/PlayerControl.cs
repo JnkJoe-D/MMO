@@ -39,7 +39,16 @@ namespace Game.Input
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Dodge"",
+                    ""name"": ""EvadeFront"",
+                    ""type"": ""Button"",
+                    ""id"": ""13705ba6-34ea-46cd-b4a1-8885e8b2476b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EvadeBack"",
                     ""type"": ""Button"",
                     ""id"": ""55b1304b-d53c-4410-9b6a-02611886fd46"",
                     ""expectedControlType"": ""Button"",
@@ -108,6 +117,15 @@ namespace Game.Input
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialSkillHold"",
+                    ""type"": ""Button"",
+                    ""id"": ""b797c23e-8e62-4da7-9894-a881bb1a8019"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -233,17 +251,6 @@ namespace Game.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7ddfb93b-5e4b-48d3-acef-be77089cefaf"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dodge"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""78a56908-e6d6-4a59-8dca-aea6fbdd6962"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
@@ -329,6 +336,303 @@ namespace Game.Input
                     ""action"": ""LightAttackHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""W+Shift"",
+                    ""id"": ""3e2418f9-2f28-48e7-b637-bb4b8727a728"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""640ad4ad-42ff-49da-8578-6b4a563bef55"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""db701e38-10b8-4ed8-b3bc-28dfcec867dc"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""S+Shift"",
+                    ""id"": ""35040563-65d1-4369-8f45-8095f7550fbb"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""27711d47-189d-439d-afd0-7e310224022b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""3e22e585-a9e8-4109-b744-544d3657cf9e"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""A+Shift"",
+                    ""id"": ""d2cbe65e-6c6e-4ed5-8275-3c3ef7ec00da"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""b7ed8554-4f8a-4b18-b034-1dd72b5c84a2"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""5d32530c-949e-4188-87f6-3f9dd112abca"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""D+Shift"",
+                    ""id"": ""aebce666-d6d5-4071-a927-4528ad734de1"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""992c485b-1e98-4739-82ce-a9842c7963aa"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""6d8115b9-40cd-417d-a0fc-9175cd1de704"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""W+RM"",
+                    ""id"": ""43dbe813-22f7-4585-bbad-a733c9cbdf57"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""0125aa65-b5ae-4b7e-a1de-24d25c22300e"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""916091b1-ace0-4ca7-a6f9-772b80dd1463"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""S+RM"",
+                    ""id"": ""80ca71f4-8873-4128-994b-2329ddd04756"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""27332eca-5f9c-4e20-8ef8-74c77bfdc2bc"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""eeeeff18-8334-476a-9566-d707ff2f247d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""A+RM"",
+                    ""id"": ""8f761841-8b58-453b-bb8e-031241aa35c8"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""7cf0e47a-d37b-40f3-85ff-60abf8065b9c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""a340ac5d-60b0-4260-aae1-79029cb222e4"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""D+RM"",
+                    ""id"": ""c628324c-c06b-4fd0-930d-09112ae71787"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""dccf2d35-9829-42fd-b59f-ac4d7bb97731"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""29c26164-cd10-47b2-b1ce-c1d1828652e5"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ddfb93b-5e4b-48d3-acef-be77089cefaf"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2255608-438f-4fc8-9559-6804ffb5c49d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EvadeBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a47f441-57c7-44e6-b4dc-bdc2e0ae58e9"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialSkillHold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -394,7 +698,8 @@ namespace Game.Input
             // GamePlay
             m_GamePlay = asset.FindActionMap("GamePlay", throwIfNotFound: true);
             m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
-            m_GamePlay_Dodge = m_GamePlay.FindAction("Dodge", throwIfNotFound: true);
+            m_GamePlay_EvadeFront = m_GamePlay.FindAction("EvadeFront", throwIfNotFound: true);
+            m_GamePlay_EvadeBack = m_GamePlay.FindAction("EvadeBack", throwIfNotFound: true);
             m_GamePlay_Look = m_GamePlay.FindAction("Look", throwIfNotFound: true);
             m_GamePlay_LightAttack = m_GamePlay.FindAction("LightAttack", throwIfNotFound: true);
             m_GamePlay_LightAttackHold = m_GamePlay.FindAction("LightAttackHold", throwIfNotFound: true);
@@ -402,6 +707,7 @@ namespace Game.Input
             m_GamePlay_SwitchNext = m_GamePlay.FindAction("SwitchNext", throwIfNotFound: true);
             m_GamePlay_SwitchPre = m_GamePlay.FindAction("SwitchPre", throwIfNotFound: true);
             m_GamePlay_SpecialSkill = m_GamePlay.FindAction("SpecialSkill", throwIfNotFound: true);
+            m_GamePlay_SpecialSkillHold = m_GamePlay.FindAction("SpecialSkillHold", throwIfNotFound: true);
             m_GamePlay_Ultimate = m_GamePlay.FindAction("Ultimate", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -471,7 +777,8 @@ namespace Game.Input
         private readonly InputActionMap m_GamePlay;
         private List<IGamePlayActions> m_GamePlayActionsCallbackInterfaces = new List<IGamePlayActions>();
         private readonly InputAction m_GamePlay_Move;
-        private readonly InputAction m_GamePlay_Dodge;
+        private readonly InputAction m_GamePlay_EvadeFront;
+        private readonly InputAction m_GamePlay_EvadeBack;
         private readonly InputAction m_GamePlay_Look;
         private readonly InputAction m_GamePlay_LightAttack;
         private readonly InputAction m_GamePlay_LightAttackHold;
@@ -479,13 +786,15 @@ namespace Game.Input
         private readonly InputAction m_GamePlay_SwitchNext;
         private readonly InputAction m_GamePlay_SwitchPre;
         private readonly InputAction m_GamePlay_SpecialSkill;
+        private readonly InputAction m_GamePlay_SpecialSkillHold;
         private readonly InputAction m_GamePlay_Ultimate;
         public struct GamePlayActions
         {
             private @PlayerControl m_Wrapper;
             public GamePlayActions(@PlayerControl wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_GamePlay_Move;
-            public InputAction @Dodge => m_Wrapper.m_GamePlay_Dodge;
+            public InputAction @EvadeFront => m_Wrapper.m_GamePlay_EvadeFront;
+            public InputAction @EvadeBack => m_Wrapper.m_GamePlay_EvadeBack;
             public InputAction @Look => m_Wrapper.m_GamePlay_Look;
             public InputAction @LightAttack => m_Wrapper.m_GamePlay_LightAttack;
             public InputAction @LightAttackHold => m_Wrapper.m_GamePlay_LightAttackHold;
@@ -493,6 +802,7 @@ namespace Game.Input
             public InputAction @SwitchNext => m_Wrapper.m_GamePlay_SwitchNext;
             public InputAction @SwitchPre => m_Wrapper.m_GamePlay_SwitchPre;
             public InputAction @SpecialSkill => m_Wrapper.m_GamePlay_SpecialSkill;
+            public InputAction @SpecialSkillHold => m_Wrapper.m_GamePlay_SpecialSkillHold;
             public InputAction @Ultimate => m_Wrapper.m_GamePlay_Ultimate;
             public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
             public void Enable() { Get().Enable(); }
@@ -506,9 +816,12 @@ namespace Game.Input
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Dodge.started += instance.OnDodge;
-                @Dodge.performed += instance.OnDodge;
-                @Dodge.canceled += instance.OnDodge;
+                @EvadeFront.started += instance.OnEvadeFront;
+                @EvadeFront.performed += instance.OnEvadeFront;
+                @EvadeFront.canceled += instance.OnEvadeFront;
+                @EvadeBack.started += instance.OnEvadeBack;
+                @EvadeBack.performed += instance.OnEvadeBack;
+                @EvadeBack.canceled += instance.OnEvadeBack;
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
@@ -530,6 +843,9 @@ namespace Game.Input
                 @SpecialSkill.started += instance.OnSpecialSkill;
                 @SpecialSkill.performed += instance.OnSpecialSkill;
                 @SpecialSkill.canceled += instance.OnSpecialSkill;
+                @SpecialSkillHold.started += instance.OnSpecialSkillHold;
+                @SpecialSkillHold.performed += instance.OnSpecialSkillHold;
+                @SpecialSkillHold.canceled += instance.OnSpecialSkillHold;
                 @Ultimate.started += instance.OnUltimate;
                 @Ultimate.performed += instance.OnUltimate;
                 @Ultimate.canceled += instance.OnUltimate;
@@ -540,9 +856,12 @@ namespace Game.Input
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
-                @Dodge.started -= instance.OnDodge;
-                @Dodge.performed -= instance.OnDodge;
-                @Dodge.canceled -= instance.OnDodge;
+                @EvadeFront.started -= instance.OnEvadeFront;
+                @EvadeFront.performed -= instance.OnEvadeFront;
+                @EvadeFront.canceled -= instance.OnEvadeFront;
+                @EvadeBack.started -= instance.OnEvadeBack;
+                @EvadeBack.performed -= instance.OnEvadeBack;
+                @EvadeBack.canceled -= instance.OnEvadeBack;
                 @Look.started -= instance.OnLook;
                 @Look.performed -= instance.OnLook;
                 @Look.canceled -= instance.OnLook;
@@ -564,6 +883,9 @@ namespace Game.Input
                 @SpecialSkill.started -= instance.OnSpecialSkill;
                 @SpecialSkill.performed -= instance.OnSpecialSkill;
                 @SpecialSkill.canceled -= instance.OnSpecialSkill;
+                @SpecialSkillHold.started -= instance.OnSpecialSkillHold;
+                @SpecialSkillHold.performed -= instance.OnSpecialSkillHold;
+                @SpecialSkillHold.canceled -= instance.OnSpecialSkillHold;
                 @Ultimate.started -= instance.OnUltimate;
                 @Ultimate.performed -= instance.OnUltimate;
                 @Ultimate.canceled -= instance.OnUltimate;
@@ -679,7 +1001,8 @@ namespace Game.Input
         public interface IGamePlayActions
         {
             void OnMove(InputAction.CallbackContext context);
-            void OnDodge(InputAction.CallbackContext context);
+            void OnEvadeFront(InputAction.CallbackContext context);
+            void OnEvadeBack(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnLightAttack(InputAction.CallbackContext context);
             void OnLightAttackHold(InputAction.CallbackContext context);
@@ -687,6 +1010,7 @@ namespace Game.Input
             void OnSwitchNext(InputAction.CallbackContext context);
             void OnSwitchPre(InputAction.CallbackContext context);
             void OnSpecialSkill(InputAction.CallbackContext context);
+            void OnSpecialSkillHold(InputAction.CallbackContext context);
             void OnUltimate(InputAction.CallbackContext context);
         }
         public interface IUIActions

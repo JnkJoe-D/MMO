@@ -11,13 +11,17 @@ namespace Game.Input
     {
         public event Action OnSwitchNext;
         public event Action OnSwitchPre;
-        public event Action OnEvadeStarted;
+        public event Action OnEvadeFrontStarted;
+        public event Action OnEvadeBackStarted;
         public event Action OnBasicAttackStarted;
         public event Action OnBasicAttackCanceled;
         public event Action OnBasicAttackHoldStart;
         public event Action OnBasicAttackHold;
         public event Action OnBasicAttackHoldCancel;
         public event Action OnSpecialAttack;
+        public event Action OnSpecialAttackHoldStart;
+        public event Action OnSpecialAttackHold;
+        public event Action OnSpecialAttackHoldCancel;
         public event Action OnUltimate;
         public event Action OnGameplayInteract;
 
@@ -29,17 +33,19 @@ namespace Game.Input
             _input = new PlayerControl();
 
             // 订阅瞬发事件
-            _input.GamePlay.Dodge.started += _ => OnEvadeStarted?.Invoke();
+            _input.GamePlay.EvadeFront.started += _ => OnEvadeFrontStarted?.Invoke();
+            _input.GamePlay.EvadeBack.started += _ => OnEvadeBackStarted?.Invoke();
             _input.GamePlay.LightAttack.started += _ => OnBasicAttackStarted?.Invoke();
             _input.GamePlay.LightAttack.canceled += _ => OnBasicAttackCanceled?.Invoke();
             _input.GamePlay.LightAttackHold.started += _ => OnBasicAttackHoldStart?.Invoke();
             _input.GamePlay.LightAttackHold.performed += _ => OnBasicAttackHold?.Invoke();
             _input.GamePlay.LightAttackHold.canceled += _ => OnBasicAttackHoldCancel?.Invoke();
             _input.GamePlay.SpecialSkill.started += _ => OnSpecialAttack?.Invoke();
+            _input.GamePlay.SpecialSkillHold.started += _ => OnSpecialAttackHold?.Invoke();
+            _input.GamePlay.SpecialSkillHold.performed += _ => OnSpecialAttackHoldStart?.Invoke();
+            _input.GamePlay.SpecialSkillHold.canceled += _ => OnSpecialAttackHoldCancel?.Invoke();
             _input.GamePlay.Ultimate.started += _ => OnUltimate?.Invoke();
             _input.GamePlay.Interact.started += _ => OnGameplayInteract?.Invoke();
-
-            // 将您配好的按键映射推测性发送给已有事件：
             _input.GamePlay.SwitchNext.started += _ => OnSwitchNext?.Invoke();
             _input.GamePlay.SwitchPre.started += _ => OnSwitchPre?.Invoke();
 
@@ -81,7 +87,7 @@ namespace Game.Input
             if (type == InputActionType.Dash)
             {
                 // 注意这里查的是您在 InputMap 里命名的 Dodge
-                return _input.GamePlay.Dodge.IsPressed();
+                return _input.GamePlay.EvadeBack.IsPressed();
             }
             return false;
         }

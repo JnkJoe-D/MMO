@@ -89,7 +89,11 @@ namespace SkillEditor.Editor
         }
         public override void OnDisable()
         {
-            base.OnDisable();
+            if (vfxInstance != null)
+            {
+                EditorVFXManager.Instance.Return(vfxInstance);
+                vfxInstance = null;
+            }
         }
         private Transform GetTargetTransform()
         {

@@ -24,7 +24,7 @@ namespace Game.Logic.Action
         /// <summary>
         /// 一次性预热加载角色挂载的所有动作资源
         /// </summary>
-        public void PreloadCharacterActions(CharacterConfigSO config)
+        public void PreloadCharacterActions(CharacterConfigAsset config)
         {
             if (config == null) return;
             foreach (var actionConfig in config.GetAllActionConfigs())
@@ -36,7 +36,7 @@ namespace Game.Logic.Action
             }
         }
 
-        public SkillTimeline GetOrLoadTimeline(ActionConfigSO config)
+        public SkillTimeline GetOrLoadTimeline(ActionConfigAsset config)
         {
             if (config == null || config.TimelineAsset == null) return null;
             

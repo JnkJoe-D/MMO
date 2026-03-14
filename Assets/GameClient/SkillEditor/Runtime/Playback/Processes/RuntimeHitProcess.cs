@@ -203,6 +203,10 @@ namespace SkillEditor
         {
             hitRecords.Clear();
         }
+        public override void OnDisable()
+        {
+            hitRecords.Clear();
+        }
 
         public override void Reset()
         {

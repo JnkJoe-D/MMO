@@ -72,7 +72,10 @@ namespace SkillEditor{
             //     playingSoundId = -1;
             // }
         }
-
+        public override void OnDisable()
+        {
+            
+        }
         public override void Reset()
         {
             base.Reset();

@@ -349,7 +349,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.06666672229766846,
                     "animationClip": {
-                        "instanceID": 19498
+                        "instanceID": 34758
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -380,7 +380,7 @@
                     "blendInDuration": 0.06666672229766846,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 19500
+                        "instanceID": 34760
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -411,7 +411,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
-                        "instanceID": 44504
+                        "instanceID": 35188
                     },
                     "prefabGuid": "d1aa224abf73af945af8db2d4c0131dd",
                     "prefabAssetName": "FX_slash_04",
@@ -454,7 +454,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
-                        "instanceID": 44504
+                        "instanceID": 35188
                     },
                     "prefabGuid": "d1aa224abf73af945af8db2d4c0131dd",
                     "prefabAssetName": "FX_slash_04",
@@ -498,7 +498,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 17706
+                            "instanceID": 33368
                         }
                     ],
                     "volume": 1.0,
@@ -534,7 +534,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 20218
+                            "instanceID": 35338
                         }
                     ],
                     "volume": 1.0,
@@ -570,7 +570,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 17826
+                            "instanceID": 33452
                         },
                         {
                             "instanceID": 0
@@ -618,7 +618,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 19704
+                            "instanceID": 34964
                         }
                     ],
                     "volume": 1.0,
@@ -665,7 +665,7 @@
                 },
                 "data": {
                     "clipId": "c4d3de75-6f56-44b0-952c-8daa1615aa92",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "预输入",
                     "isEnabled": true,
                     "startTime": 0.0,
                     "duration": 0.6666666865348816,
@@ -684,7 +684,7 @@
                 },
                 "data": {
                     "clipId": "90426a8d-dee4-4646-b051-d6f308693143",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "普通",
                     "isEnabled": true,
                     "startTime": 0.6666666865348816,
                     "duration": 0.1499999761581421,
@@ -703,7 +703,7 @@
                 },
                 "data": {
                     "clipId": "fb8ba9c4-364f-4de6-a226-8f6a93650dea",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "后摇",
                     "isEnabled": true,
                     "startTime": 0.9666666984558106,
                     "duration": 1.8666667938232422,
@@ -722,7 +722,7 @@
                 },
                 "data": {
                     "clipId": "f3d134a9-2683-432d-8f6d-99c6cdb775a2",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "落雷",
                     "isEnabled": true,
                     "startTime": 0.8166666626930237,
                     "duration": 0.15000000596046449,
@@ -741,7 +741,7 @@
                 },
                 "data": {
                     "clipId": "2d1de92d-bcb5-4803-be56-83dfc3b32a13",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "闪避",
                     "isEnabled": true,
                     "startTime": 0.0,
                     "duration": 2.8333334922790529,

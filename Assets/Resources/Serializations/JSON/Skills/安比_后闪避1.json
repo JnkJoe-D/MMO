@@ -216,6 +216,9 @@
                     "clips": [
                         {
                             "rid": 1012
+                        },
+                        {
+                            "rid": 1013
                         }
                     ]
                 }
@@ -236,11 +239,7 @@
                     "isHidden": false,
                     "isCollapsed": false,
                     "isEnabled": true,
-                    "clips": [
-                        {
-                            "rid": 1013
-                        }
-                    ]
+                    "clips": []
                 }
             },
             {
@@ -259,7 +258,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 35378
+                        "instanceID": 34396
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -290,7 +289,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
-                        "instanceID": 34792
+                        "instanceID": 35020
                     },
                     "prefabGuid": "83e244af1d719994ab693b7cedf89951",
                     "prefabAssetName": "Slash_fx_01",
@@ -376,7 +375,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 35334
+                            "instanceID": 35840
                         }
                     ],
                     "volume": 1.0,
@@ -448,8 +447,8 @@
                     "duration": 1.9000000953674317,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
-                    "windowType": 1,
-                    "comboTag": "Deploy2"
+                    "windowType": 2,
+                    "comboTag": ""
                 }
             }
         ]

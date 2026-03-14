@@ -294,7 +294,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.16666662693023683,
                     "animationClip": {
-                        "instanceID": 19510
+                        "instanceID": 34770
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -325,7 +325,7 @@
                     "blendInDuration": 0.16666662693023683,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 19512
+                        "instanceID": 34772
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -356,7 +356,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
-                        "instanceID": 44504
+                        "instanceID": 35188
                     },
                     "prefabGuid": "d1aa224abf73af945af8db2d4c0131dd",
                     "prefabAssetName": "FX_slash_04",
@@ -400,7 +400,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 19542
+                            "instanceID": 34796
                         }
                     ],
                     "volume": 1.0,
@@ -436,7 +436,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 17538
+                            "instanceID": 33252
                         },
                         {
                             "instanceID": 0
@@ -478,7 +478,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 19704
+                            "instanceID": 34964
                         }
                     ],
                     "volume": 1.0,
@@ -514,7 +514,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 18464
+                            "instanceID": 33968
                         }
                     ],
                     "volume": 1.0,
@@ -561,7 +561,7 @@
                 },
                 "data": {
                     "clipId": "38293812-51c0-4df9-b0f0-30d7a04c4407",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "预输入",
                     "isEnabled": true,
                     "startTime": 0.0,
                     "duration": 0.5333333611488342,
@@ -580,7 +580,7 @@
                 },
                 "data": {
                     "clipId": "ad8216a3-e96c-4341-8d1e-9e5d33f4b4e9",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "后摇",
                     "isEnabled": true,
                     "startTime": 0.5333333611488342,
                     "duration": 2.6500003337860109,
@@ -599,7 +599,7 @@
                 },
                 "data": {
                     "clipId": "3e7e78b1-cf76-4c5d-947c-188b2feb7c7a",
-                    "clipName": "连击派生窗口片段",
+                    "clipName": "闪避派生",
                     "isEnabled": true,
                     "startTime": 0.0,
                     "duration": 3.1666667461395265,

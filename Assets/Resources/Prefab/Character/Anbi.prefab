@@ -4474,7 +4474,7 @@ GameObject:
   - component: {fileID: 7139846086242264007}
   - component: {fileID: 4767981326623299890}
   - component: {fileID: 8712995317113709330}
-  - component: {fileID: 5632087064730713062}
+  - component: {fileID: -2569771162649719823}
   m_Layer: 7
   m_Name: Anbi
   m_TagString: Untagged
@@ -4597,7 +4597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 8279904419173429122}
   PlayAutomatically: 1
---- !u!114 &5632087064730713062
+--- !u!114 &-2569771162649719823
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4606,9 +4606,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7318168888982567421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277527b816cc111499b88327b5ac68e3, type: 3}
+  m_Script: {fileID: 11500000, guid: cee5e65f44c12874ca41d7de8c1527e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetEntity: {fileID: 4234548345316881261}
 --- !u!1 &7412486912497016464
 GameObject:
   m_ObjectHideFlags: 0

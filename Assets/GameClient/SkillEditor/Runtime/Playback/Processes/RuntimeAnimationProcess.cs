@@ -32,7 +32,6 @@ namespace SkillEditor
             }
             //这里的update频率比monoupdate低，所以在onenter先同步一次播放速度，确保动画按预期速度开始播放
             animHandler?.SetLayerSpeed((int)clip.layer, clip.playbackSpeed * context.GlobalPlaySpeed);
-            Debug.Log($"[OnEnter] Play at time: {UnityEngine.Time.time}");
         }
 
         public override void OnUpdate(float currentTime, float deltaTime)
@@ -54,10 +53,14 @@ namespace SkillEditor
             {
                 context.PopLayerMask((int)clip.layer, clip.overrideMask);
             }
-            Debug.Log($"[OnExit] OnExit at time: {UnityEngine.Time.time}");
-            // 可选：停止当前动画片段
         }
-
+        public override void OnDisable()
+        {
+            if (clip.overrideMask != null)
+            {
+                context.PopLayerMask((int)clip.layer, clip.overrideMask);
+            }
+        }
         public override void Reset()
         {
             base.Reset();

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Game.Audio;
+using Game.Camera;
 using Game.FSM;
 using Game.Input;
 using UnityEngine;
@@ -12,10 +12,10 @@ namespace Game.Logic.Character
     /// </summary>
     public class CharacterEntity : MonoBehaviour, SkillEditor.ISkillEventHandler, SkillEditor.ISkillComboWindowHandler
     {
+        private bool _hasStarted;
         // === 对底层组件的松散引用 ===
         public IInputProvider InputProvider { get; private set; }
         public IMovementController MovementController { get; private set; }
-        public IAnimController AnimController { get; private set; }
         // 专门处理该实体视角的组件（不依赖全局管理，哪怕是没相机的服务器克隆体也可以模拟前向）
         public ICameraController CameraController { get; private set; }
         
@@ -27,11 +27,11 @@ namespace Game.Logic.Character
         public ActionPlayer ActionPlayer { get; private set; }
 
         // --- 供 State 拿取配置动作 ---
-        public Game.Logic.Character.Config.CharacterConfigSO Config { get; private set; }
+        public Game.Logic.Character.Config.CharacterConfigAsset Config { get; private set; }
 
         // --- 技能连招与事件通讯黑板 ---
         public event System.Action<string> OnSkillTimelineEvent;
-        public Game.Logic.Action.Config.ActionConfigSO NextActionToCast { get; set; }
+        public Game.Logic.Action.Config.ActionConfigAsset NextActionToCast { get; set; }
 
         public Game.Logic.Action.Combo.CommandBuffer CommandBuffer { get; private set; }
         public Game.Logic.Action.Combo.ComboController ComboController { get; private set; }
@@ -63,7 +63,9 @@ namespace Game.Logic.Character
         // === 闪避充能与冷却 ===
         public float EvadeTimer { get; set; } = 0f;
         public int EvadeCount { get; set; } = 0;
-
+        // === 不处于连招窗口的判定条件中 ===
+        public bool IsInComboWindowState =>StateMachine.CurrentState is CharacterSkillState
+            || StateMachine.CurrentState is CharacterEvadeState;
         public bool CanEvade()
         {
             if (Config == null) return false;
@@ -83,18 +85,18 @@ namespace Game.Logic.Character
         private void Awake()
         {
             // 在实际工业架构中，它们通过依赖注入容器或 Awake GetComponent 汇聚到实体上
+            Game.AI.BehaviorTreeCharacterRegistry.Register(this);
             InputProvider = GetComponent<IInputProvider>();
             MovementController = GetComponent<IMovementController>();
-            AnimController = GetComponent<IAnimController>();
             // 实体视听组件
             CameraController = GetComponent<ICameraController>();
 
-            if (InputProvider == null || MovementController == null || AnimController == null)
+            if (InputProvider == null || MovementController == null)
             {
                 Debug.LogWarning($"[CharacterEntity] {gameObject.name} 缺少部分控制组件！");
             }
         }
-        public void Init(Game.Logic.Character.Config.CharacterConfigSO config)
+        public void Init(Game.Logic.Character.Config.CharacterConfigAsset config)
         {
             Config = config;
             Debug.Log($"[CharacterEntity] Config Injected: Role={config.RoleName}");
@@ -110,6 +112,7 @@ namespace Game.Logic.Character
 
         private void Start()
         {
+            _hasStarted = true;
             // ===== 不再使用全局动画管理器，现在由配置传入 =====
             if (Config == null)
             {
@@ -126,6 +129,7 @@ namespace Game.Logic.Character
                     StateMachine.AddState(new CharacterAirborneState());
                     StateMachine.AddState(new CharacterSkillState());
                     StateMachine.AddState(new CharacterEvadeState());
+                    StateMachine.AddState(new CharacterActionBackswingState());
 
                     // 动作播放器
                     ActionPlayer = new ActionPlayer(this);
@@ -145,25 +149,44 @@ namespace Game.Logic.Character
             Game.Camera.GameCameraManager.Instance?.SetTarget(this.transform);
 
             // 注册输入监听
-            if (InputProvider != null)
+            BindInputProviderEvents(InputProvider);
+        }
+
+        public void SetInputProvider(IInputProvider provider)
+        {
+            if (ReferenceEquals(InputProvider, provider))
             {
-                InputProvider.OnBasicAttackStarted += OnBasicAttack;
-                InputProvider.OnSpecialAttack += OnSpecialAttack;
-                InputProvider.OnUltimate += OnUltimateAttack;
-                InputProvider.OnEvadeStarted += OnEvade;
+                return;
+            }
+
+            if (_hasStarted)
+            {
+                UnbindInputProviderEvents(InputProvider);
+            }
+
+            InputProvider = provider;
+
+            if (_hasStarted)
+            {
+                BindInputProviderEvents(InputProvider);
             }
         }
-        private void OnEvade()
+        private void OnEvadeFront()
         {
-            if (StateMachine.CurrentState is CharacterGroundState || StateMachine.CurrentState is CharacterAirborneState)
+            if (!IsInComboWindowState)
             {
                 if (!CanEvade()) return;
+                NextActionToCast = Config.evadeFront[0];
+                StateMachine.ChangeState<CharacterEvadeState>();
+            }
+        }
 
-                if (InputProvider.HasMovementInput())
-                    NextActionToCast = Config.evadeFront[0];
-                else
-                    NextActionToCast = Config.evadeBack[0];
-
+        private void OnEvadeBack()
+        {
+            if (!IsInComboWindowState)
+            {
+                if (!CanEvade()) return;
+                NextActionToCast = Config.evadeBack[0];
                 StateMachine.ChangeState<CharacterEvadeState>();
             }
         }
@@ -173,8 +196,8 @@ namespace Game.Logic.Character
         // =====================================
         private void OnBasicAttack()
         {
-            // 如果不在技能态中，则是起手第一刀
-            if (StateMachine.CurrentState is CharacterGroundState)
+            // 如果不在技能/闪避态中，则是起手第一刀
+            if (!IsInComboWindowState)
             {
                 if (Config == null) return;
                 if (Config.lightAttacks != null && Config.lightAttacks.Length > 0)
@@ -187,7 +210,7 @@ namespace Game.Logic.Character
 
         private void OnSpecialAttack()
         {
-            if (!(StateMachine.CurrentState is CharacterSkillState))
+            if (!IsInComboWindowState)
             {
                 if (Config != null && Config.specialSkill != null)
                 {
@@ -199,7 +222,7 @@ namespace Game.Logic.Character
 
         private void OnUltimateAttack()
         {
-            if (!(StateMachine.CurrentState is CharacterSkillState))
+            if (!IsInComboWindowState)
             {
                 if (Config != null && Config.Ultimate != null)
                 {
@@ -250,12 +273,42 @@ namespace Game.Logic.Character
 
         private void OnDestroy()
         {
+            Game.AI.BehaviorTreeCharacterRegistry.Unregister(this);
+            UnbindInputProviderEvents(InputProvider);
             if (FSMManager.Instance != null && StateMachine != null)
             {
                 // 回收该角色的所有计算轮组
                 FSMManager.Instance.DestroyFSM(StateMachine);
                 StateMachine = null;
             }
+        }
+
+        private void BindInputProviderEvents(IInputProvider provider)
+        {
+            if (provider == null)
+            {
+                return;
+            }
+
+            provider.OnBasicAttackStarted += OnBasicAttack;
+            provider.OnSpecialAttack += OnSpecialAttack;
+            provider.OnUltimate += OnUltimateAttack;
+            provider.OnEvadeFrontStarted += OnEvadeFront;
+            provider.OnEvadeBackStarted += OnEvadeBack;
+        }
+
+        private void UnbindInputProviderEvents(IInputProvider provider)
+        {
+            if (provider == null)
+            {
+                return;
+            }
+
+            provider.OnBasicAttackStarted -= OnBasicAttack;
+            provider.OnSpecialAttack -= OnSpecialAttack;
+            provider.OnUltimate -= OnUltimateAttack;
+            provider.OnEvadeFrontStarted -= OnEvadeFront;
+            provider.OnEvadeBackStarted -= OnEvadeBack;
         }
     }
 }

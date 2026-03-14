@@ -12,6 +12,21 @@ namespace Game.Logic.Action.Combo
         // 临界保护标志：防止在状态切换期间（触发 OnExit/StopAction）二次验算引发死循环和乱跳连段
         private bool _isTransitioning = false;
 
+        public struct ExecutionRecord
+        {
+            public BufferedInputType Input;
+            public int ActionId;
+            public float Timestamp;
+        }
+        public System.Collections.Generic.List<ExecutionRecord> ExecutionHistory { get; private set; } = new System.Collections.Generic.List<ExecutionRecord>();
+
+        private void RecordExecution(BufferedInputType input, object action)
+        {
+            int actionId = action != null ? (action as Config.ActionConfigAsset).ID : -1;
+            ExecutionHistory.Insert(0, new ExecutionRecord { Input = input, ActionId = actionId, Timestamp = Time.time });
+            if (ExecutionHistory.Count > 10) ExecutionHistory.RemoveAt(10);
+        }
+
         public ComboController(CharacterEntity entity)
         {
             _entity = entity;
@@ -19,18 +34,11 @@ namespace Game.Logic.Action.Combo
 
         public void Update(float deltaTime)
         {
+            // Fallback 期间的打断逻辑现在移到了 CharacterActionBackswingState 内部处理，
+            // 保持这里的 Update 纯粹。
             if (_entity.CommandBuffer != null)
             {
                 _entity.CommandBuffer.Tick();
-            }
-
-            // Fallback 期间，允许移动随时打断
-            if (_entity.HasWindowType(ComboWindowType.Fallback))
-            {
-                if (_entity.InputProvider != null && _entity.InputProvider.HasMovementInput())
-                {
-                    InterruptToGround();
-                }
             }
         }
 
@@ -43,8 +51,10 @@ namespace Game.Logic.Action.Combo
             
             _entity.CommandBuffer.Push(inputType);
 
-            // 如果当前在放技能或闪避，立刻进行一次评估
-            if (_entity.Machine.CurrentState is CharacterSkillState || _entity.Machine.CurrentState is CharacterEvadeState)
+            // 如果当前在放技能、闪避或后摇期，立刻进行一次评估
+            if (_entity.Machine.CurrentState is CharacterSkillState || 
+                _entity.Machine.CurrentState is CharacterEvadeState ||
+                _entity.Machine.CurrentState is CharacterActionBackswingState)
             {
                 EvaluateCurrentState();
             }
@@ -64,6 +74,11 @@ namespace Game.Logic.Action.Combo
                 // 彻底杜绝“玩家在很早之前乱按的键，到现在仍未过期并被这扇窗户错误捕获”的极大延迟感。
                 _entity.CommandBuffer.Clear();
             }
+            else if (windowType == ComboWindowType.Fallback)
+            {
+                // 进入后摇窗口，切入空白等待态
+                _entity.Machine.ChangeState<CharacterActionBackswingState>();
+            }
         }
 
         public void OnWindowExit(string comboTag, ComboWindowType windowType)
@@ -72,6 +87,17 @@ namespace Game.Logic.Action.Combo
             {
                 // Buffer期结束时，作为一个重要的“结算点”，以该 Buffer 自身的 Tag 作为条件校验一次连段
                 EvaluateTransitionsAgainst(comboTag);
+            }
+            else if (windowType == ComboWindowType.Fallback)
+            {
+                // 后摇窗口自然结束，回归待机
+                if (_entity.Machine.CurrentState is CharacterActionBackswingState)
+                {
+                    if (_entity.MovementController != null && _entity.MovementController.IsGrounded)
+                        _entity.Machine.ChangeState<CharacterGroundState>();
+                    else
+                        _entity.Machine.ChangeState<CharacterAirborneState>();
+                }
             }
         }
 
@@ -84,15 +110,10 @@ namespace Game.Logic.Action.Combo
             if (_entity.CommandBuffer == null) return;
             if (_entity.ActiveComboWindows.Count == 0) return;
 
-            bool isFallback = _entity.HasWindowType(ComboWindowType.Fallback);
+            // 进入后摇期间，打断逻辑由 CharacterActionBackswingState.OnUpdate 处理。
+            // 连段跳转逻辑统一通过 EvaluateTransitionsAgainst 遍历处理。
 
-            if (isFallback)
-            {
-                HandleFallbackWindow();
-                return;
-            }
-
-            var currentSkill = _entity.NextActionToCast as Config.SkillConfigSO;
+            var currentSkill = _entity.NextActionToCast as Config.SkillConfigAsset;
             if (currentSkill == null || currentSkill.OutTransitions == null) return;
 
             // 为了支持【同一时间存在多个并行的窗口轨道】（例如攻击轨道和闪避轨道重叠），
@@ -128,25 +149,28 @@ namespace Game.Logic.Action.Combo
                             _isTransitioning = true;
                             cmd.IsConsumed = true;
 
-                            // 动态判定 Evade 的动作（解决前闪/后闪无法在连段线里静态配置的问题）
-                            if (cmd.InputType == BufferedInputType.Evade)
+                            // 判定闪避动作
+                            if (cmd.InputType == BufferedInputType.EvadeFront)
                             {
-                                if (_entity.InputProvider != null && _entity.InputProvider.HasMovementInput())
-                                    _entity.NextActionToCast = _entity.Config.evadeFront[0];
-                                else
-                                    _entity.NextActionToCast = _entity.Config.evadeBack[0];
+                                _entity.NextActionToCast = _entity.Config.evadeFront[0];
+                            }
+                            else if (cmd.InputType == BufferedInputType.EvadeBack)
+                            {
+                                _entity.NextActionToCast = _entity.Config.evadeBack[0];
                             }
                             else
                             {
                                 _entity.NextActionToCast = transition.NextAction;
                             }
                             
+                            RecordExecution(cmd.InputType, _entity.NextActionToCast);
+                            
                             // 必须全清当前技能留下的窗口！
                             _entity.ActiveComboWindows.Clear();
                             _entity.CommandBuffer.Clear();
 
                             // 通过调用 FSM 的流转，会自动执行旧状态 OnExit(停顿/清理) 和进入新状态 OnEnter(播新技能)
-                            var nextSkill = _entity.NextActionToCast as Config.SkillConfigSO;
+                            var nextSkill = _entity.NextActionToCast as Config.SkillConfigAsset;
                             if (nextSkill != null && nextSkill.Category == Config.SkillCategory.Evade)
                                 _entity.Machine.ChangeState<CharacterEvadeState>();
                             else
@@ -160,79 +184,14 @@ namespace Game.Logic.Action.Combo
             }
         }
 
-        private void HandleFallbackWindow()
-        {
-            if (_entity.CommandBuffer == null) return;
 
-            // 在 Fallback 期间，有指令立刻打断
-            foreach (var cmd in _entity.CommandBuffer.GetUnconsumedCommands())
-            {
-                if (cmd.InputType == BufferedInputType.BasicAttack || cmd.InputType == BufferedInputType.BasicAttackHold)
-                {
-                    if (_entity.Config != null && _entity.Config.lightAttacks != null && _entity.Config.lightAttacks.Length > 0)
-                    {
-                        cmd.IsConsumed = true;
-                        _isTransitioning = true;
-                        _entity.NextActionToCast = _entity.Config.lightAttacks[0];
-                        _entity.ActiveComboWindows.Clear(); // 清理残留窗口
-                        _entity.CommandBuffer.Clear();
-                        _entity.Machine.ChangeState<CharacterSkillState>();
-                        _isTransitioning = false;
-                        return;
-                    }
-                }
-                else if (cmd.InputType == BufferedInputType.Evade)
-                {
-                    cmd.IsConsumed = true;
-                    _isTransitioning = true;
-                    
-                    if (_entity.InputProvider.HasMovementInput())
-                        _entity.NextActionToCast = _entity.Config.evadeFront[0];
-                    else
-                        _entity.NextActionToCast = _entity.Config.evadeBack[0];
-
-                    _entity.CommandBuffer.Clear();
-                    _entity.Machine.ChangeState<CharacterEvadeState>();
-                    _isTransitioning = false;
-                    return;
-                }
-                else if (cmd.InputType == BufferedInputType.SpecialAttack)
-                {
-                    if (_entity.Config != null && _entity.Config.specialSkill != null)
-                    {
-                        cmd.IsConsumed = true;
-                        _isTransitioning = true;
-                        _entity.NextActionToCast = _entity.Config.specialSkill;
-                        _entity.ActiveComboWindows.Clear();
-                        _entity.CommandBuffer.Clear();
-                        _entity.Machine.ChangeState<CharacterSkillState>();
-                        _isTransitioning = false;
-                        return;
-                    }
-                }
-                else if (cmd.InputType == BufferedInputType.Ultimate)
-                {
-                    if (_entity.Config != null && _entity.Config.Ultimate != null)
-                    {
-                        cmd.IsConsumed = true;
-                        _isTransitioning = true;
-                        _entity.NextActionToCast = _entity.Config.Ultimate;
-                        _entity.ActiveComboWindows.Clear();
-                        _entity.CommandBuffer.Clear();
-                        _entity.Machine.ChangeState<CharacterSkillState>();
-                        _isTransitioning = false;
-                        return;
-                    }
-                }
-            }
-        }
 
         private void EvaluateTransitionsAgainst(string tagToTest)
         {
             if (_isTransitioning) return;
             if (_entity.CommandBuffer == null) return;
 
-            var currentSkill = _entity.NextActionToCast as Config.SkillConfigSO;
+            var currentSkill = _entity.NextActionToCast as Config.SkillConfigAsset;
             if (currentSkill == null || currentSkill.OutTransitions == null) return;
 
             foreach (var cmd in _entity.CommandBuffer.GetUnconsumedCommands())
@@ -262,26 +221,32 @@ namespace Game.Logic.Action.Combo
                         _isTransitioning = true;
                         cmd.IsConsumed = true;
 
-                        // 动态判定 Evade
-                        if (cmd.InputType == BufferedInputType.Evade)
+                        // 判定闪避动作
+                        if (cmd.InputType == BufferedInputType.EvadeFront)
                         {
-                            if (_entity.InputProvider != null && _entity.InputProvider.HasMovementInput())
-                                _entity.NextActionToCast = _entity.Config.evadeFront[0];
-                            else
-                                _entity.NextActionToCast = _entity.Config.evadeBack[0];
+                            _entity.NextActionToCast = _entity.Config.evadeFront[0];
+                        }
+                        else if (cmd.InputType == BufferedInputType.EvadeBack)
+                        {
+                            _entity.NextActionToCast = _entity.Config.evadeBack[0];
                         }
                         else
                         {
                             _entity.NextActionToCast = transition.NextAction;
                         }
 
+                        RecordExecution(cmd.InputType, _entity.NextActionToCast);
+
                         // 必须全清当前技能留下的窗口！
                         _entity.ActiveComboWindows.Clear();
                         _entity.CommandBuffer.Clear();
 
                         // 通过调用 FSM 的流转，会自动执行旧状态 OnExit(停顿/清理) 和进入新状态 OnEnter(播新技能)
-                        var nextSkill = _entity.NextActionToCast as Config.SkillConfigSO;
-                        _entity.Machine.ChangeState<CharacterSkillState>();
+                        var nextSkill = _entity.NextActionToCast as Config.SkillConfigAsset;
+                        if (nextSkill != null && nextSkill.Category == Config.SkillCategory.Evade)
+                            _entity.Machine.ChangeState<CharacterEvadeState>();
+                        else
+                            _entity.Machine.ChangeState<CharacterSkillState>();
 
                         _isTransitioning = false;
                         return; 

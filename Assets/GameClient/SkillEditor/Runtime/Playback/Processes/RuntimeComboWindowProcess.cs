@@ -30,7 +30,10 @@ namespace SkillEditor
                 comboHandler.OnComboWindowExit(clip.comboTag, clip.windowType);
             }
         }
+        public override void OnDisable()
+        {
 
+        }
         public override void Reset()
         {
             base.Reset();

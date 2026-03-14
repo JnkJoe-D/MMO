@@ -53,7 +53,14 @@ namespace SkillEditor
             }
             spawnedProjectile = null;
         }
-
+        public override void OnDisable()
+        {
+            if (clip.destroyOnInterrupt && spawnedProjectile != null && context != null && context.IsInterrupted)
+            {
+                spawnedProjectile.Recycle();
+            }
+            spawnedProjectile = null;
+        }
         private void GetMatrix(out Vector3 pos, out Quaternion rot, out Transform parent)
         {
             parent = null;

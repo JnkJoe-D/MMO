@@ -1,4 +1,5 @@
 using Game.FSM;
+using Game.AI;
 using UnityEngine;
 
 namespace Game.Logic.Character
@@ -134,6 +135,12 @@ namespace Game.Logic.Character
         /// </summary>
         public Vector3 CalculateWorldDirection(Vector2 inputDir)
         {
+            if (Entity.InputProvider is AIInputProvider aiInputProvider &&
+                aiInputProvider.TryGetWorldMovementDirection(out Vector3 aiWorldDirection))
+            {
+                return aiWorldDirection.normalized;
+            }
+
             if (Entity.CameraController != null)
             {
                 Vector3 camForward = Entity.CameraController.GetForward();

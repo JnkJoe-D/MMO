@@ -43,7 +43,7 @@
         {
             "groupId": "5e32243f-fd0e-4a9e-b870-e6e5ef0357fb",
             "groupName": "分组 4",
-            "isCollapsed": false,
+            "isCollapsed": true,
             "isEnabled": true,
             "isLocked": false,
             "tracks": [
@@ -216,6 +216,9 @@
                     "clips": [
                         {
                             "rid": 1012
+                        },
+                        {
+                            "rid": 1013
                         }
                     ]
                 }
@@ -236,11 +239,7 @@
                     "isHidden": false,
                     "isCollapsed": false,
                     "isEnabled": true,
-                    "clips": [
-                        {
-                            "rid": 1013
-                        }
-                    ]
+                    "clips": []
                 }
             },
             {
@@ -259,7 +258,7 @@
                     "blendInDuration": 0.20000000298023225,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 35380
+                        "instanceID": 34398
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -290,7 +289,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "effectPrefab": {
-                        "instanceID": 34792
+                        "instanceID": 35020
                     },
                     "prefabGuid": "83e244af1d719994ab693b7cedf89951",
                     "prefabAssetName": "Slash_fx_01",
@@ -376,7 +375,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 35334
+                            "instanceID": 35840
                         }
                     ],
                     "volume": 1.0,
@@ -441,15 +440,15 @@
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
-                    "clipId": "16a05b9c-83d5-43d2-804c-37f0b93a1831",
+                    "clipId": "96c5121a-608a-46d2-b760-b9178c50b959",
                     "clipName": "连击派生窗口片段",
                     "isEnabled": true,
                     "startTime": 0.3333333432674408,
-                    "duration": 1.5,
+                    "duration": 1.533333420753479,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
-                    "windowType": 1,
-                    "comboTag": "Deploy2"
+                    "windowType": 2,
+                    "comboTag": ""
                 }
             }
         ]

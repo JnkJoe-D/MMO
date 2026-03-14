@@ -16,7 +16,7 @@ namespace Game.Logic.Character
     {
         
         private SkillEditor.SkillRunner _currentRunner;
-        private SkillConfigSO currentSkill;
+        private SkillConfigAsset currentSkill;
         private bool isBackswingStarted;
 
         public override void OnEnter()
@@ -32,11 +32,9 @@ namespace Game.Logic.Character
                 Entity.InputProvider.OnBasicAttackHoldCancel += OnBasicAttackRequestHoldCancel;
                 Entity.InputProvider.OnSpecialAttack += OnSpecialAttackRequest;
                 Entity.InputProvider.OnUltimate += OnUltimateRequest;
-                Entity.InputProvider.OnEvadeStarted += OnEvadeRequest;
+                Entity.InputProvider.OnEvadeFrontStarted += OnEvadeFrontRequest;
+                Entity.InputProvider.OnEvadeBackStarted += OnEvadeBackRequest;
             }
-
-            // 即便采用新设计，Evade 的自然结（跑/跑）可能仍需 Timeline Event 退场
-            Entity.OnSkillTimelineEvent += OnReceiveTimelineEvent;
 
             PlayCurrentSkill();
         }
@@ -55,19 +53,21 @@ namespace Game.Logic.Character
                 _currentRunner.OnComplete -= OnSkillEnd;
                 _currentRunner.OnComplete += OnSkillEnd;
             }
+
+            // 识别是否是前闪避，用于后续衔接 Dash
+            bool isFrontEvade = false;
+            if (Entity.Config.evadeFront != null)
+            {
+                foreach (var ev in Entity.Config.evadeFront)
+                {
+                    if (ev == skillConfig) { isFrontEvade = true; break; }
+                }
+            }
+            Entity.ForceDashNextFrame = isFrontEvade;
+
             Entity.ActionPlayer.SetPlaySpeed(Entity.Config.DodgeMultipier);
 
-            currentSkill = skillConfig as SkillConfigSO;
-        }
-
-        private void OnReceiveTimelineEvent(string eventName)
-        {
-            // 对于闪避技能，InputAvailable 事件现在仅用作“如果没有派生，则自然切回Ground的标记点”
-            // 连段逻辑已经完全被 ComboWindow 及 ComboController 接管
-            if (eventName == "InputAvailable")
-            {
-                isBackswingStarted = true;
-            }
+            currentSkill = skillConfig as SkillConfigAsset;
         }
 
         private float _skillStartTime;
@@ -79,11 +79,19 @@ namespace Game.Logic.Character
         private void OnSpecialAttackRequest() { Entity.ComboController.OnInput(BufferedInputType.SpecialAttack); }
         private void OnUltimateRequest() { Entity.ComboController.OnInput(BufferedInputType.Ultimate); }
 
-        private void OnEvadeRequest()
+        private void OnEvadeFrontRequest()
         {
             if (Entity.CanEvade())
             {
-                Entity.ComboController.OnInput(BufferedInputType.Evade);
+                Entity.ComboController.OnInput(BufferedInputType.EvadeFront);
+            }
+        }
+
+        private void OnEvadeBackRequest()
+        {
+            if (Entity.CanEvade())
+            {
+                Entity.ComboController.OnInput(BufferedInputType.EvadeBack);
             }
         }
 
@@ -92,7 +100,7 @@ namespace Game.Logic.Character
         {
             if (Entity.InputProvider != null && Entity.InputProvider.HasMovementInput())
             {
-                Entity.ForceDashNextFrame = true; // 告诉地面状态直接切跑
+                // Entity.ForceDashNextFrame = true; // 此处不再暴力设为 true，改由 PlayCurrentSkill 识别
                 if (Entity.MovementController != null && Entity.MovementController.IsGrounded)
                     Machine.ChangeState<CharacterGroundState>();
                 else
@@ -108,6 +116,7 @@ namespace Game.Logic.Character
                 FinishEvadeAndReturnToGround();
                 return;
             }
+            //兜底，播放完强转
             if (!Entity.ActionPlayer.IsPlaying)
             {
                 if (Entity.MovementController != null && Entity.MovementController.IsGrounded)
@@ -125,7 +134,14 @@ namespace Game.Logic.Character
                 _currentRunner.OnComplete -= OnSkillEnd;
                 _currentRunner = null;
             }
-            Entity.ActionPlayer.StopAction();
+            if (Machine.NextState is CharacterActionBackswingState)
+            {
+                // 不要停止播放，让后摇自然流逝并交给新状态接力
+            }
+            else
+            {
+                Entity.ActionPlayer.StopAction();
+            }
             currentSkill = null;
             
             if (Entity.InputProvider != null)
@@ -137,9 +153,9 @@ namespace Game.Logic.Character
                 Entity.InputProvider.OnBasicAttackHoldCancel -= OnBasicAttackRequestHoldCancel;
                 Entity.InputProvider.OnSpecialAttack -= OnSpecialAttackRequest;
                 Entity.InputProvider.OnUltimate -= OnUltimateRequest;
-                Entity.InputProvider.OnEvadeStarted -= OnEvadeRequest;
+                Entity.InputProvider.OnEvadeFrontStarted -= OnEvadeFrontRequest;
+                Entity.InputProvider.OnEvadeBackStarted -= OnEvadeBackRequest;
             }
-            Entity.OnSkillTimelineEvent -= OnReceiveTimelineEvent;
         }
 
         private void OnSkillEnd()

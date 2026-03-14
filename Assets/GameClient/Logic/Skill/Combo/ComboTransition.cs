@@ -21,7 +21,7 @@ namespace Game.Logic.Action.Combo
         [Header("跳转目标")]
         [Tooltip("验证通过后，将要播放的下一个行为")]
         [FormerlySerializedAs("NextSkill")]
-        public Config.ActionConfigSO NextAction;
+        public Config.ActionConfigAsset NextAction;
 
         [Header("业务前置条件 (选填)")]
         [SerializeReference] 

@@ -14,7 +14,7 @@ namespace Game.Logic.Character
         private SkillRunner _runner;
         private ProcessContext _context;
         
-        public ActionConfigSO CurrentAction { get; private set; }
+        public ActionConfigAsset CurrentAction { get; private set; }
         public bool IsPlaying { get; private set; }
 
         public ActionPlayer(CharacterEntity entity)
@@ -22,7 +22,7 @@ namespace Game.Logic.Character
             _entity = entity;
         }
 
-        public SkillRunner PlayAction(ActionConfigSO config)
+        public SkillRunner PlayAction(ActionConfigAsset config)
         {
             if (config == null || config.TimelineAsset == null)
             {

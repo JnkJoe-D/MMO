@@ -50,7 +50,8 @@ namespace Game.Input
         /// <summary>切换上一个指令触发 (如 C 键)</summary>
         event Action OnSwitchPre;
         /// <summary>闪避触发 (如 Shift 键)</summary>
-        event Action OnEvadeStarted;
+        event Action OnEvadeFrontStarted;
+        event Action OnEvadeBackStarted;
 
         /// <summary>基础普攻指令触发 (如 鼠标左键)</summary>
         event Action OnBasicAttackStarted;
@@ -63,6 +64,10 @@ namespace Game.Input
 
         /// <summary>特殊攻击触发 (如 E)</summary>
         event Action OnSpecialAttack;
+        /// <summary>特殊攻击触发长按 (如 E)</summary>
+        event Action OnSpecialAttackHoldStart;
+        event Action OnSpecialAttackHold;
+        event Action OnSpecialAttackHoldCancel;
         /// <summary>终结技触发 (如 Q)</summary>
         event Action OnUltimate;
         /// <summary>非城镇下交互 (如 F)</summary>

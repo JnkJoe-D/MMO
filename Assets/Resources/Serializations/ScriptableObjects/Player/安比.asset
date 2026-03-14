@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RoleID: 1001
   RoleName: 
-  CharacterPrefab: {fileID: 0}
+  CharacterPrefab: {fileID: 7318168888982567421, guid: ae5497ae1dd48134ba0434944f49b33b,
+    type: 3}
   GroundRadius: 0.3
   GroundHeight: 1.8
   GroundOffset: 0.1
@@ -44,7 +45,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3234c5172f27bf04ab44ccd062212689, type: 2}
   - {fileID: 11400000, guid: a27aaf74d907f784180fe4aaae2bf27f, type: 2}
   - {fileID: 11400000, guid: 5db824db0cb6cde42a4bb39499f35970, type: 2}
-  heavyAttacks: []
+  heavyAttacks:
+  - {fileID: 11400000, guid: a17238d2db42b3f4d96d027c3a261b32, type: 2}
   dashAttack: {fileID: 11400000, guid: 7a51b91027c2ec94ba9740c476a93a5f, type: 2}
   dodgeCounter: []
   specialSkill: {fileID: 11400000, guid: 867432dae13f2b8488c6584a0b64f77e, type: 2}
@@ -53,3 +55,4 @@ MonoBehaviour:
   chainSkill: {fileID: 0}
   assistSkill: {fileID: 0}
   Ultimate: {fileID: 0}
+  BehaviorTreeGraph: {fileID: 0}

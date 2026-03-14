@@ -241,6 +241,9 @@
                         },
                         {
                             "rid": 1014
+                        },
+                        {
+                            "rid": 1015
                         }
                     ]
                 }
@@ -263,7 +266,7 @@
                     "isEnabled": true,
                     "clips": [
                         {
-                            "rid": 1015
+                            "rid": 1016
                         }
                     ]
                 }
@@ -284,7 +287,7 @@
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "animationClip": {
-                        "instanceID": 34568
+                        "instanceID": 35696
                     },
                     "playbackSpeed": 1.0,
                     "layer": 0,
@@ -316,7 +319,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 34986
+                            "instanceID": 34856
                         }
                     ],
                     "volume": 1.0,
@@ -352,7 +355,7 @@
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 35182
+                            "instanceID": 36570
                         },
                         {
                             "instanceID": 0
@@ -388,13 +391,13 @@
                     "clipId": "e24274e3-705a-4bd3-b0e5-bf703ff1e391",
                     "clipName": "音效轨道片段",
                     "isEnabled": true,
-                    "startTime": 2.1666667461395265,
+                    "startTime": 1.533333420753479,
                     "duration": 0.7666666507720947,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "audioClips": [
                         {
-                            "instanceID": 35044
+                            "instanceID": 34940
                         }
                     ],
                     "volume": 1.0,
@@ -444,7 +447,7 @@
                     "clipName": "连击派生窗口片段",
                     "isEnabled": true,
                     "startTime": 0.0,
-                    "duration": 0.23333334922790528,
+                    "duration": 0.31666669249534609,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "windowType": 0,
@@ -462,8 +465,8 @@
                     "clipId": "8fa2a5f3-b8b2-4999-9c4b-fac67a8b7d51",
                     "clipName": "连击派生窗口片段",
                     "isEnabled": true,
-                    "startTime": 0.23333334922790528,
-                    "duration": 2.1000001430511476,
+                    "startTime": 0.46666669845581057,
+                    "duration": 1.8500001430511475,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "windowType": 2,
@@ -478,11 +481,30 @@
                     "asm": "Assembly-CSharp"
                 },
                 "data": {
+                    "clipId": "41a8ee67-be83-425a-96e5-ab06e9396c2d",
+                    "clipName": "连击派生窗口片段",
+                    "isEnabled": true,
+                    "startTime": 0.31666669249534609,
+                    "duration": 0.15000000596046449,
+                    "blendInDuration": 0.0,
+                    "blendOutDuration": 0.0,
+                    "windowType": 1,
+                    "comboTag": "Deploy1"
+                }
+            },
+            {
+                "rid": 1016,
+                "type": {
+                    "class": "ComboWindowClip",
+                    "ns": "SkillEditor",
+                    "asm": "Assembly-CSharp"
+                },
+                "data": {
                     "clipId": "d76bbeaa-e023-4e55-9046-23bf386644f1",
                     "clipName": "连击派生窗口片段",
                     "isEnabled": true,
                     "startTime": 0.0,
-                    "duration": 2.3333334922790529,
+                    "duration": 2.316666841506958,
                     "blendInDuration": 0.0,
                     "blendOutDuration": 0.0,
                     "windowType": 1,

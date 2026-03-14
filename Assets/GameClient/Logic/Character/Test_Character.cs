@@ -22,7 +22,7 @@ namespace Game.Logic.Character
         [SerializeField] private ResourceConfig _resourceConfig;
         [Header("Test Spawner Config")]
         public string characterPrefabPath = "Assets/Resources/Character_Player.prefab";
-        public Game.Logic.Character.Config.CharacterConfigSO testCharacterConfig;
+        public Game.Logic.Character.Config.CharacterConfigAsset testCharacterConfig;
 
         public Transform spawnPoint;
 

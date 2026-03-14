@@ -43,7 +43,7 @@ namespace Game.Logic.Character
         /// <param name="config">角色的基因数据配置</param>
         /// <param name="spawnPos">出生位置</param>
         /// <param name="spawnRot">出生旋转</param>
-        public async Task<CharacterEntity> PossessNewCharacterAsync(string characterPrefabPath, CharacterConfigSO config, Vector3 spawnPos, Quaternion spawnRot)
+        public async Task<CharacterEntity> PossessNewCharacterAsync(string characterPrefabPath, CharacterConfigAsset config, Vector3 spawnPos, Quaternion spawnRot)
         {
             UnpossessCurrentCharacter();
 

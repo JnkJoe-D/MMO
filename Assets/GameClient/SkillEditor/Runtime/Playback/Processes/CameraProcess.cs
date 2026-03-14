@@ -40,5 +40,9 @@ namespace SkillEditor
         {
             cameraHandler?.ReleaseCamera();
         }
+        public override void OnDisable()
+        {
+            cameraHandler?.ReleaseCamera();
+        }
     }
 }

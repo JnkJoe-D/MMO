@@ -6,7 +6,8 @@ namespace Game.Logic.Character
     public enum BufferedInputType
     {
         None,
-        Evade=10,
+        EvadeFront = 10,
+        EvadeBack = 11,
         BasicAttack=20,
         BasicAttackCancel = 21,
         BasicAttackHold =30,

@@ -13,6 +13,8 @@ namespace Game.FSM
         
         private IFSMState<T> _currentState;
         public IFSMState<T> CurrentState => _currentState;
+        public IFSMState<T> PreviousState { get; private set; }
+        public IFSMState<T> NextState { get; private set; }
         private readonly Dictionary<System.Type, IFSMState<T>> _stateCache = new Dictionary<System.Type, IFSMState<T>>();
 
         // 内部构造，外部由 FSMManager 创建
@@ -70,8 +72,11 @@ namespace Game.FSM
             if (_currentState != null && !_currentState.CanExit()) return false;
             if (!nextState.CanEnter()) return false;
 
+            NextState = nextState;
             _currentState?.OnExit();
+            PreviousState = _currentState;
             _currentState = nextState;
+            NextState = null;
             _currentState?.OnEnter();
 
             return true;

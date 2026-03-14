@@ -378,14 +378,14 @@ namespace SkillEditor
         /// </summary>
         private void FullCleanup()
         {
-            // 级别 1: 实例级清理
-            foreach (var inst in processes)
-            {
-                if (inst.isActive)
-                {
-                    inst.process.OnExit();
-                }
-            }
+            // 级别 1: 实例级清理 (仅在自然退出时触发，此处为硬清理，直接跳过 OnExit)
+            // foreach (var inst in processes)
+            // {
+            //     if (inst.isActive)
+            //     {
+            //         inst.process.OnExit();
+            //     }
+            // }
 
             // 级别 2: 进程级清理
             foreach (var inst in processes)
